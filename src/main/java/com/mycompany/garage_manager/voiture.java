@@ -13,8 +13,7 @@ import Personnes.*;
 public class voiture {
 
     public static void main(String[] args) {
-     Personne p=new Personne(22,"salhi","med",20202020,"mourouj");
-     System.out.println(p);
+   
      
     }
 }
