@@ -8,7 +8,7 @@ package Personnes;
  *
  * @author LENOVO
  */
-public class Personne {
+public abstract  class Personne {
     private int id;
     private String nom;
     private String prenom;
@@ -42,7 +42,30 @@ public class Personne {
     {
         this.adresse=adresse;
     }
+    public int get_id()
+    {
+        return this.id;
+    }
+    public String get_nom()
+    {
+        return this.nom;
+    }
+    public String get_prenom()
+    {
+        return this.prenom;
+    }
+    public int get_telephone()
+    {
+        return this.telephone;
+    }
+   public abstract void modifier();
+    @Override
+   public String toString()
+    {
+        return("Id : "+this.id+ "\n" +"Nom : "+this.nom+ "\n" +"Prenom : "+this.prenom+ "\n"  +"téléphone : "+this.telephone+ "\n" +"adresse : "+this.adresse);
+    }
     
+       
     
-    
+            
 }
