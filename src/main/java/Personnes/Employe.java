@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class Employe extends Personne{
     
-    private LocalDate  date_embauche;
+    private  LocalDate  date_embauche;//consider putting final
     private double salaire;
     public Employe(int id , String nom , String prenom , int telephone , String adresse,double salaire)
     {
