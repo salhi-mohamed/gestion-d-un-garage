@@ -4,7 +4,8 @@
  */
 
 package com.mycompany.garage_manager;
-import Personnes.*;
+import Personnes.Personne;
+import Personnes.Employe;
 
 /**
  *
@@ -13,7 +14,9 @@ import Personnes.*;
 public class voiture {
 
     public static void main(String[] args) {
-   
+  Employe p=new Employe(00,"salhi","aa",44444,"ff",2500);
+  p.modifier();
+       System.out.println(p);
      
     }
 }
