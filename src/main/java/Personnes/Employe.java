@@ -44,13 +44,22 @@ public class Employe extends Personne{
         
         
     }
+        
 }
-   public void modifier() {
+    public void set_salaire(double salaire)
+    {
+        this.salaire=salaire;
+    }
+    public void set_date_embauche(LocalDate date_embauche) {
+    this.date_embauche = date_embauche;
+    }   
+    
+  public void modifier() {
     int choice;
     Scanner sc = new Scanner(System.in);
 
     do {
-        // Boucle pour forcer un choix valide (entre 0 et 4)
+        // Boucle pour forcer un choix valide (entre 0 et 6)
         do {
             System.out.println("Que voulez-vous modifier ?");
             System.out.println("1 : nom");
@@ -58,21 +67,22 @@ public class Employe extends Personne{
             System.out.println("3 : adresse");
             System.out.println("4 : telephone");
             System.out.println("5 : salaire");
+            System.out.println("6 : date d'embauche");
             System.out.println("0 : quitter");
 
             // Vérifier que l'entrée est bien un entier
             while (!sc.hasNextInt()) {
-                System.out.println("Saisie invalide, veuillez entrer un nombre entre 0 et 4.");
+                System.out.println("Saisie invalide, veuillez entrer un nombre entre 0 et 6.");
                 sc.next(); // Consomme l'entrée invalide
             }
             choice = sc.nextInt();
 
-            // Vérifier si l'entier est dans la plage valide (0 à 4)
-            if (choice < 0 || choice > 5) {
-                System.out.println("Choix invalide, veuillez entrer un nombre entre 0 et 4.");
+            // Vérifier si l'entier est dans la plage valide (0 à 6)
+            if (choice < 0 || choice > 6) {
+                System.out.println("Choix invalide, veuillez entrer un nombre entre 0 et 6.");
             }
 
-        } while (choice < 0 || choice > 5);  // Répéter tant que l'utilisateur entre un choix invalide
+        } while (choice < 0 || choice > 6);  // Répéter tant que l'utilisateur entre un choix invalide
 
         // Traiter le choix valide
         sc.nextLine(); // Consommer le retour de ligne restant après nextInt()
@@ -105,12 +115,35 @@ public class Employe extends Personne{
                 super.set_telephone(new_tel);
                 System.out.println("Téléphone mis à jour.");
                 break;
-            case 5 :    
-                 System.out.println("Saisir le nouveau salaire : ");
-                int new_salary = sc.nextInt();
+
+            case 5:
+                System.out.println("Saisir le nouveau salaire : ");
+                double new_salary = sc.nextDouble();  // Utiliser double pour les salaires
                 sc.nextLine(); // Consommer le retour de ligne
-                super.set_telephone(new_salary);
-                System.out.println("salaire mis à jour.");
+                set_salaire(new_salary);  // Utiliser une méthode set_salaire()
+                System.out.println("Salaire mis à jour.");
+                break;
+
+            case 6:
+                // Modification de la date d'embauche
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                boolean dateValide = false;
+
+                while (!dateValide) {
+                    System.out.println("Veuillez entrer la nouvelle date d'embauche (format: dd/MM/yyyy) : ");
+                    String dateInput = sc.nextLine();
+                    
+                    try {
+                        // Convertir la chaîne saisie en LocalDate
+                        LocalDate new_date_embauche = LocalDate.parse(dateInput, formatter);
+                        set_date_embauche(new_date_embauche);  // Méthode set_date_embauche()
+                        System.out.println("Date d'embauche mise à jour : " + new_date_embauche);
+                        dateValide = true; // Sortir de la boucle si aucune exception
+                    } catch (DateTimeParseException e) {
+                        // En cas de format de date incorrect
+                        System.out.println("Format de date invalide. Utilisez le format dd/MM/yyyy.");
+                    }
+                }
                 break;
 
             case 0:
@@ -128,5 +161,12 @@ public class Employe extends Personne{
   public String toString() {
     return super.toString() + "\n" + "Salaire de l'employé : " + this.salaire + "\n" + "Date d'embauche de l'employé : " + this.date_embauche;
     }
+  public int calcul_anciennette()
+  {
+      LocalDate today=LocalDate.now();
+      int current_year=today.getYear();
+      int experience=current_year-date_embauche.getYear();
+      return experience;
+  }
 
 }
