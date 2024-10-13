@@ -12,11 +12,11 @@ import java.util.Arrays;
 public class Chef extends Personne {
     
     private double salaireC;
-    private Employe[] equipe;
+    private equipe //ArrayList ??
     public Chef(int id , String nom ,String prenom ,int telephone,String adresse , double salaireC)
     {
         super(id,nom,prenom,telephone,adresse);
         this.salaireC=salaireC;
-        equipe=new Array();
+       
     }
 }
