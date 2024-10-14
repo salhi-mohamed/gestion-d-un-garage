@@ -4,7 +4,7 @@
  */
 
 package com.mycompany.garage_manager;
-
+import Stocks.Fourniture;
 /**
  *
  * @author LENOVO
@@ -12,6 +12,18 @@ package com.mycompany.garage_manager;
 public class Garage_Manager {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        // Création d'un objet Fourniture
+        /*Fourniture fourniture = new Fourniture(1, "Batterie", "Batterie de voiture 12V", 120.5, 50);
+
+        // Afficher les informations initiales de la fourniture
+        System.out.println("Informations initiales de la fourniture :");
+        fourniture.afficherFourniture();
+
+        // Modifier les informations de la fourniture
+        fourniture.modifier("Batterie renforcée", "Batterie de voiture 12V haute capacité", 150.0, 30);
+
+        // Afficher les informations après modification
+        System.out.println("\nInformations de la fourniture après modification :");
+        fourniture.afficherFourniture();*/
     }
 }
