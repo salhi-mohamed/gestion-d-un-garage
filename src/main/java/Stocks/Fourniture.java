@@ -68,7 +68,7 @@ public class Fourniture {
 
     // Méthode pour afficher les informations de la fourniture
     public void afficherFourniture() {
-        System.out.println("ID Fourniture: " + idFourniture);
+        System.out.println("ID du Fourniture: " + idFourniture);
         System.out.println("Nom: " + nom);
         System.out.println("Description: " + description);
         System.out.println("Prix: " + prix);
