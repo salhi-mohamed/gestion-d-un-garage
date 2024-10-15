@@ -9,7 +9,7 @@ import java.util.Arrays;
  *
  * @author LENOVO
  */
-
+/*
 public class Chef extends Personne {
     
     private double salaireC;
@@ -20,4 +20,4 @@ public class Chef extends Personne {
         this.salaireC=salaireC;
        
     }
-}
+}*/
