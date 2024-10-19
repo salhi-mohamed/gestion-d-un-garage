@@ -4,7 +4,7 @@
  */
 
 package com.mycompany.garage_manager;
-import Stocks.Fourniture;
+import Gestion_Service.Client;
 /**
  *
  * @author LENOVO
@@ -12,18 +12,18 @@ import Stocks.Fourniture;
 public class Garage_Manager {
 
     public static void main(String[] args) {
-        // Création d'un objet Fourniture
-        /*Fourniture fourniture = new Fourniture(1, "Batterie", "Batterie de voiture 12V", 120.5, 50);
+        // Création d'un objet Client
+        /*Client client = new Client(1, "Ahmed Memni", "Rue des Jasmins, Tunis", "98765432");
 
-        // Afficher les informations initiales de la fourniture
-        System.out.println("Informations initiales de la fourniture :");
-        fourniture.afficherFourniture();
+        // Afficher les informations initiales du client
+        System.out.println("Informations initiales du client :");
+        client.afficherClient();
 
-        // Modifier les informations de la fourniture
-        fourniture.modifier("Batterie renforcée", "Batterie de voiture 12V haute capacité", 150.0, 30);
+        // Modifier les informations du client
+        client.modifier("Ahmed Ben Ali", "Avenue Habib Bourguiba, Tunis", "12345678");
 
         // Afficher les informations après modification
-        System.out.println("\nInformations de la fourniture après modification :");
-        fourniture.afficherFourniture();*/
+        System.out.println("\nInformations du client après modification :");
+        client.afficherClient();*/
     }
 }
