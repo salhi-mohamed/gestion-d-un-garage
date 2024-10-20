@@ -4,8 +4,8 @@
  */
 
 package com.mycompany.garage_manager;
-import Gestion_Service.Client;
-/**
+import Gestion_Service.*;
+import Personnes.*;/**
  *
  * @author LENOVO
  */
@@ -25,5 +25,20 @@ public class Garage_Manager {
         // Afficher les informations après modification
         System.out.println("\nInformations du client après modification :");
         client.afficherClient();*/
+        /*
+          private String immatriculation;
+    private String marque;
+    private String modele;
+    private int annee;
+        */
+       
+          Employe M1=new Mecanicien(01, "salhi", "med",  2001, "mourouj", 350.2,  "moteur");
+          M1.modifier();
+          System.out.println(M1);
+         
+            
+
+        
+        
     }
 }

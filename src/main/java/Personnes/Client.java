@@ -1,4 +1,4 @@
-package Gestion_Service;
+package Personnes;
 
 public class Client {
     // Attributs
