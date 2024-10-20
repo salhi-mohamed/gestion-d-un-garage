@@ -33,6 +33,17 @@ public class Piece_Rechange {
         this.quantiteStock = quantiteStock;
     }
 
+    @Override
+    public String toString() {
+        return "Piece_Rechange{" +
+                "idPiece=" + idPiece +
+                ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
+                ", prix=" + prix +
+                ", quantiteStock=" + quantiteStock +
+                '}';
+    }
+
     // Getters et Setters (facultatifs)
     public int getIdPiece() {
         return idPiece;
