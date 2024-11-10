@@ -1,8 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+
+
+
+ /* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Personnes;
+/*package Personnes;
 import Gestion_Service.Voiture;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,7 +14,7 @@ import java.util.Scanner;
  *
  * @author LENOVO
  */
-public class Laveur extends Employe {
+/*public class Laveur extends Employe {
     private boolean specialise_interieur;
     private boolean specialise_exterieur;
    /* private ArrayList<Voiture> voitures;
@@ -48,7 +50,7 @@ public class Laveur extends Employe {
     }   
       */
     //    public Employe(int id , String nom , String prenom , int telephone , String adresse,double salaire)
-    public void set_specialise_interieur(boolean spec )
+    /*public void set_specialise_interieur(boolean spec )
     {
         this.specialise_interieur=spec;
     }
@@ -74,7 +76,36 @@ public class Laveur extends Employe {
     }
     public void modifier()
     {
+        Scanner s=new Scanner(System.in);
+        super.modifier();
+        do
+        {
+            System.out.println("Voulez vous modifier la specialite ?  O:Oui / N:Non");
+            char rep=s.next().charAt(0);
+            if ((rep=='O')||(rep=='o'))
+        {
+            if (this.specialise_interieur)
+           {
+               this.specialise_interieur=false;
+               this.specialise_exterieur=true;
+           }
+            else
+           {
+               this.specialise_interieur=true;
+               this.specialise_exterieur=false;
+           }
+             
+           
+        }
+            if ((rep!='o')&&(rep!='O'))
+            {
+                System.out.println(" choix invalide ! ");
+            }
+            
+        }//while((rep!='o')&&(rep!='O'));
         
+        
+         
     }
-    
+    */
 }
