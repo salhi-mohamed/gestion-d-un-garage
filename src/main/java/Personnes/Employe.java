@@ -54,6 +54,7 @@ public class Employe extends Personne{
     this.date_embauche = date_embauche;
     }   
     
+    
   public void modifier() {
     int choice;
     Scanner sc = new Scanner(System.in);

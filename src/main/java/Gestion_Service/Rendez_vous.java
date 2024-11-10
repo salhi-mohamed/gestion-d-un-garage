@@ -2,6 +2,10 @@ package Gestion_Service;
 import Personnes.Client;
 import java.util.ArrayList;
 import java.util.Date;
+import Gestion_Service.Service;
+
+
+
 
 public class Rendez_vous {
     //attribut

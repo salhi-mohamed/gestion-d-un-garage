@@ -1,69 +1,68 @@
 package Gestion_Service;
 
-import Personnes.Client;
-import Personnes.Employe;
-import Stocks.Piece_Rechange;
-
 import java.util.ArrayList;
+import Stocks.Piece_Rechange;
+import Personnes.Employe;
+import Personnes.Client;
 
 public class Service {
     // Attributs
-   private int IdService;
-   private String Description;
-   private double Cout;
-   private ArrayList<Employe> Effecteurs;
-   private Client client;
-   private Voiture voiture;
-   private Rendez_vous rendez_vous;
-   private ArrayList<Piece_Rechange> Piece_Utilises;
+    private int idService;
+    private String description;
+    private double cout;
+    private ArrayList<Employe> effecteurs; // Liste des employés effectuant le service
+    private Client client; // Client associé au service
+    private Voiture voiture; // Voiture associée au service
+    private Rendez_vous rendezVous; // Rendez-vous associé au service
+    private ArrayList<Piece_Rechange> piecesUtilisees; // Liste des pièces de rechange utilisées dans le service
 
-   //constructeur
-   public Service(int idService, String description, double cout, ArrayList<Employe> effecteurs, Client client, Voiture voiture, Rendez_vous rendez_vous, ArrayList<Piece_Rechange> piece_Utilises) {
-       this.IdService = idService;
-       this.Description = description;
-       this.Cout = cout;
-       this.Effecteurs = effecteurs;
-       this.client = client;
-       this.voiture = voiture;
-       this.rendez_vous = rendez_vous;
-       this.Piece_Utilises = piece_Utilises;
-   }
+    //constructeur
 
 
-
-    //geters et setres
-
-
-    public int getIdService() {
-        return IdService;
+    public Service(String description, double cout, ArrayList<Employe> effecteurs, int idService, Client client, Voiture voiture, ArrayList<Piece_Rechange> piecesUtilisees, Rendez_vous rendezVous) {
+        this.description = description;
+        this.cout = cout;
+        this.effecteurs = effecteurs;
+        this.idService = idService;
+        this.client = client;
+        this.voiture = voiture;
+        this.piecesUtilisees = piecesUtilisees;
+        this.rendezVous = rendezVous;
     }
 
-    public void setIdService(int idService) {
-        IdService = idService;
-    }
+    //geter & seter
+
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
+    }
+
+    public int getIdService() {
+        return idService;
+    }
+
+    public void setIdService(int idService) {
+        this.idService = idService;
     }
 
     public double getCout() {
-        return Cout;
+        return cout;
     }
 
     public void setCout(double cout) {
-        Cout = cout;
+        this.cout = cout;
     }
 
     public ArrayList<Employe> getEffecteurs() {
-        return Effecteurs;
+        return effecteurs;
     }
 
     public void setEffecteurs(ArrayList<Employe> effecteurs) {
-        Effecteurs = effecteurs;
+        this.effecteurs = effecteurs;
     }
 
     public Client getClient() {
@@ -82,73 +81,81 @@ public class Service {
         this.voiture = voiture;
     }
 
-    public Rendez_vous getRendez_vous() {
-        return rendez_vous;
+    public ArrayList<Piece_Rechange> getPiecesUtilisees() {
+        return piecesUtilisees;
     }
 
-    public void setRendez_vous(Rendez_vous rendez_vous) {
-        this.rendez_vous = rendez_vous;
+    public void setPiecesUtilisees(ArrayList<Piece_Rechange> piecesUtilisees) {
+        this.piecesUtilisees = piecesUtilisees;
     }
 
-    public ArrayList<Piece_Rechange> getPiece_Utilises() {
-        return Piece_Utilises;
+    public Rendez_vous getRendezVous() {
+        return rendezVous;
     }
 
-    public void setPiece_Utilises(ArrayList<Piece_Rechange> piece_Utilises) {
-        Piece_Utilises = piece_Utilises;
+    public void setRendezVous(Rendez_vous rendezVous) {
+        this.rendezVous = rendezVous;
     }
-   //methode pour modifier le service
-    public void modifierService(Service service) {
-        if (service != null) {
-            this.IdService = service.getIdService();  // Modifier l'ID du service
-            this.Description = service.getDescription();  // Modifier la description
-            this.Cout = service.getCout();  // Modifier le coût
-            this.Effecteurs = service.getEffecteurs();  // Modifier la liste des effecteurs
-            this.client = service.getClient();  // Modifier le client associé
-            this.voiture = service.getVoiture();  // Modifier la voiture associée
-            this.rendez_vous = service.getRendez_vous();  // Modifier le rendez-vous associé
-            this.Piece_Utilises = service.getPiece_Utilises();  // Modifier la liste des pièces utilisées
-        } else {
-            System.out.println("Le service fourni est nul.");
-        }
-    }
-    //methode pour afficher le service
 
+
+    // Méthode Afficher_Service : affiche les informations du service
     public void afficherService() {
-        System.out.println("ID Service: " + IdService);
-        System.out.println("Description: " + Description);
-        System.out.println("Coût: " + Cout);
+        System.out.println(this.toString());
+    }
 
-        if (Effecteurs != null && !Effecteurs.isEmpty()) {
-            System.out.println("Effecteurs:");
-            for (Employe employe : Effecteurs) {
-                System.out.println(" - " + employe);
-            }
+    // Méthode Ajouter_Effecteur : ajoute un employé effecteur au service
+    public void ajouterEffecteur(Employe employe) {
+        effecteurs.add(employe);
+    }
+
+    // Méthode Ajouter_Piece : ajoute une pièce de rechange au service
+    public void ajouterPiece(Piece_Rechange piece) {
+        piecesUtilisees.add(piece);
+    }
+
+    // Méthode Supprimer_Effecteur : supprime un effecteur par son index
+    public void supprimerEffecteur(int index) {
+        if (index >= 0 && index < effecteurs.size()) {
+            effecteurs.remove(index);
         } else {
-            System.out.println("Aucun effecteur assigné.");
+            System.out.println("Index invalide pour la suppression de l'effecteur.");
         }
+    }
 
-        if (client != null) {
-            System.out.println("Client: " + client.getNom());
+    // Méthode Afficher_Rendez_vous : affiche les informations du rendez-vous associé au service
+    public void afficherRendezVous() {
+        if (rendezVous != null) {
+            System.out.println(rendezVous.toString());
         } else {
-            System.out.println("Aucun client assigné.");
-        }
-
-        if (voiture != null) {
-            System.out.println("Voiture: " + voiture.getImmatriculation());
-        } else {
-            System.out.println("Aucune voiture assignée.");
-        }
-
-        if (Piece_Utilises != null && !Piece_Utilises.isEmpty()) {
-            System.out.println("Pièces Utilisées:");
-            for (Piece_Rechange piece : Piece_Utilises) {
-                System.out.println(" - " + piece);
-            }
-        } else {
-            System.out.println("Aucune pièce utilisée.");
+            System.out.println("Aucun rendez-vous associé à ce service.");
         }
     }
 
 
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "idService=" + idService +
+                ", description='" + description + '\'' +
+                ", cout=" + cout +
+                ", effecteurs=" + effecteurs +
+                ", client=" + client +
+                ", voiture=" + voiture +
+                ", rendezVous=" + rendezVous +
+                ", piecesUtilisees=" + piecesUtilisees +
+                '}';
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

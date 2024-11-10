@@ -1,6 +1,8 @@
 package Stocks;
 
 public class Fourniture {
+
+    // Attributs
     private int idFourniture;
     private String nom;
     private String description;
@@ -8,6 +10,8 @@ public class Fourniture {
     private int quantiteStock;
 
     // Constructeur
+
+
     public Fourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) {
         this.idFourniture = idFourniture;
         this.nom = nom;
@@ -16,7 +20,10 @@ public class Fourniture {
         this.quantiteStock = quantiteStock;
     }
 
-    // Getters et Setters
+
+    //geters & seters
+
+
     public int getIdFourniture() {
         return idFourniture;
     }
@@ -57,21 +64,27 @@ public class Fourniture {
         this.quantiteStock = quantiteStock;
     }
 
+    ////////////////////////// Méthodes //////////////////////////
+
     // Méthode pour modifier les informations de la fourniture
-    public void modifier(String nouveauNom, String nouvelleDescription, double nouveauPrix, int nouvelleQuantiteStock) {
-        this.nom = nouveauNom;
-        this.description = nouvelleDescription;
-        this.prix = nouveauPrix;
-        this.quantiteStock = nouvelleQuantiteStock;
-        System.out.println("Les informations de la fourniture ont été mises à jour.");
+    public void modifierFourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) {
+        this.idFourniture = idFourniture;
+        this.nom = nom;
+        this.description = description;
+        this.prix = prix;
+        this.quantiteStock = quantiteStock;
+        System.out.println("Informations de la fourniture modifiées avec succès.");
     }
 
     // Méthode pour afficher les informations de la fourniture
     public void afficherFourniture() {
-        System.out.println("ID du Fourniture: " + idFourniture);
-        System.out.println("Nom: " + nom);
-        System.out.println("Description: " + description);
-        System.out.println("Prix: " + prix);
-        System.out.println("Quantité en stock: " + quantiteStock);
+        System.out.println("=== Informations de la Fourniture ===");
+        System.out.println("ID Fourniture : " + idFourniture);
+        System.out.println("Nom : " + nom);
+        System.out.println("Description : " + description);
+        System.out.println("Prix : " + prix);
+        System.out.println("Quantité en Stock : " + quantiteStock);
     }
+
+
 }
