@@ -1,10 +1,10 @@
 package Gestion_Service;
 import Personnes.Client;
 import java.util.ArrayList;
+
 public class Voiture {
 
     // Attributs
-    private String idVoiture;
     private String marque;
     private String modele;
     private int annee;
@@ -13,12 +13,8 @@ public class Voiture {
     private Client client;
     private ArrayList<Service> services;
 
-
     // Constructeur
-
-
-    public Voiture(String idVoiture, String marque, String modele, int annee, long kilometrage, String immatriculation, Client client, ArrayList<Service> services) {
-        this.idVoiture = idVoiture;
+    public Voiture(String marque, String modele, int annee, long kilometrage, String immatriculation, Client client, ArrayList<Service> services) {
         this.marque = marque;
         this.modele = modele;
         this.annee = annee;
@@ -28,13 +24,11 @@ public class Voiture {
         this.services = services;
     }
 
-
     ////////////////////////// Méthodes //////////////////////////
 
     // Méthode pour afficher les informations de la voiture
     public void afficherVoiture() {
         System.out.println("=== Informations de la Voiture ===");
-        System.out.println("ID : " + idVoiture);
         System.out.println("Marque : " + marque);
         System.out.println("Modèle : " + modele);
         System.out.println("Année : " + annee);
@@ -70,7 +64,6 @@ public class Voiture {
         }
     }
 
-
     // Méthode pour afficher le client propriétaire de la voiture
     public void afficherClient() {
         System.out.println("=== Informations du Client Propriétaire ===");
@@ -89,8 +82,7 @@ public class Voiture {
     @Override
     public String toString() {
         return "Voiture{" +
-                "idVoiture='" + idVoiture + '\'' +
-                ", marque='" + marque + '\'' +
+                "marque='" + marque + '\'' +
                 ", modele='" + modele + '\'' +
                 ", annee=" + annee +
                 ", kilometrage=" + kilometrage +
