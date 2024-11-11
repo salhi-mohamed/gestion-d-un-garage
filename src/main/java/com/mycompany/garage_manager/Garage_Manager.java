@@ -42,20 +42,29 @@ public class Garage_Manager {
      //l.supprimer_voiture("7 tun 555");
      //System.out.println("*********************");
      //l.afficher();
-  Mecanicien m=new Mecanicien(00,"salhi","med",20592345,"mourouj",2500,"tourneur");
+ /* Mecanicien m=new Mecanicien(00,"salhi","med",20592345,"mourouj",2500,"tourneur");
   m.ajouter_voiture(v1);
   m.ajouter_voiture(v2);
   m.afficher();
   m.modifier();
   
     System.out.println("**********");
-m.afficher();
-  
-  
-   /*
-               public Mecanicien(int id, String nom, String prenom, int telephone, String adresse, double salaire, String specialite) {
+m.afficher();*/
+  Receptionniste r = new Receptionniste(012,"salah","aymen",2058888,"mannouba",40005,10,"ahmed@gmailcom");
+  r.PlanifierRendezVous(c, v1);
+  r.PlanifierRendezVous(c, v2);
+  r.AfficherReceptionniste();
+  r.annuler_rendez_vous();
+  System.out.println("*********************************");
+  r.AfficherReceptionniste();
+  /*
+              public Receptionniste(int id, String nom, String prenom, int telephone, String adresse,double salaire ,  int numeroBureau, String email) {
 
           */
+  
+   
+
+          
               
 
        
