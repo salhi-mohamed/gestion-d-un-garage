@@ -46,6 +46,12 @@ public class Employe extends Personne{
     }
         
 }
+    public void afficher()
+    {
+        super.afficher();
+        System.out.println("Salaire : " + this.get_salaire());
+        System.out.println("Date d embauche : " + this.get_date_embauche());
+    }
     public void set_salaire(double salaire)
     {
         this.salaire=salaire;
@@ -54,7 +60,7 @@ public class Employe extends Personne{
     this.date_embauche = date_embauche;
     }   
     
-    
+@Override    
   public void modifier() {
     int choice;
     Scanner sc = new Scanner(System.in);
@@ -168,6 +174,15 @@ public class Employe extends Personne{
       int current_year=today.getYear();
       int experience=current_year-date_embauche.getYear();
       return experience;
+  }
+  public double get_salaire()
+  {
+      return this.salaire;
+              
+  }
+  public LocalDate get_date_embauche()
+  {
+      return this.date_embauche;
   }
  // @Override
   

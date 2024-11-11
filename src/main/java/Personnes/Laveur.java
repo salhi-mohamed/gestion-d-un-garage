@@ -4,53 +4,54 @@
  /* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/*package Personnes;
+package Personnes;
 import Gestion_Service.Voiture;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 
 /**
  *
  * @author LENOVO
  */
-/*public class Laveur extends Employe {
+public class Laveur extends Employe {
     private boolean specialise_interieur;
     private boolean specialise_exterieur;
-   /* private ArrayList<Voiture> voitures;
-    public Laveur(int id , String nom , String prenom,int telephone,String adresse , double salaire )
-    {
-        super(id,nom,prenom,telephone,adresse,salaire);
-        Scanner sc=new Scanner(System.in);    
-        do {
-             System.out.println(" quelle est la spécialité de ce laveur ? I : Intérieur / E : Extérieur ");
-      char specialite=sc.next().charAt(0);
-      switch (specialite)
-      {
-          case 'E' :
-              this.Specialise_exterieur=true;
-              this.Specialise_interieur=false;
-              break;
-                
-          case 'I' :  
-              this.Specialise_interieur=true;
-              this.Specialise_exterieur=false;
-              break ;
-          default : 
-              System.out.println("Choix invalide ! ");
-            
+   private ArrayList<Voiture> voitures;
+  public Laveur(int id, String nom, String prenom, int telephone, String adresse, double salaire) {
+    super(id, nom, prenom, telephone, adresse, salaire);
+    Scanner sc = new Scanner(System.in);    
+    char specialite; // Déclaration de la variable 'specialite'
+    
+    do {
+        System.out.println("Quelle est la spécialité de ce laveur ? I : Intérieur / E : Extérieur ");
+        specialite = sc.next().charAt(0); // Affectation à la variable specialite
+
+        switch (specialite) {
+            case 'E':
+            case 'e':
+                this.specialise_exterieur = true;
+                this.specialise_interieur = false;
+                break;
+            case 'I':
+            case 'i':  
+                this.specialise_interieur = true;
+                this.specialise_exterieur = false;
+                break;
+            default: 
+                System.out.println("Choix invalide !");
         }
+    } while (specialite != 'I' && specialite != 'i' && specialite != 'E' && specialite != 'e');
+    
+    voitures = new ArrayList<Voiture>();
+}
 
-    
-    
-      }while((specialite!='I')&(specialite!='i')&
       
-
-     
-    }   
-      */
     //    public Employe(int id , String nom , String prenom , int telephone , String adresse,double salaire)
-    /*public void set_specialise_interieur(boolean spec )
+    public void set_specialise_interieur(boolean spec )
     {
         this.specialise_interieur=spec;
     }
@@ -74,38 +75,156 @@ import java.util.Scanner;
         else
             return super.toString()+" spécialité : intérieur";
     }
-    public void modifier()
-    {
-        Scanner s=new Scanner(System.in);
-        super.modifier();
-        do
-        {
-            System.out.println("Voulez vous modifier la specialite ?  O:Oui / N:Non");
-            char rep=s.next().charAt(0);
-            if ((rep=='O')||(rep=='o'))
-        {
-            if (this.specialise_interieur)
-           {
-               this.specialise_interieur=false;
-               this.specialise_exterieur=true;
-           }
-            else
-           {
-               this.specialise_interieur=true;
-               this.specialise_exterieur=false;
-           }
-             
+  public void afficher()
+  {
+      super.afficher();
+      if (this.specialise_exterieur)
+          System.out.println("Spécialité : exterieur");
+      else
+          System.out.println("Spécialité : interieur ");
+      this.afficher_historique_voitures();
+      
+  }
+   @Override 
+  
            
-        }
-            if ((rep!='o')&&(rep!='O'))
-            {
-                System.out.println(" choix invalide ! ");
+public void modifier() {
+    int choice;
+    Scanner sc = new Scanner(System.in);
+
+    do {
+        // Afficher le menu de modification
+        do {
+            System.out.println("Que voulez-vous modifier ?");
+            System.out.println("1 : nom");
+            System.out.println("2 : prenom");
+            System.out.println("3 : adresse");
+            System.out.println("4 : telephone");
+            System.out.println("5 : salaire");
+            System.out.println("6 : date d'embauche");
+            System.out.println("7 : spécialité (intérieur / extérieur)");
+            System.out.println("0 : quitter");
+
+            // Vérifier que l'entrée est bien un entier
+            while (!sc.hasNextInt()) {
+                System.out.println("Saisie invalide, veuillez entrer un nombre entre 0 et 7.");
+                sc.next();
             }
-            
-        }//while((rep!='o')&&(rep!='O'));
-        
-        
-         
+            choice = sc.nextInt();
+
+            if (choice < 0 || choice > 7) {
+                System.out.println("Choix invalide, veuillez entrer un nombre entre 0 et 7.");
+            }
+        } while (choice < 0 || choice > 7);
+
+        // Traiter le choix de l'utilisateur
+        sc.nextLine();  // Consommer le retour de ligne après nextInt()
+
+        switch (choice) {
+            case 1:
+                System.out.println("Saisir le nouveau nom : ");
+                super.set_nom(sc.nextLine());
+                System.out.println("Nom mis à jour.");
+                break;
+            case 2:
+                System.out.println("Saisir le nouveau prénom : ");
+                super.set_prenom(sc.nextLine());
+                System.out.println("Prénom mis à jour.");
+                break;
+            case 3:
+                System.out.println("Saisir la nouvelle adresse : ");
+                super.set_adresse(sc.nextLine());
+                System.out.println("Adresse mise à jour.");
+                break;
+            case 4:
+                System.out.println("Saisir le nouveau téléphone : ");
+                super.set_telephone(sc.nextInt());
+                sc.nextLine();
+                System.out.println("Téléphone mis à jour.");
+                break;
+            case 5:
+                System.out.println("Saisir le nouveau salaire : ");
+                set_salaire(sc.nextDouble());
+                sc.nextLine();
+                System.out.println("Salaire mis à jour.");
+                break;
+            case 6:
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                boolean dateValide = false;
+                while (!dateValide) {
+                    System.out.println("Veuillez entrer la nouvelle date d'embauche (format: dd/MM/yyyy) : ");
+                    String dateInput = sc.nextLine();
+                    try {
+                        LocalDate newDate = LocalDate.parse(dateInput, formatter);
+                        set_date_embauche(newDate);
+                        System.out.println("Date d'embauche mise à jour : " + newDate);
+                        dateValide = true;
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Format de date invalide. Utilisez le format dd/MM/yyyy.");
+                    }
+                }
+                break;
+            case 7:
+                char specialite;
+                do {
+                    System.out.println("Saisir la nouvelle spécialité (I : Intérieur / E : Extérieur) : ");
+                    specialite = sc.next().charAt(0);
+                    if (specialite == 'I' || specialite == 'i') {
+                        set_specialise_interieur(true);
+                        set_specialise_exterieur(false);
+                        System.out.println("Spécialité mise à jour : Intérieur.");
+                    } else if (specialite == 'E' || specialite == 'e') {
+                        set_specialise_exterieur(true);
+                        set_specialise_interieur(false);
+                        System.out.println("Spécialité mise à jour : Extérieur.");
+                    } else {
+                        System.out.println("Choix invalide ! Utilisez 'I' pour Intérieur ou 'E' pour Extérieur.");
+                    }
+                } while (specialite != 'I' && specialite != 'i' && specialite != 'E' && specialite != 'e');
+                break;
+            case 0:
+                System.out.println("Quitter le menu.");
+                break;
+        }
+
+    } while (choice != 0);
+
+    sc.close();  // Fermer le scanner après utilisation
+}
+
+
+  public void ajouter_voiture(Voiture voiture) {
+        this.voitures.add(voiture);  // Ajouter la voiture à la liste
+        System.out.println("Voiture ajoutée avec succès !");
     }
-    */
+ public void supprimer_voiture(String immatriculation) {
+    boolean trouve = false;
+
+    // Vérification si la voiture avec l'immatriculation donnée existe
+    for (Voiture voiture : voitures) {
+        if (voiture.get_immatriculation().equals(immatriculation)) {
+            voitures.remove(voiture);  // Suppression de la voiture
+            System.out.println("Voiture avec immatriculation " + immatriculation + " supprimée avec succès.");
+            trouve = true;
+            break;
+        }
+    }
+
+    if (!trouve) {
+        System.out.println("Aucune voiture trouvée avec l'immatriculation " + immatriculation + ".");
+    }
+}
+
+
+    public void afficher_historique_voitures() {
+        if (voitures.isEmpty()) {
+            System.out.println("Aucune voiture dans l'historique.");
+        } else {
+            System.out.println("Historique des voitures lavées : ");
+            for (Voiture voiture : voitures) {
+                System.out.println(voiture.toString());  // Affiche chaque voiture de l'historique
+            }
+        }
+    }
+    
 }

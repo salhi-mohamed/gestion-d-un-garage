@@ -58,12 +58,25 @@ public abstract  class Personne {
     {
         return this.telephone;
     }
+    public String get_adresse()
+    {
+        return this.adresse;
+    }
    public abstract void modifier();
     @Override
    public String toString()
     {
         return("Id : "+this.id+ "\n" +"Nom : "+this.nom+ "\n" +"Prenom : "+this.prenom+ "\n"  +"téléphone : "+this.telephone+ "\n" +"adresse : "+this.adresse);
     }
+   public void afficher()
+   {
+       System.out.println("ID : "+this.get_id());
+              System.out.println("Nom : "+this.get_nom());
+           System.out.println("Prénom : "+this.get_prenom());
+                System.out.println("Téléphone  : "+this.get_telephone());
+                   System.out.println("Adresse : "+this.get_adresse());
+
+   }
     
        
     

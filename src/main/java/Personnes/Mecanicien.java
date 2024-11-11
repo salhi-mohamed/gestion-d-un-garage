@@ -30,42 +30,67 @@ public class Mecanicien extends Employe{
         // Initialisation de la liste de voitures (Historique_voitures)
         this.historique_voitures = new ArrayList<Voiture>(); // Important : spécifier le type Voiture
     }
-      public void ajouter_voiture(Voiture voiture) throws Exception {
-        if (voiture == null) {
-            throw new Exception("Impossible d'ajouter une voiture nulle à l'historique.");
+       public void ajouter_voiture(Voiture voiture) {
+        try {
+            if (voiture == null) {
+                throw new Exception("Impossible d'ajouter une voiture nulle à l'historique.");
+            }
+            this.historique_voitures.add(voiture); // Ajoute la voiture si elle est valide
+        } catch (Exception e) {
+            System.out.println("Erreur lors de l'ajout de la voiture : " + e.getMessage());
         }
-        this.historique_voitures.add(voiture); // Ajoute la voiture si elle est valide
     }
+    
      
 
-public void supprimer_voiture() throws Exception {
-    // Vérifier si l'historique est vide
-    if (this.historique_voitures.isEmpty()) {
-        throw new Exception("L'historique des voitures est vide, impossible de supprimer.");
+public void supprimer_voiture() {
+    try {
+        // Vérifier si l'historique est vide
+        if (this.historique_voitures.isEmpty()) {
+            throw new Exception("L'historique des voitures est vide, impossible de supprimer.");
+        }
+
+        // Afficher les voitures numérotées avec leur immatriculation
+        System.out.println("Liste des voitures dans l'historique :");
+        for (int i = 0; i < historique_voitures.size(); i++) {
+            System.out.print((i + 1) + ": ");
+            historique_voitures.get(i).afficherVoiture(); // Affiche les détails de la voiture
+            System.out.println(); // Nouvelle ligne
+        }
+
+        // Demander à l'utilisateur de saisir l'immatriculation de la voiture à supprimer
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Veuillez saisir l'immatriculation de la voiture à supprimer : ");
+        String immatriculation = scanner.nextLine();
+
+        // Chercher la voiture par immatriculation
+        Voiture voitureASupprimer = null;
+        for (Voiture voiture : historique_voitures) {
+            if (voiture.get_immatriculation().equals(immatriculation)) {
+                voitureASupprimer = voiture;
+                break;
+            }
+        }
+
+        // Si la voiture n'a pas été trouvée
+        if (voitureASupprimer == null) {
+            throw new Exception("Aucune voiture trouvée avec cette immatriculation.");
+        }
+
+        // Supprimer la voiture trouvée
+        this.historique_voitures.remove(voitureASupprimer);
+        System.out.println("La voiture a été supprimée avec succès.");
+        
+    } catch (Exception e) {
+        System.out.println("Erreur lors de la suppression de la voiture : " + e.getMessage());
     }
+}
 
-    // Afficher les voitures numérotées
-    System.out.println("Liste des voitures dans l'historique :");
-    for (int i = 0; i < historique_voitures.size(); i++) {
-        System.out.print((i + 1) + ": ");
-        historique_voitures.get(i).afficherVoiture(); // Affiche les détails de la voiture
-        System.out.println(); // Nouvelle ligne
-    }
-
-    // Demander à l'utilisateur de saisir le numéro de la voiture à supprimer
-    Scanner scanner = new Scanner(System.in);
-    System.out.print("Veuillez saisir le numéro de la voiture à supprimer : ");
-    int numero = scanner.nextInt();
-
-    // Vérifier que le numéro est valide
-    if (numero < 1 || numero > historique_voitures.size()) {
-        throw new Exception("Numéro de voiture invalide. Aucune voiture supprimée.");
-    }
-
-    // Supprimer la voiture choisie
-    Voiture voitureASupprimer = historique_voitures.get(numero - 1); // On soustrait 1 car l'index est à partir de 0
-    this.historique_voitures.remove(voitureASupprimer); // Supprime la voiture
-    System.out.println("La voiture a été supprimée avec succès.");
+public void afficher()
+{
+    super.afficher();
+    System.out.println("Spécialité : "+ this.get_specialite());
+    this.afficherHistoriqueVoitures();
 }
 
       public void set_specialite(String specialite)

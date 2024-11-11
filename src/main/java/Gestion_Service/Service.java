@@ -19,15 +19,15 @@ public class Service {
     //constructeur
 
 
-    public Service(String description, double cout, ArrayList<Employe> effecteurs, int idService, Client client, Voiture voiture, ArrayList<Piece_Rechange> piecesUtilisees, Rendez_vous rendezVous) {
+    public Service(String description, double cout,int idService,  Voiture voiture, Rendez_vous rendezVous , Client client) {
         this.description = description;
         this.cout = cout;
-        this.effecteurs = effecteurs;
         this.idService = idService;
-        this.client = client;
         this.voiture = voiture;
-        this.piecesUtilisees = piecesUtilisees;
         this.rendezVous = rendezVous;
+        this.client=client;
+        effecteurs=new ArrayList<Employe>();
+        piecesUtilisees=new ArrayList<Piece_Rechange>();
     }
 
     //geter & seter
@@ -140,13 +140,34 @@ public class Service {
                 ", description='" + description + '\'' +
                 ", cout=" + cout +
                 ", effecteurs=" + effecteurs +
-                ", client=" + client +
-                ", voiture=" + voiture +
-                ", rendezVous=" + rendezVous +
+                ", client=" + client.get_id() +
+                ", voiture=" + voiture.get_immatriculation() +
+                ", rendezVous=" + rendezVous.getId_rendez_vous() +
                 ", piecesUtilisees=" + piecesUtilisees +
                 '}';
     }
-}
+    public void afficher()
+    {
+      System.out.println("Affichage du service : ");
+      System.out.println("Id service : " + this.getIdService());
+      System.out.println("Description service : " + this.getDescription());
+      System.out.println("Cout service : "+ this.getCout());
+      System.out.println(" Effecteurs : ");
+      for (Employe e : effecteurs)
+      {
+          System.out.println(e);
+      }
+      System.out.println("client concerné : "+this.client);
+      
+      System.out.println("Voiture concernée : "+voiture);
+      System.out.println("Rendez-vous concerné : "+rendezVous);
+      for (Piece_Rechange p : piecesUtilisees)
+      {
+          System.out.println(p);
+      }
+      
+    }
+};
 
 
 

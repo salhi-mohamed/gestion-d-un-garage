@@ -11,17 +11,17 @@ public class Voiture {
     private long kilometrage;
     private String immatriculation; // Ajout de l'attribut immatriculation
     private Client client;
-    private ArrayList<Service> services;
+   // private ArrayList<Service> services;
 
     // Constructeur
-    public Voiture(String marque, String modele, int annee, long kilometrage, String immatriculation, Client client, ArrayList<Service> services) {
+    public Voiture(String marque, String modele, int annee, long kilometrage, String immatriculation , Client client ) {
         this.marque = marque;
         this.modele = modele;
         this.annee = annee;
         this.kilometrage = kilometrage;
         this.immatriculation = immatriculation;
-        this.client = client;
-        this.services = services;
+        this.client=client;
+     //   this.services=new ArrayList<Service>();
     }
 
     ////////////////////////// Méthodes //////////////////////////
@@ -34,8 +34,8 @@ public class Voiture {
         System.out.println("Année : " + annee);
         System.out.println("Kilométrage : " + kilometrage);
         System.out.println("Immatriculation : " + immatriculation);
-        System.out.println("Client : " + client);
-        System.out.println("Services réalisés : " + services);
+        System.out.println("Client : " + client.get_id());
+       // System.out.println("Services réalisés : " + services);
     }
 
     // Méthode pour modifier les informations de la voiture
@@ -49,13 +49,13 @@ public class Voiture {
     }
 
     // Méthode pour ajouter un service
-    public void ajouterService(Service service) {
+    /*public void ajouterService(Service service) {
         services.add(service);
         System.out.println("Service ajouté avec succès à la voiture.");
-    }
+    }*/
 
     // Méthode pour supprimer le dernier service ajouté
-    public void supprimerService() {
+    /*public void supprimerService() {
         if (!services.isEmpty()) {
             services.remove(services.size() - 1);
             System.out.println("Le dernier service a été supprimé avec succès.");
@@ -63,7 +63,7 @@ public class Voiture {
             System.out.println("Aucun service à supprimer.");
         }
     }
-
+*/
     // Méthode pour afficher le client propriétaire de la voiture
     public void afficherClient() {
         System.out.println("=== Informations du Client Propriétaire ===");
@@ -71,13 +71,13 @@ public class Voiture {
     }
 
     // Méthode pour calculer le coût total d'entretien annuel de la voiture
-    public double coutEntretienAnnuel() {
+  /*  public double coutEntretienAnnuel() {
         double total = 0;
         for (Service service : services) {
             total += service.getCout();
         }
         return total;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -87,8 +87,13 @@ public class Voiture {
                 ", annee=" + annee +
                 ", kilometrage=" + kilometrage +
                 ", immatriculation='" + immatriculation + '\'' +
-                ", client=" + client +
-                ", services=" + services +
+                ", client=" + client.get_id() +
+       //         ", services=" + services +
                 '}';
     }
+    public String get_immatriculation()
+    {
+        return this.immatriculation;
+    }
+    
 }
