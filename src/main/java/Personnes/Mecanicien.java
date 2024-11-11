@@ -54,7 +54,7 @@ public void supprimer_voiture() {
         System.out.println("Liste des voitures dans l'historique :");
         for (int i = 0; i < historique_voitures.size(); i++) {
             System.out.print((i + 1) + ": ");
-            historique_voitures.get(i).afficherVoiture(); // Affiche les détails de la voiture
+            historique_voitures.get(i).afficher(); // Affiche les détails de la voiture
             System.out.println(); // Nouvelle ligne
         }
 
@@ -119,7 +119,7 @@ public void afficher()
         System.out.println("Historique des voitures :");
         for (Voiture voiture : historique_voitures) {
             // Appelle la méthode afficherVoiture de la classe Voiture
-            voiture.afficherVoiture();
+            voiture.afficher();
             System.out.println(); // Ajoute une ligne vide pour séparer chaque voiture
         }
     } catch (Exception e) {

@@ -27,7 +27,7 @@ public class Voiture {
     ////////////////////////// Méthodes //////////////////////////
 
     // Méthode pour afficher les informations de la voiture
-    public void afficherVoiture() {
+    public void afficher() {
         System.out.println("=== Informations de la Voiture ===");
         System.out.println("Marque : " + marque);
         System.out.println("Modèle : " + modele);
@@ -39,14 +39,9 @@ public class Voiture {
     }
 
     // Méthode pour modifier les informations de la voiture
-    public void modifierVoiture(String nouvelleMarque, String nouveauModele, int nouvelleAnnee, long nouveauKilometrage, String nouvelleImmatriculation) {
-        this.marque = nouvelleMarque;
-        this.modele = nouveauModele;
-        this.annee = nouvelleAnnee;
-        this.kilometrage = nouveauKilometrage;
-        this.immatriculation = nouvelleImmatriculation;
-        System.out.println("Informations de la voiture modifiées avec succès.");
-    }
+    
+    //modifier voiture 
+    
 
     // Méthode pour ajouter un service
     /*public void ajouterService(Service service) {

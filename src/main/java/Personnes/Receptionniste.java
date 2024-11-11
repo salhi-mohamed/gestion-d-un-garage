@@ -16,6 +16,9 @@ public class Receptionniste extends Employe {
     private int numeroBureau;
     private String email;
     private ArrayList<Rendez_vous> listeRendezVous; // Liste pour stocker les rendez-vous
+        private ArrayList<Client> listeClients;
+        private ArrayList<Voiture> ListeVoitures;
+
     //listeservices
     //listeclients
     //listevoitures
@@ -27,10 +30,181 @@ public class Receptionniste extends Employe {
         this.numeroBureau = numeroBureau;
         this.email = email;
         this.listeRendezVous = new ArrayList<>();
+        this.listeClients = new ArrayList<>();
+        this.ListeVoitures=new ArrayList<Voiture>();
+
+    }
+    // GESTION DES CLIENTS
+    //**********************CREER UN CLIENT************************************
+   public void creerClient(int id, String nom, String prenom, int telephone, String adresse, String statutFinancier) {
+        // Création d'un nouveau client avec les informations fournies
+        Client client = new Client(id, nom, prenom, telephone, adresse, statutFinancier);
+        
+        // Ajout du client à la liste des clients
+        listeClients.add(client);
+        System.out.println("Client créé et ajouté à la liste des clients.");
+    } 
+   //**************SUPPRIMER UN CLIENT*************************
+   // Méthode pour supprimer un client en fonction de son ID
+ public void supprimerClient(int idClient) {
+        Iterator<Client> iterator = listeClients.iterator(); // Création de l'Iterator
+        boolean clientTrouve = false;
+
+        while (iterator.hasNext()) { // Vérifie s'il y a encore un client à parcourir
+            Client client = iterator.next(); // Récupère le client suivant
+            if (client.get_id() == idClient) { // Si le client avec l'ID correspond
+                iterator.remove(); // Supprime le client de la liste
+                System.out.println("Client avec ID " + idClient + " supprimé.");
+                clientTrouve = true;
+                break; // Arrête la boucle une fois que le client est supprimé
+            }
+        }
+
+        if (!clientTrouve) {
+            System.out.println("Client avec ID " + idClient + " non trouvé.");
+        }
+    }
+ public void modifierClient(int idClient) {
+    // Chercher le client à partir de l'ID
+    Client client = chercherClientParId(idClient);  // Supposons que tu as une méthode pour chercher un client par ID
+
+    if (client != null) {
+        // Si le client est trouvé, appeler la méthode modifier de la classe Client
+        client.modifier();  // Cette méthode est déjà définie dans la classe Client
+    } else {
+        // Si le client n'est pas trouvé, afficher un message d'erreur
+        System.out.println("Client non trouvé.");
+    }
+}
+ private Client chercherClientParId(int idClient) {
+    for (Client client : listeClients) {
+        if (client.get_id() == idClient) {  // Supposons que la méthode getId() existe dans la classe Client
+            return client;
+        }
+    }
+    return null;  // Si le client n'est pas trouvé
+}
+    public void afficherListeClients() {
+    // Vérifier si la liste des clients est vide
+    if (listeClients.isEmpty()) {
+        System.out.println("Aucun client à afficher.");
+        return;
     }
 
+    // Parcourir la liste des clients
+    Iterator<Client> iterator = listeClients.iterator();
+    while (iterator.hasNext()) {
+        Client client = iterator.next();
+        
+        // Afficher les informations du client
+        System.out.println("\n--- Client : " + client.get_nom() + " " + client.get_prenom() + " ---");
+        System.out.println("Téléphone : " + client.get_telephone());
+        System.out.println("Adresse : " + client.get_adresse());
+        System.out.println("Statut Financier : " + client.getStatutFinancier());
+
+        // Afficher les voitures du client
+        System.out.println("Voitures du client :");
+        Iterator<Voiture> voitureIterator = client.getVoitures().iterator();  // On suppose qu'il y a un getter pour la liste de voitures
+        if (voitureIterator.hasNext()) {
+            while (voitureIterator.hasNext()) {
+                Voiture voiture = voitureIterator.next();
+                voiture.afficher();  // Appeler la méthode afficher() de la classe Voiture
+            }
+        } else {
+            System.out.println("Aucune voiture associée à ce client.");
+        }
+    }
+}
+//****************GESTION DES VOITURES********************
+    //creer voiture
+public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) {
+    // Vérifier si le client avec l'id donné existe dans la liste des clients
+    Client clientExist = null;
+    for (Client client : listeClients) {
+        if (client.get_id() == idClient) {
+            clientExist = client;
+            break;
+        }
+    }
+
+    // Si le client existe, créer la voiture et l'ajouter au client
+    if (clientExist != null) {
+        // Création de la nouvelle voiture avec les informations données
+        Voiture voiture = new Voiture(marque, modele, annee, kilometrage, immatriculation, clientExist);
+        this.ListeVoitures.add(voiture);
+
+        // Ajouter la voiture à la collection de voitures du client
+        clientExist.ajouterVoiture(voiture);  // On suppose que Client a une méthode ajouterVoiture()
+        System.out.println("Voiture créée et ajoutée au client avec succès.");
+    } else {
+        // Si le client n'existe pas
+        System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
+    }
+}
+//afficher voiture 
+public void afficherVoitures() {
+    // Vérifier si la liste des clients est vide
+    if (listeClients.isEmpty()) {
+        System.out.println("Aucun client n'a de voiture à afficher.");
+        return;
+    }
+
+    // Parcourir la liste des clients
+    Iterator<Client> iterator = listeClients.iterator();
+    while (iterator.hasNext()) {
+        Client client = iterator.next();
+
+        // Afficher le nom du client
+        System.out.println("\nClient : " + client.get_nom() + " " + client.get_prenom());
+        System.out.println("-------------------------");
+
+        // Parcourir les voitures de chaque client
+        Iterator<Voiture> voitureIterator = client.getVoitures().iterator();  // On suppose qu'il y a un getter pour la liste de voitures
+        if (voitureIterator.hasNext()) {
+            while (voitureIterator.hasNext()) {
+                Voiture voiture = voitureIterator.next();
+                
+                // Utiliser la méthode afficher de la classe Voiture pour afficher les informations de la voiture
+                voiture.afficher();
+                System.out.println();  // Ajouter une ligne vide entre les voitures
+            }
+        } else {
+            System.out.println("Aucune voiture associée à ce client.");
+        }
+    }
+}
+//supprimer voiture
+/*public void supprimerVoiture(int idVoiture) {
+    // Parcourir la liste des voitures
+    Iterator<Voiture> iterator = listeVoitures.iterator();
+    boolean voitureSupprimee = false;
+
+    while (iterator.hasNext()) {
+        Voiture voiture = iterator.next();
+
+        // Vérifier si l'ID de la voiture correspond à l'ID passé en argument
+        if (voiture.get_() == idVoiture) {
+            // Supprimer la voiture de la liste
+            iterator.remove();
+            voitureSupprimee = true;
+            System.out.println("Voiture supprimée avec succès.");
+            break;
+        }
+    }
+
+    // Si aucune voiture n'a été supprimée
+    if (!voitureSupprimee) {
+        System.out.println("Aucune voiture trouvée avec l'ID " + idVoiture);
+    }
+}*/
+
+
+
+
+   
+
     // Méthode pour planifier un rendez-vous
-   public void PlanifierRendezVous(Client client, Voiture voiture) {
+  /* public void PlanifierRendezVous(Client client, Voiture voiture) {
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("Entrez l'ID du rendez-vous : ");
@@ -263,6 +437,48 @@ public void confirmerRendezVous(Rendez_vous rendezVous) {
 
 
 }
+public void modifierRendezVous() {
+    if (listeRendezVous.isEmpty()) {
+        System.out.println("Aucun rendez-vous à modifier.");
+        return;
+    }
+
+    // Afficher tous les rendez-vous avec un index pour le choix
+    System.out.println("Liste des rendez-vous :");
+    int index = 1;
+    for (Rendez_vous rv : listeRendezVous) {
+        System.out.println(index + ". " + rv);
+        index++;
+    }
+
+    // Demander à l'utilisateur de choisir un rendez-vous à modifier
+    Scanner scanner = new Scanner(System.in);
+    int choix = -1;
+    boolean choixValide = false;
+
+    while (!choixValide) {
+        try {
+            System.out.print("Veuillez entrer le numéro du rendez-vous à modifier : ");
+            choix = scanner.nextInt();
+            scanner.nextLine(); // Pour consommer la nouvelle ligne
+
+            if (choix > 0 && choix <= listeRendezVous.size()) {
+                choixValide = true;
+            } else {
+                System.out.println("Numéro invalide. Veuillez réessayer.");
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Entrée invalide. Veuillez entrer un numéro.");
+            scanner.nextLine(); // Consommer l'entrée incorrecte
+        }
+    }
+
+    // Sélectionner et modifier le rendez-vous choisi
+    Rendez_vous rendezVousChoisi = listeRendezVous.get(choix - 1);
+    rendezVousChoisi.modifier();  // Appel de la méthode modifier de Rendez_vous
+    System.out.println("Rendez-vous modifié avec succès.");
+*/
 }
 
     // Autres méthodes à implémenter si besoin...
