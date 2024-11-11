@@ -9,15 +9,20 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Iterator;
+import Stocks.Fourniture;
+import Stocks.Piece_Rechange;
 import Exceptions.*;
 
 
-public class Receptionniste extends Employe {
+public class Receptionniste extends Employe
+{
     private int numeroBureau;
     private String email;
     private ArrayList<Rendez_vous> listeRendezVous; // Liste pour stocker les rendez-vous
         private ArrayList<Client> listeClients;
         private ArrayList<Voiture> ListeVoitures;
+    private ArrayList<Fourniture> listeFournitures;
+    private ArrayList<Piece_Rechange> listPiecesRechange;
 
     //listeservices
     //listeclients
@@ -32,8 +37,206 @@ public class Receptionniste extends Employe {
         this.listeRendezVous = new ArrayList<>();
         this.listeClients = new ArrayList<>();
         this.ListeVoitures=new ArrayList<Voiture>();
+        this.listeFournitures=new ArrayList<Fourniture>();
 
     }
+
+
+
+
+
+                                                    /////////GESTION DES FOURNITURES///////////
+
+    //******** Méthode pour creer une fourniture***********
+    public void creerFourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) {
+        Fourniture nouvelleFourniture = new Fourniture(idFourniture, nom, description, prix, quantiteStock);
+        listeFournitures.add(nouvelleFourniture);
+        System.out.println("Fourniture ajoutée avec succès.");
+    }
+
+
+
+
+
+    // ******Méthode pour supprimer une fourniture************
+    public void supprimerFourniture(int idFourniture) {
+        Iterator<Fourniture> iterator = listeFournitures.iterator();
+        boolean trouve = false;
+
+        while (iterator.hasNext()) {
+            Fourniture f = iterator.next();
+            if (f.getIdFourniture() == idFourniture) {
+                iterator.remove();
+                System.out.println("Fourniture supprimée avec succès.");
+                trouve = true;
+                break;
+            }
+        }
+
+        if (!trouve) {
+            System.out.println("Aucune fourniture trouvée avec cet ID.");
+        }
+    }
+
+
+
+
+
+
+    // Méthode pour chercher une fourniture par son ID
+    private Fourniture chercherFournitureParId(int idFourniture) {
+        for (Fourniture f : listeFournitures) {
+            if (f.getIdFourniture() == idFourniture) {
+                return f;
+            }
+        }
+        return null;
+    }
+    // Méthode pour modifier une fourniture
+    public void ModifierFourniture(int idFourniture) {
+        Fourniture fourniture = chercherFournitureParId(idFourniture);
+
+        if (fourniture != null) {
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Modifier le nom de la fourniture : ");
+            String nom = sc.nextLine();
+
+            System.out.println("Modifier la description : ");
+            String description = sc.nextLine();
+
+            System.out.println("Modifier le prix : ");
+            double prix = sc.nextDouble();
+
+            System.out.println("Modifier la quantité en stock : ");
+            int quantiteStock = sc.nextInt();
+
+            fourniture.modifierFourniture(idFourniture,nom, description, prix, quantiteStock);
+        } else {
+            System.out.println("Fourniture non trouvée.");
+        }
+    }
+
+
+
+
+
+
+
+
+    // Méthode pour afficher toutes les fournitures
+    public void afficherFournitures() {
+        if (listeFournitures.isEmpty()) {
+            System.out.println("Aucune fourniture à afficher.");
+        } else {
+            for (Fourniture f : listeFournitures) {
+                f.afficherFourniture();
+                System.out.println();
+            }
+        }
+    }
+
+
+
+
+
+                                                              ///////////GESTION DES PIECES DE RECHANGE //////////////
+
+
+
+
+    //**************** Créer Piece_Rechange
+
+    public void creerPieceRechange(int idPiece, String nom, String description, double prix, int quantiteStock) {
+        Piece_Rechange nouvellePiece = new Piece_Rechange(idPiece, nom, description, prix, quantiteStock);
+
+        listPiecesRechange.add(nouvellePiece);
+
+        System.out.println("La pièce de rechange a été créée et ajoutée avec succès.");
+    }
+
+
+
+
+
+ //******Supprimer piece rechange
+    public void supprimerPieceRechange(int idPiece) {
+        Iterator<Piece_Rechange> iterator = listPiecesRechange.iterator();
+
+        while (iterator.hasNext()) {
+            Piece_Rechange piece = iterator.next();
+
+            if (piece.getIdPiece() == idPiece) {
+                iterator.remove(); // Supprimer l'élément de la liste
+                System.out.println("La pièce de rechange avec l'ID " + idPiece + " a été supprimée avec succès.");
+                return;
+            }
+        }
+
+        System.out.println("Aucune pièce de rechange trouvée avec l'ID " + idPiece);
+    }
+
+
+
+
+
+
+/////modifier piece rechange
+
+    public Piece_Rechange chercherPieceRechangeParId(int idPieceRechange) {
+        for (Piece_Rechange piece : listPiecesRechange) {
+            if (piece.getIdPiece() == idPieceRechange) {
+                return piece;
+            }
+        }
+        return null; // Retourner null si aucune pièce n'a été trouvée
+    }
+
+    public void modifierPieceRechange(int idPieceRechange) {
+        Piece_Rechange pieceRechange = chercherPieceRechangeParId(idPieceRechange);
+
+        if (pieceRechange != null) {
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Modifier le nom de la pièce de rechange : ");
+            String nom = sc.nextLine();
+
+            System.out.println("Modifier la description : ");
+            String description = sc.nextLine();
+
+            System.out.println("Modifier le prix : ");
+            double prix = sc.nextDouble();
+
+            System.out.println("Modifier la quantité en stock : ");
+            int quantiteStock = sc.nextInt();
+
+            // Appeler la méthode pour modifier les informations de la pièce de rechange
+            pieceRechange.modifier(idPieceRechange, nom, description, prix, quantiteStock);
+        } else {
+            System.out.println("Pièce de rechange non trouvée.");
+        }
+    }
+
+
+
+
+
+    ////methode pour afficher  toute les pieces
+
+    public void afficherToutesLesPiecesRechange() {
+        if (listPiecesRechange.isEmpty()) {
+            System.out.println("Aucune pièce de rechange à afficher.");
+        } else {
+            for (Piece_Rechange p : listPiecesRechange) {
+                p.afficherPieceRechange();
+                System.out.println();
+            }
+        }
+    }
+
+
+
+
     // GESTION DES CLIENTS
     //**********************CREER UN CLIENT************************************
    public void creerClient(int id, String nom, String prenom, int telephone, String adresse, String statutFinancier) {
@@ -481,4 +684,9 @@ public void modifierRendezVous() {
 */
 }
 
-    // Autres méthodes à implémenter si besoin...
+
+
+
+
+
+
