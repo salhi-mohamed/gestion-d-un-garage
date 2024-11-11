@@ -53,10 +53,10 @@ m.afficher();*/
   Receptionniste r = new Receptionniste(012,"salah","aymen",2058888,"mannouba",40005,10,"ahmed@gmailcom");
   r.PlanifierRendezVous(c, v1);
   r.PlanifierRendezVous(c, v2);
-  r.AfficherReceptionniste();
-  r.annuler_rendez_vous();
-  System.out.println("*********************************");
-  r.AfficherReceptionniste();
+  r.afficher();
+ r.modifier();
+ System.out.println("************************");
+ r.afficher();
   /*
               public Receptionniste(int id, String nom, String prenom, int telephone, String adresse,double salaire ,  int numeroBureau, String email) {
 
