@@ -584,7 +584,7 @@ public void creerClient(int id, String nom, String prenom, int telephone, String
 
     // Si le client n'existe pas, on l'ajoute à la liste des clients
     listeClients.add(client);
-    System.out.println("Client créé et ajouté à la liste des clients.");
+    System.out.println("Client créé et ajouté à la liste des clients. ");
 }
 
 
