@@ -2,9 +2,8 @@ package Personnes;
 import java.util.Scanner;
 import Stocks.Fourniture;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import java.util.InputMismatchException;
-
 import java.util.HashSet;
 import Gestion_Service.Voiture;
 import Exceptions.*;
@@ -172,7 +171,57 @@ public void modifier() {
     // Redéfinition de la méthode toString() pour afficher les informations du client
     @Override
     public String toString() {
-        return super.toString() + "\n" + "Statut financier : " + this.statutFinancier + "\n" + 
-               "Voitures : " + this.voitures.toString();
+        return super.toString() + "\n" + "Statut financier : " + this.getStatutFinancier() + "\n" + 
+               "Voitures : " + this.getVoitures().toString() + "Fournitures achetées : "+this.get_fournitures_achetees().toString();
     }
+    public ArrayList<Fourniture> get_fournitures_achetees()
+    {
+        return this.fournitures_achetees;
+    }
+    public void set_fournitures_achetees(ArrayList<Fourniture> fournitures)
+    {
+        this.fournitures_achetees=fournitures;
+    }
+    public void ajouterFourniture(Fourniture fourniture) throws FournitureExisteClientException {
+    for (Fourniture f : fournitures_achetees) {
+        if (f.getIdFourniture() == fourniture.getIdFourniture()) {
+            throw new FournitureExisteClientException("La fourniture avec cet ID existe déjà pour ce client.");
+        }
+    }
+    fournitures_achetees.add(fourniture);
+    System.out.println("Fourniture ajoutée avec succès.");
+}
+    public void supprimerFourniture(Fourniture fourniture) throws FournitureNonTrouveeClientException {
+    boolean trouvée = false;
+    Iterator<Fourniture> iterator = fournitures_achetees.iterator();
+
+    while (iterator.hasNext()) {
+        Fourniture f = iterator.next();
+        if (f.getIdFourniture() == fourniture.getIdFourniture()) {
+            iterator.remove();
+            trouvée = true;
+            System.out.println("Fourniture supprimée avec succès.");
+            break;
+        }
+    }
+
+    if (!trouvée) {
+        throw new FournitureNonTrouveeClientException("La fourniture n'existe pas dans la liste des fournitures achetées.");
+    }
+}
+    public void afficherFournitures() {
+    if (fournitures_achetees.isEmpty()) {
+        System.out.println("Aucune fourniture achetée pour ce client.");
+    } else {
+        System.out.println("Liste des fournitures achetées par le client:");
+        
+        Iterator<Fourniture> iterator = fournitures_achetees.iterator();
+        while (iterator.hasNext()) {
+            Fourniture fourniture = iterator.next();
+            System.out.println(fourniture.toString()); // ou fourniture.afficherFourniture()
+        }
+    }
+}
+
+
 }
