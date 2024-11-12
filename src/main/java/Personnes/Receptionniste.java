@@ -19,8 +19,8 @@ public class Receptionniste extends Employe
     private int numeroBureau;
     private String email;
     private ArrayList<Rendez_vous> listeRendezVous; // Liste pour stocker les rendez-vous
-        private ArrayList<Client> listeClients;
-        private ArrayList<Voiture> ListeVoitures;
+    private ArrayList<Client> listeClients;
+    private ArrayList<Voiture> ListeVoitures;
     private ArrayList<Fourniture> listeFournitures;
     private ArrayList<Piece_Rechange> listPiecesRechange;
 
@@ -263,36 +263,458 @@ public class Receptionniste extends Employe
 
 
 
-    // GESTION DES CLIENTS
-    //**********************CREER UN CLIENT************************************
-   public void creerClient(int id, String nom, String prenom, int telephone, String adresse, String statutFinancier) {
-        // Création d'un nouveau client avec les informations fournies
-        Client client = new Client(id, nom, prenom, telephone, adresse, statutFinancier);
-        
-        // Ajout du client à la liste des clients
-        listeClients.add(client);
-        System.out.println("Client créé et ajouté à la liste des clients.");
-    } 
-   //**************SUPPRIMER UN CLIENT*************************
-   // Méthode pour supprimer un client en fonction de son ID
- public void supprimerClient(int idClient) {
-        Iterator<Client> iterator = listeClients.iterator(); // Création de l'Iterator
-        boolean clientTrouve = false;
+   
+    /**************** GESTION DES VOITURES ********************/
+/*
+    // Méthode pour créer une voiture
+    public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) throws VoitureDejaExistanteClientException {
+        // Vérifier si le client avec l'ID donné existe dans la liste des clients
+        Client clientExist = listeClients.stream()
+                .filter(client -> client.get_id() == idClient)
+                .findFirst()
+                .orElse(null);
 
-        while (iterator.hasNext()) { // Vérifie s'il y a encore un client à parcourir
-            Client client = iterator.next(); // Récupère le client suivant
-            if (client.get_id() == idClient) { // Si le client avec l'ID correspond
-                iterator.remove(); // Supprime le client de la liste
-                System.out.println("Client avec ID " + idClient + " supprimé.");
-                clientTrouve = true;
-                break; // Arrête la boucle une fois que le client est supprimé
+        if (clientExist != null) {
+            // Création de la nouvelle voiture avec les informations fournies
+            Voiture voiture = new Voiture(marque, modele, annee, kilometrage, immatriculation, clientExist);
+            ListeVoitures.add(voiture);  // Ajouter la voiture à la liste générale des voitures
+            clientExist.ajouterVoiture(voiture);  // Ajouter la voiture au client
+            System.out.println("Voiture créée et ajoutée au client avec succès.");
+        } else {
+            System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
+        }
+    }
+
+    // Méthode pour afficher les voitures avec leur propriétaire directement depuis ListeVoitures
+    public void afficherVoitures() {
+        if (ListeVoitures.isEmpty()) {
+            System.out.println("Aucune voiture à afficher.");
+            return;
+        }
+
+        for (Voiture voiture : ListeVoitures) {
+            Client proprietaire = voiture.getClient(); // Supposons que chaque voiture ait une référence à son client
+
+            if (proprietaire != null) {
+                System.out.println("\nPropriétaire : " + proprietaire.get_nom() + " " + proprietaire.get_prenom());
+            } else {
+                System.out.println("\nPropriétaire : Non spécifié");
+            }
+
+            System.out.println("-------------------------");
+            voiture.afficher(); // Afficher les informations de la voiture
+            System.out.println();
+        }
+    }
+*/
+
+
+
+    // Méthode pour créer une voiture
+    public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) throws VoitureDejaExistanteClientException {
+        // Vérifier si le client avec l'ID donné existe dans la liste des clients
+        Client clientExist = listeClients.stream()
+                .filter(client -> client.get_id() == idClient)
+                .findFirst()
+                .orElse(null);
+
+        if (clientExist != null) {
+            // Vérifier si la voiture existe déjà pour ce client
+            for (Voiture v : clientExist.getVoitures()) {
+                if (v.get_immatriculation().equals(immatriculation)) {
+                    throw new VoitureDejaExistanteClientException("Cette voiture est déjà associée à ce client.");
+                }
+            }
+
+            // Vérifier si la voiture existe déjà dans la liste générale des voitures
+            for (Voiture v : ListeVoitures) {
+                if (v.get_immatriculation().equals(immatriculation)) {
+                    System.out.println("Cette voiture existe déjà dans la liste générale.");
+                    return; // On sort de la méthode si la voiture existe déjà
+                }
+            }
+
+            // Création de la nouvelle voiture avec les informations fournies
+            Voiture voiture = new Voiture(marque, modele, annee, kilometrage, immatriculation, clientExist);
+
+            // Ajouter la voiture à la liste générale des voitures
+            ListeVoitures.add(voiture);
+
+            // Ajouter la voiture à la liste des voitures du client
+            clientExist.ajouterVoiture(voiture);
+
+            System.out.println("Voiture créée et ajoutée au client avec succès.");
+        } else {
+            System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
+        }
+    }
+
+
+    // Méthode pour supprimer une voiture en fonction de l'ID
+    public void supprimerVoiture(String immatriculation) {
+        boolean voitureSupprimee = false;
+
+        Iterator<Voiture> iterator = ListeVoitures.iterator();
+        while (iterator.hasNext()) {
+            Voiture voiture = iterator.next();
+
+            if (voiture.get_immatriculation().equals(immatriculation)) {
+                iterator.remove();  // Supprime la voiture de la liste générale
+                voiture.getClient().getVoitures().remove(voiture);  // Supprime la voiture de la collection du client
+                voitureSupprimee = true;
+                System.out.println("Voiture supprimée avec succès.");
+                break;
             }
         }
 
-        if (!clientTrouve) {
-            System.out.println("Client avec ID " + idClient + " non trouvé.");
+        if (!voitureSupprimee) {
+            System.out.println("Aucune voiture trouvée avec l'immatriculation " + immatriculation);
         }
     }
+
+    // Méthode pour mettre à jour les informations d'une voiture
+    public void modifierVoiture(String immatriculation, String nouvelleMarque, String nouveauModele, int nouvelleAnnee, long nouveauKilometrage) {
+        Voiture voiture = ListeVoitures.stream()
+                .filter(v -> v.get_immatriculation().equals(immatriculation))
+                .findFirst()
+                .orElse(null);
+
+        if (voiture != null) {
+            voiture.setMarque(nouvelleMarque);
+            voiture.setModele(nouveauModele);
+            voiture.setAnnee(nouvelleAnnee);
+            voiture.setKilometrage(nouveauKilometrage);
+            System.out.println("Les informations de la voiture ont été mises à jour avec succès.");
+        } else {
+            System.out.println("Aucune voiture trouvée avec l'immatriculation " + immatriculation);
+        }
+    }
+
+
+
+    // Méthode pour afficher toutes les voitures
+    public void afficherVoitures() {
+        if (ListeVoitures.isEmpty()) {
+            System.out.println("Aucune voiture n'est disponible dans la liste.");
+            return;
+        }
+
+        System.out.println("Liste des voitures :");
+        for (Voiture voiture : ListeVoitures) {
+            System.out.println("Immatriculation : " + voiture.get_immatriculation());
+            System.out.println("Marque : " + voiture.getMarque());
+            System.out.println("Modèle : " + voiture.getModele());
+            System.out.println("Année : " + voiture.getAnnee());
+            System.out.println("Kilométrage : " + voiture.getKilometrage());
+
+            // Informations du client associé
+            Client client = voiture.getClient();
+            if (client != null) {
+                System.out.println("Client associé : " + client.get_nom() + " " + client.get_prenom());
+                System.out.println("ID du client : " + client.get_id());
+            } else {
+                System.out.println("Aucun client associé.");
+            }
+            System.out.println("--------------------------");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //testt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               /////////// GESTION DES CLIENTS/////////////////////////
+    //**********************CREER UN CLIENT************************************
+public void creerClient(int id, String nom, String prenom, int telephone, String adresse, String statutFinancier) throws ClientExisteException {
+    // Création d'un nouveau client avec les informations fournies
+    Client client = new Client(id, nom, prenom, telephone, adresse, statutFinancier);
+
+    // Vérifier si un client avec le même ID existe déjà dans la liste
+    for (Client c : listeClients) {
+        if (c.get_id() == client.get_id()) {  // Comparaison basée sur l'ID
+            throw new ClientExisteException("Un client avec cet ID existe déjà.");
+        }
+    }
+
+    // Si le client n'existe pas, on l'ajoute à la liste des clients
+    listeClients.add(client);
+    System.out.println("Client créé et ajouté à la liste des clients. ");
+}
+
+
+
+  
+   //**************SUPPRIMER UN CLIENT*************************
+   // Méthode pour supprimer un client en fonction de son ID
+public void supprimerClient(int idClient) {
+    // Vérifier si la liste des clients est vide
+    if (listeClients.isEmpty()) {
+        System.out.println("La liste des clients est vide, aucune suppression possible.");
+        return; // Sortir de la méthode si la liste est vide
+    }
+
+    // Utilisation d'un Stream pour rechercher et supprimer le client
+    boolean clientTrouve = listeClients.stream()
+            .filter(client -> client.get_id() == idClient)  // Filtrer les clients avec l'ID spécifié
+            .peek(client -> { // Utiliser peek pour effectuer une action sur l'élément trouvé
+                listeClients.remove(client);  // Supprimer le client de la liste
+                System.out.println("Client avec ID " + idClient + " supprimé.");
+            })
+            .findFirst() // Récupérer le premier élément trouvé (s'il y en a un)
+            .isPresent();  // Vérifier si un client a été trouvé et supprimé
+
+    if (!clientTrouve) {
+        System.out.println("Client avec ID " + idClient + " non trouvé.");
+    }
+}
+
+
  public void modifierClient(int idClient) {
     // Chercher le client à partir de l'ID
     Client client = chercherClientParId(idClient);  // Supposons que tu as une méthode pour chercher un client par ID
@@ -343,298 +765,60 @@ public class Receptionniste extends Employe
         }
     }
     }
-
-
-
-
-    /**************** GESTION DES VOITURES ********************/
-
-    // Méthode pour créer une voiture
-    public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) throws VoitureDejaExistanteClientException {
-        // Vérifier si le client avec l'ID donné existe dans la liste des clients
-        Client clientExist = listeClients.stream()
-                .filter(client -> client.get_id() == idClient)
-                .findFirst()
-                .orElse(null);
-
-        if (clientExist != null) {
-            // Création de la nouvelle voiture avec les informations fournies
-            Voiture voiture = new Voiture(marque, modele, annee, kilometrage, immatriculation, clientExist);
-            ListeVoitures.add(voiture);  // Ajouter la voiture à la liste générale des voitures
-            clientExist.ajouterVoiture(voiture);  // Ajouter la voiture au client
-            System.out.println("Voiture créée et ajoutée au client avec succès.");
-        } else {
-            System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
+    public void affichv()
+    {
+        for (Voiture v : this.ListeVoitures)
+        {
+            System.out.println(v);
+        }
+    }
+   
+    public void ajouterVoitureAuClient(int idClient, Voiture voiture) {
+    // Trouver le client par son ID
+    Client clientExist = null;
+    for (Client client : listeClients) {
+        if (client.get_id() == idClient) {
+            clientExist = client;
+            break; // Si le client est trouvé, on peut sortir de la boucle
         }
     }
 
-    // Méthode pour afficher les voitures avec leur propriétaire directement depuis ListeVoitures
-    public void afficherVoitures() {
-        if (ListeVoitures.isEmpty()) {
-            System.out.println("Aucune voiture à afficher.");
-            return;
+    // Vérification si le client existe
+    if (clientExist != null) {
+        // Vérifier si la voiture existe déjà pour ce client
+        try {
+            clientExist.ajouterVoiture(voiture); // Cette méthode lève une exception si la voiture existe déjà pour le client
+            this.ListeVoitures.add(voiture); // Ajouter la voiture à la liste des voitures de la réceptionniste
+            System.out.println("La voiture a été ajoutée au client.");
+        } catch (VoitureDejaExistanteClientException e) {
+            // Si la voiture existe déjà pour ce client, on lève l'exception et on sort
+            System.out.println("Erreur: " + e.getMessage());
+            return; // On sort immédiatement de la méthode si la voiture existe déjà pour ce client
         }
 
-        for (Voiture voiture : ListeVoitures) {
-            Client proprietaire = voiture.getClient(); // Supposons que chaque voiture ait une référence à son client
-
-            if (proprietaire != null) {
-                System.out.println("\nPropriétaire : " + proprietaire.get_nom() + " " + proprietaire.get_prenom());
-            } else {
-                System.out.println("\nPropriétaire : Non spécifié");
-            }
-
-            System.out.println("-------------------------");
-            voiture.afficher(); // Afficher les informations de la voiture
-            System.out.println();
-        }
-    }
-
-
-    // Méthode pour supprimer une voiture en fonction de l'ID
-    public void supprimerVoiture(String immatriculation) {
-        boolean voitureSupprimee = false;
-
-        Iterator<Voiture> iterator = ListeVoitures.iterator();
-        while (iterator.hasNext()) {
-            Voiture voiture = iterator.next();
-
-            if (voiture.get_immatriculation().equals(immatriculation)) {
-                iterator.remove();  // Supprime la voiture de la liste générale
-                voiture.getClient().getVoitures().remove(voiture);  // Supprime la voiture de la collection du client
-                voitureSupprimee = true;
-                System.out.println("Voiture supprimée avec succès.");
-                break;
+        // Si la voiture n'existe pas pour ce client, on vérifie dans la liste générale des voitures
+        boolean voitureExistanteGlobale = false;
+        for (Voiture v : this.ListeVoitures) { // Vérifier la voiture dans la liste globale des voitures
+            if (v.get_immatriculation().equals(voiture.get_immatriculation())) {
+                voitureExistanteGlobale = true;
+                break; // La voiture existe déjà globalement
             }
         }
 
-        if (!voitureSupprimee) {
-            System.out.println("Aucune voiture trouvée avec l'immatriculation " + immatriculation);
-        }
-    }
-
-    // Méthode pour mettre à jour les informations d'une voiture
-    public void modifierVoiture(String immatriculation, String nouvelleMarque, String nouveauModele, int nouvelleAnnee, long nouveauKilometrage) {
-        Voiture voiture = ListeVoitures.stream()
-                .filter(v -> v.get_immatriculation().equals(immatriculation))
-                .findFirst()
-                .orElse(null);
-
-        if (voiture != null) {
-            voiture.setMarque(nouvelleMarque);
-            voiture.setModele(nouveauModele);
-            voiture.setAnnee(nouvelleAnnee);
-            voiture.setKilometrage(nouveauKilometrage);
-            System.out.println("Les informations de la voiture ont été mises à jour avec succès.");
+        // Si la voiture existe déjà dans la liste générale, on affiche un message
+        if (voitureExistanteGlobale) {
+            System.out.println("Cette voiture existe  dans la liste générale.");
         } else {
-            System.out.println("Aucune voiture trouvée avec l'immatriculation " + immatriculation);
+            // Si elle n'existe ni pour ce client ni dans la liste générale, on l'ajoute
+            this.ListeVoitures.add(voiture); // Ajouter la voiture à la liste des voitures globales
+            clientExist.add_car(voiture); // Ajouter la voiture à la liste du client concerné
+            System.out.println("La voiture a été ajoutée à la liste générale et au client.");
         }
+
+    } else {
+        System.out.println("Client non trouvé.");
     }
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //testt
+}
 
 
 
@@ -644,43 +828,4 @@ public class Receptionniste extends Employe
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //test 2/////////////////////////////
 }

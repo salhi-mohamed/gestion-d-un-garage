@@ -222,6 +222,10 @@ public void modifier() {
         }
     }
 }
+    public void add_car(Voiture v)
+    {
+        this.voitures.add(v);
+    }
 
 
 }
