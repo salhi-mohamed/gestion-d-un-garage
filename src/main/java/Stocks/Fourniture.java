@@ -1,4 +1,7 @@
 package Stocks;
+
+import Exceptions.ArgumentInvalideException;
+import Exceptions.QuantiteNegatifException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +15,14 @@ public class Fourniture {
     private int quantiteStock;
 
     // Constructeur
+    public Fourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) throws ArgumentInvalideException, QuantiteNegatifException {
+        if (prix < 0) {
+            throw new ArgumentInvalideException("Le prix de la fourniture ne peut pas être négatif.");
+        }
+        if (quantiteStock < 0) {
+            throw new QuantiteNegatifException("La quantité en stock ne peut pas être négative.");
+        }
 
-
-    public Fourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) {
         this.idFourniture = idFourniture;
         this.nom = nom;
         this.description = description;
@@ -22,10 +30,7 @@ public class Fourniture {
         this.quantiteStock = quantiteStock;
     }
 
-
-    //geters & seters
-
-
+    // Getters & Setters
     public int getIdFourniture() {
         return idFourniture;
     }
@@ -54,7 +59,10 @@ public class Fourniture {
         return prix;
     }
 
-    public void setPrix(double prix) {
+    public void setPrix(double prix) throws ArgumentInvalideException {
+        if (prix < 0) {
+            throw new ArgumentInvalideException("Le prix de la fourniture ne peut pas être négatif.");
+        }
         this.prix = prix;
     }
 
@@ -62,14 +70,24 @@ public class Fourniture {
         return quantiteStock;
     }
 
-    public void setQuantiteStock(int quantiteStock) {
+    public void setQuantiteStock(int quantiteStock) throws QuantiteNegatifException {
+        if (quantiteStock < 0) {
+            throw new QuantiteNegatifException("La quantité en stock ne peut pas être négative.");
+        }
         this.quantiteStock = quantiteStock;
     }
 
     ////////////////////////// Méthodes //////////////////////////
 
     // Méthode pour modifier les informations de la fourniture
-    public void modifierFourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) {
+    public void modifierFourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) throws ArgumentInvalideException, QuantiteNegatifException {
+        if (prix < 0) {
+            throw new ArgumentInvalideException("Le prix de la fourniture ne peut pas être négatif.");
+        }
+        if (quantiteStock < 0) {
+            throw new QuantiteNegatifException("La quantité en stock ne peut pas être négative.");
+        }
+
         this.idFourniture = idFourniture;
         this.nom = nom;
         this.description = description;
@@ -88,8 +106,6 @@ public class Fourniture {
         System.out.println("Quantité en Stock : " + quantiteStock);
     }
 
-
-
     ////////////////////////// Méthodes avec Streams //////////////////////////
 
     // Filtrer les fournitures avec quantité en stock inférieure au seuil
@@ -105,10 +121,5 @@ public class Fourniture {
                 .sorted((f1, f2) -> Double.compare(f1.getPrix(), f2.getPrix()))
                 .collect(Collectors.toList());
     }
-
-
-
-
-
 
 }

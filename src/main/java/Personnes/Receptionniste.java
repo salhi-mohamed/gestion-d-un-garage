@@ -44,18 +44,36 @@ public class Receptionniste extends Employe
 
                                                     /////////GESTION DES FOURNITURES///////////
 
-    //******** Méthode pour creer une fourniture***********
+    // ******** Méthode pour créer une fourniture ***********
     public void creerFourniture(int idFourniture, String nom, String description, double prix, int quantiteStock) {
-        Fourniture nouvelleFourniture = new Fourniture(idFourniture, nom, description, prix, quantiteStock);
-        listeFournitures.add(nouvelleFourniture);
-        System.out.println("Fourniture ajoutée avec succès.");
+        try {
+            // Vérifier les arguments
+            if (nom == null || nom.isEmpty()) {
+                throw new ArgumentInvalideException("Le nom de la fourniture ne peut pas être vide.");
+            }
+            if (description == null || description.isEmpty()) {
+                throw new ArgumentInvalideException("La description ne peut pas être vide.");
+            }
+            if (prix <= 0) {
+                throw new ArgumentInvalideException("Le prix doit être supérieur à 0.");
+            }
+            if (quantiteStock < 0) {
+                throw new QuantiteNegatifException("La quantité en stock ne peut pas être négative.");
+            }
+
+            // Créer et ajouter la nouvelle fourniture
+            Fourniture nouvelleFourniture = new Fourniture(idFourniture, nom, description, prix, quantiteStock);
+            listeFournitures.add(nouvelleFourniture);
+            System.out.println("Fourniture ajoutée avec succès.");
+        } catch (ArgumentInvalideException | QuantiteNegatifException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
     }
 
 
 
 
-
-    // ******Méthode pour supprimer une fourniture************
+    // ****** Méthode pour supprimer une fourniture ************
     public void supprimerFourniture(int idFourniture) {
         Iterator<Fourniture> iterator = listeFournitures.iterator();
         boolean trouve = false;
@@ -78,8 +96,6 @@ public class Receptionniste extends Employe
 
 
 
-
-
     // Méthode pour chercher une fourniture par son ID
     private Fourniture chercherFournitureParId(int idFourniture) {
         for (Fourniture f : listeFournitures) {
@@ -89,37 +105,51 @@ public class Receptionniste extends Employe
         }
         return null;
     }
+
+
+
+
     // Méthode pour modifier une fourniture
     public void ModifierFourniture(int idFourniture) {
-        Fourniture fourniture = chercherFournitureParId(idFourniture);
+        try {
+            Fourniture fourniture = chercherFournitureParId(idFourniture);
 
-        if (fourniture != null) {
-            Scanner sc = new Scanner(System.in);
+            if (fourniture != null) {
+                Scanner sc = new Scanner(System.in);
 
-            System.out.println("Modifier le nom de la fourniture : ");
-            String nom = sc.nextLine();
+                System.out.println("Modifier le nom de la fourniture : ");
+                String nom = sc.nextLine();
+                if (nom == null || nom.isEmpty()) {
+                    throw new ArgumentInvalideException("Le nom de la fourniture ne peut pas être vide.");
+                }
 
-            System.out.println("Modifier la description : ");
-            String description = sc.nextLine();
+                System.out.println("Modifier la description : ");
+                String description = sc.nextLine();
+                if (description == null || description.isEmpty()) {
+                    throw new ArgumentInvalideException("La description ne peut pas être vide.");
+                }
 
-            System.out.println("Modifier le prix : ");
-            double prix = sc.nextDouble();
+                System.out.println("Modifier le prix : ");
+                double prix = sc.nextDouble();
+                if (prix <= 0) {
+                    throw new ArgumentInvalideException("Le prix doit être supérieur à 0.");
+                }
 
-            System.out.println("Modifier la quantité en stock : ");
-            int quantiteStock = sc.nextInt();
+                System.out.println("Modifier la quantité en stock : ");
+                int quantiteStock = sc.nextInt();
+                if (quantiteStock < 0) {
+                    throw new QuantiteNegatifException("La quantité en stock ne peut pas être négative.");
+                }
 
-            fourniture.modifierFourniture(idFourniture,nom, description, prix, quantiteStock);
-        } else {
-            System.out.println("Fourniture non trouvée.");
+                // Modifier les informations de la fourniture
+                fourniture.modifierFourniture(idFourniture, nom, description, prix, quantiteStock);
+            } else {
+                System.out.println("Fourniture non trouvée.");
+            }
+        } catch (ArgumentInvalideException | QuantiteNegatifException e) {
+            System.out.println("Erreur : " + e.getMessage());
         }
     }
-
-
-
-
-
-
-
 
     // Méthode pour afficher toutes les fournitures
     public void afficherFournitures() {
@@ -132,7 +162,6 @@ public class Receptionniste extends Employe
             }
         }
     }
-
 
 
 
