@@ -5,6 +5,7 @@
 package Personnes;
 import java.util.Set;
 import java.util.HashSet;
+import Exceptions.*;
 /**
  *
  * @author LENOVO
@@ -20,36 +21,49 @@ public class Chef extends Employe {
     }
 
     // Méthode pour ajouter un employé à l'équipe
-    public void ajouterEmploye(Employe employe) {
-        if (employe == null) {
-            System.out.println("L'employé ne peut pas être null.");
-        } else {
-            equipe.add(employe); // Ajoute l'employé à l'équipe
-            System.out.println("L'employé " + employe.get_nom() + " a été ajouté à l'équipe.");
+   public void ajouterEmploye(Employe employe) throws EmployeExistantException {
+    if (employe == null) {
+        throw new IllegalArgumentException("Veuiller spécifier l'employé .");
+    }
+
+    // Vérification si l'employé existe déjà dans l'équipe par son ID
+    for (Employe e : equipe) {
+        if (e.get_id() == employe.get_id()) {
+            throw new EmployeExistantException("L'employé avec l'ID " + employe.get_id() + " existe déjà dans l'équipe du chef : "+this.get_nom());
         }
     }
+
+    // Si l'employé n'est pas trouvé, il est ajouté à l'équipe
+    equipe.add(employe);
+    System.out.println("L'employé " + employe.get_nom() + " a été ajouté à l'équipe.");
+}
+
 
     // Méthode pour supprimer un employé de l'équipe
-    public void supprimerEmploye(Employe employe) {
-        if (equipe.contains(employe)) {
-            equipe.remove(employe); // Supprime l'employé de l'équipe
-            System.out.println("L'employé " + employe.get_nom() + " a été supprimé de l'équipe.");
-        } else {
-            System.out.println("L'employé n'est pas dans l'équipe.");
-        }
+    public void supprimerEmploye(Employe employe) throws EmployeNonTrouveException {
+    // Vérifier si l'employé existe dans l'équipe
+    if (equipe.contains(employe)) {
+        equipe.remove(employe); // Supprimer l'employé de l'équipe
+        System.out.println("L'employé " + employe.get_nom() + " a été supprimé de l'équipe.");
+    } else {
+        // Si l'employé n'est pas dans l'équipe, lancer une exception
+        throw new EmployeNonTrouveException("L'employé avec l'ID " + employe.get_id() + " n'a pas été trouvé dans l'équipe du chef "+ this.get_nom());
     }
+}
+
 
     // Méthode pour afficher les membres de l'équipe
-    public void afficherEquipe() {
-        if (equipe.isEmpty()) {
-            System.out.println("L'équipe est vide.");
-        } else {
-            System.out.println("Équipe de " + get_nom() + ":");
-            for (Employe employe : equipe) {
-                System.out.println(employe); // Affiche les détails de chaque employé
-            }
+  public void afficherEquipe() throws EquipeVideException {
+    if (equipe.isEmpty()) {
+        throw new EquipeVideException("L'équipe est vide. Aucun employé n'a été ajouté.");
+    } else {
+        System.out.println("Équipe de " + get_nom() + ":");
+        for (Employe employe : equipe) {
+            System.out.println(employe); // Affiche les détails de chaque employé
         }
     }
+}
+
 
     // Getter pour l'équipe
     public Set<Employe> getEquipe() {

@@ -140,4 +140,14 @@ public class Facture {
                 ", avecRemise=" + avecRemise +
                 '}';
     }
+
+
+    // Méthode pour afficher les services dont le coût est supérieur à une valeur donnée
+    public void afficherServicesAvecCoutSuperieur(double coutMinimum) {
+        services.stream()
+                .filter(service -> service.getCout() > coutMinimum)  // Filtrer les services par coût
+                .forEach(System.out::println);    // Afficher chaque service correspondant
+    }
+
+
 }

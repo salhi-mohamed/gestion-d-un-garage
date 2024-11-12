@@ -110,6 +110,7 @@ public class Service {
 
     // Méthode Ajouter_Piece : ajoute une pièce de rechange au service
     public void ajouterPiece(Piece_Rechange piece) {
+
         piecesUtilisees.add(piece);
     }
 
@@ -167,6 +168,17 @@ public class Service {
       }
       
     }
+
+
+    // Afficher toutes les pièces de rechange utilisées dans le service
+    public void afficherPiecesUtilisees() {
+        System.out.println("Pièces de rechange utilisées :");
+        piecesUtilisees.stream()
+                .forEach(System.out::println);
+    }
+
+
+
 };
 
 

@@ -7,6 +7,7 @@ import java.util.InputMismatchException;
 
 import java.util.HashSet;
 import Gestion_Service.Voiture;
+import Exceptions.*;
 
 public class Client extends Personne {
     private HashSet<Voiture> voitures;  // Liste des voitures du client
@@ -38,38 +39,46 @@ public class Client extends Personne {
     }
 
     // Ajouter une voiture au client
-    public void ajouterVoiture(Voiture voiture) {
-        this.voitures.add(voiture);
+   public void ajouterVoiture(Voiture voiture) throws VoitureDejaExistanteClientException {
+    for (Voiture v : this.getVoitures()) {
+        if (v.get_immatriculation().equals(voiture.get_immatriculation())) {
+            throw new VoitureDejaExistanteClientException("Cette voiture existe déjà pour ce client.");
+        }
     }
+    this.voitures.add(voiture);
+}
     
 
     // Retirer une voiture du client
-  public void retirerVoiture(String immatriculation) {
-    try {
-        // Parcours du HashSet des voitures du client
-        Voiture voitureARetirer = null;
-        for (Voiture voiture : voitures) {
-            if (voiture.get_immatriculation().equals(immatriculation)) {
-                voitureARetirer = voiture;
-                break; // Trouvé, on sort de la boucle
-            }
-        }
+ public void retirerVoiture(String immatriculation) throws VoitureNonTrouveeClientException, ArgumentInvalideException {
+    if (immatriculation == null || immatriculation.isEmpty()) {
+        throw new ArgumentInvalideException("L'immatriculation fournie est invalide.");
+    }
 
-        // Si la voiture a été trouvée, on la retire
-        if (voitureARetirer != null) {
-            if (voitures.remove(voitureARetirer)) {
-                System.out.println("La voiture avec l'immatriculation " + immatriculation + " a été retirée.");
-            } else {
-                throw new Exception("La voiture n'a pas pu être retirée.");
-            }
-        } else {
-            throw new Exception("Aucune voiture avec l'immatriculation " + immatriculation + " n'a été trouvée.");
+    boolean voitureTrouvee = false;
+    for (Voiture v : this.getVoitures()) {
+        if (v.get_immatriculation().equals(immatriculation)) {
+            this.voitures.remove(v);
+            voitureTrouvee = true;
+            break;
         }
-    } catch (Exception e) {
-        // Gérer l'exception en affichant un message d'erreur
-        System.out.println("Erreur : " + e.getMessage());
+    }
+
+    if (!voitureTrouvee) {
+        throw new VoitureNonTrouveeClientException("Aucune voiture trouvée avec l'immatriculation : " + immatriculation);
     }
 }
+ public void afficherVoitures() throws VoituresNonDisponiblesClientException {
+        if (this.getVoitures() == null || this.getVoitures().isEmpty()) {
+            throw new VoituresNonDisponiblesClientException("Aucune voiture disponible pour ce client.");
+        }
+
+        System.out.println("Liste des voitures de " + this.get_nom() + " " + this.get_prenom() + ":");
+        for (Voiture voiture : this.getVoitures()) {
+            System.out.println(voiture);
+        }
+    }
+
 
 
 @Override

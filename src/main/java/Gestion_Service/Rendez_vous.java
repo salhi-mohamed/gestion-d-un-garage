@@ -19,40 +19,26 @@ public class Rendez_vous {
    private boolean confirme;
    private Voiture voiture;
    private Client client;
-  // private ArrayList<Service> Services;
 
-                                  //////////////////////////methodes//////////////////////////
+
+
 
 
     // constructeur
-   /*public Rendez_vous(int id_rendez_vous, String Description_rendez_vous, boolean confirme, Voiture voiture , Client client) {
-       this.id_rendez_vous = id_rendez_vous;
-       //this.Date_rendez_vous = Date_rendez_vous;
-       this.Description_rendez_vous = Description_rendez_vous;
-       this.confirme = confirme;
-       this.client=client;
-       this.voiture = voiture;
-       this.Services=new ArrayList<Service>();
-      
-      
-   }*/
+
    public Rendez_vous(int id_rendez_vous, String Description_rendez_vous, boolean confirme, Voiture voiture, Client client) {
         this.id_rendez_vous = id_rendez_vous;
         this.Description_rendez_vous = Description_rendez_vous;
         this.confirme = confirme;
         this.client = client;
         this.voiture = voiture;
-       // this.Services = new ArrayList<Service>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
         Scanner scanner = new Scanner(System.in);
         boolean dateValide = false;
-        
         // Boucle jusqu'à ce que l'utilisateur entre une date valide
         while (!dateValide) {
             System.out.println("Veuillez entrer la date du rendez_vous (format: dd/MM/yyyy) : ");
             String dateInput = scanner.nextLine();
-            
             try {
                 // Convertir la chaîne saisie en LocalDate
                 this.Date_rendez_vous = LocalDate.parse(dateInput, formatter);
@@ -63,14 +49,10 @@ public class Rendez_vous {
             } 
         
         
-    }
+        }
 
          
-    }
-
-
-
-
+   }
 
 
    //geter et seter
@@ -122,13 +104,7 @@ public class Rendez_vous {
         this.client = client;
     }
 
-   /* public ArrayList<Service> getServices() {
-        return Services;
-    }*/
-
-    /*public void setServices(ArrayList<Service> services) {
-        Services = services;
-    }*/
+                         /////////Mehode */////////////
     public void ajouter_client(Client C){
         
     {
@@ -136,48 +112,11 @@ public class Rendez_vous {
     }
     }
 
-    // Méthode pour ajouter un service
-
-    /*public void ajouterService(Service service) {
-       
-        
-        Services.add(service); // Ajouter le service à la liste
-    }*/
-
-
-
-    // Méthode pour supprimer un service par index
-
-   /* public void supprimerService(int index) {
-        if (Services != null && index >= 0 && index < Services.size()) {
-            Services.remove(index); // Supprime le service à l'indice spécifié
-        } else {
-            System.out.println("Index invalide ou liste de services vide.");
-        }
-    }*/
-
-
-    // Méthode pour annuler un rendez-vous
-    /*public void annulerRendezVous() {
-        this.confirme = false; // Modifier l'état de confirmation à false
-        if (Services != null) {
-            Services.clear(); // Vider la liste des services associés
-        }
-    }*/
-
 
     // Redéfinition de la méthode toString()
     @Override
     public String toString() {
-          //attribut
-   /*private int id_rendez_vous;
-  private LocalDate Date_rendez_vous;
-   private String Description_rendez_vous;
-   private boolean confirme;
-   private Voiture voiture;
-   private Client client;
-   private ArrayList<Service> Services;*/
-    return "id rendez-vous :  " + this.getId_rendez_vous() +"\n" +" date rendez-vous : "+ this.getDate_rendez_vous()+ "\n " +"Description rendez-vous : "+this.getDescription_rendez_vous()+ "\n" +" voiture concernée : "+this.getVoiture().get_immatriculation()+ "\n" +" client concerné : "+ this.getClient().get_id();
+       return "id rendez-vous :  " + this.getId_rendez_vous() +"\n" +" date rendez-vous : "+ this.getDate_rendez_vous()+ "\n " +"Description rendez-vous : "+this.getDescription_rendez_vous()+ "\n" +" voiture concernée : "+this.getVoiture().get_immatriculation()+ "\n" +" client concerné : "+ this.getClient().get_id();
         
     }
 

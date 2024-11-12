@@ -318,9 +318,24 @@ public class Receptionniste extends Employe
         }
     }
 }
+<<<<<<< HEAD
+=======
+//****************GESTION DES VOITURES********************
+    //creer voiture
+/*public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) {
+    // Vérifier si le client avec l'id donné existe dans la liste des clients
+    Client clientExist = null;
+    for (Client client : listeClients) {
+        if (client.get_id() == idClient) {
+            clientExist = client;
+            break;
+        }
+    }
+>>>>>>> da276c87e4176d468511ae856bc27c5ef76ac476
 
     /****************** GESTION DES VOITURES ******************/
 
+<<<<<<< HEAD
     /*// Créer une voiture
     public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) {
         // Vérifier si le client avec l'id donné existe dans la liste des clients
@@ -329,6 +344,42 @@ public class Receptionniste extends Employe
             if (client.get_id() == idClient) {
                 clientExist = client;
                 break;
+=======
+        // Ajouter la voiture à la collection de voitures du client
+        clientExist.ajouterVoiture(voiture);  // On suppose que Client a une méthode ajouterVoiture()
+        System.out.println("Voiture créée et ajoutée au client avec succès.");
+    } else {
+        // Si le client n'existe pas
+        System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
+    }
+}*/
+//afficher voiture 
+public void afficherVoitures() {
+    // Vérifier si la liste des clients est vide
+    if (listeClients.isEmpty()) {
+        System.out.println("Aucun client n'a de voiture à afficher.");
+        return;
+    }
+
+    // Parcourir la liste des clients
+    Iterator<Client> iterator = listeClients.iterator();
+    while (iterator.hasNext()) {
+        Client client = iterator.next();
+
+        // Afficher le nom du client
+        System.out.println("\nClient : " + client.get_nom() + " " + client.get_prenom());
+        System.out.println("-------------------------");
+
+        // Parcourir les voitures de chaque client
+        Iterator<Voiture> voitureIterator = client.getVoitures().iterator();  // On suppose qu'il y a un getter pour la liste de voitures
+        if (voitureIterator.hasNext()) {
+            while (voitureIterator.hasNext()) {
+                Voiture voiture = voitureIterator.next();
+                
+                // Utiliser la méthode afficher de la classe Voiture pour afficher les informations de la voiture
+                voiture.afficher();
+                System.out.println();  // Ajouter une ligne vide entre les voitures
+>>>>>>> da276c87e4176d468511ae856bc27c5ef76ac476
             }
         }
 

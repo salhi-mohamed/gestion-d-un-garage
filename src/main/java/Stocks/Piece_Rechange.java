@@ -1,5 +1,6 @@
 package Stocks;
-
+import java.util.List;
+import java.util.stream.Collectors;
 public class Piece_Rechange {
 
     // Attributs
@@ -83,6 +84,22 @@ public class Piece_Rechange {
         System.out.println("Description : " + description);
         System.out.println("Prix : " + prix);
         System.out.println("Quantité en Stock : " + quantiteStock);
+    }
+
+    ////////////////////////// Méthodes avec Streams //////////////////////////
+
+    // Filtrer les pièces dont le stock est inférieur à un seuil
+    public static List<Piece_Rechange> filtrerParQuantiteStock(List<Piece_Rechange> pieces, int seuil) {
+        return pieces.stream()
+                .filter(p -> p.getQuantiteStock() < seuil)
+                .collect(Collectors.toList());
+    }
+
+    // Trier les pièces par prix
+    public static List<Piece_Rechange> trierParPrix(List<Piece_Rechange> pieces) {
+        return pieces.stream()
+                .sorted((p1, p2) -> Double.compare(p1.getPrix(), p2.getPrix()))
+                .collect(Collectors.toList());
     }
 
 }

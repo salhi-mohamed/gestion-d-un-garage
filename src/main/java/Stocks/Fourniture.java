@@ -1,4 +1,6 @@
 package Stocks;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Fourniture {
 
@@ -85,6 +87,28 @@ public class Fourniture {
         System.out.println("Prix : " + prix);
         System.out.println("Quantité en Stock : " + quantiteStock);
     }
+
+
+
+    ////////////////////////// Méthodes avec Streams //////////////////////////
+
+    // Filtrer les fournitures avec quantité en stock inférieure au seuil
+    public static List<Fourniture> filtrerParQuantiteStock(List<Fourniture> fournitures, int seuil) {
+        return fournitures.stream()
+                .filter(f -> f.getQuantiteStock() < seuil)
+                .collect(Collectors.toList());
+    }
+
+    // Trier les fournitures par prix croissant
+    public static List<Fourniture> trierParPrix(List<Fourniture> fournitures) {
+        return fournitures.stream()
+                .sorted((f1, f2) -> Double.compare(f1.getPrix(), f2.getPrix()))
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
 
 }

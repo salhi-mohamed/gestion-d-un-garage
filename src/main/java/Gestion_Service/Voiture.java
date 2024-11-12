@@ -11,7 +11,7 @@ public class Voiture {
     private long kilometrage;
     private String immatriculation; // Ajout de l'attribut immatriculation
     private Client client;
-   // private ArrayList<Service> services;
+
 
     // Constructeur
     public Voiture(String marque, String modele, int annee, long kilometrage, String immatriculation , Client client ) {
@@ -21,10 +21,59 @@ public class Voiture {
         this.kilometrage = kilometrage;
         this.immatriculation = immatriculation;
         this.client=client;
-     //   this.services=new ArrayList<Service>();
+
     }
 
-    ////////////////////////// Méthodes //////////////////////////
+    public String getMarque() {
+        return marque;
+    }
+
+    public void setMarque(String marque) {
+        this.marque = marque;
+    }
+
+    public String getModele() {
+        return modele;
+    }
+
+    public void setModele(String modele) {
+        this.modele = modele;
+    }
+
+    public int getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(int annee) {
+        this.annee = annee;
+    }
+
+    public long getKilometrage() {
+        return kilometrage;
+    }
+
+    public void setKilometrage(long kilometrage) {
+        this.kilometrage = kilometrage;
+    }
+
+    public String getImmatriculation() {
+        return immatriculation;
+    }
+
+    public void setImmatriculation(String immatriculation) {
+        this.immatriculation = immatriculation;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+
+////////////////////////// Méthodes //////////////////////////
 
     // Méthode pour afficher les informations de la voiture
     public void afficher() {
@@ -35,44 +84,17 @@ public class Voiture {
         System.out.println("Kilométrage : " + kilometrage);
         System.out.println("Immatriculation : " + immatriculation);
         System.out.println("Client : " + client.get_id());
-       // System.out.println("Services réalisés : " + services);
+
     }
 
-    // Méthode pour modifier les informations de la voiture
-    
-    //modifier voiture 
-    
 
-    // Méthode pour ajouter un service
-    /*public void ajouterService(Service service) {
-        services.add(service);
-        System.out.println("Service ajouté avec succès à la voiture.");
-    }*/
-
-    // Méthode pour supprimer le dernier service ajouté
-    /*public void supprimerService() {
-        if (!services.isEmpty()) {
-            services.remove(services.size() - 1);
-            System.out.println("Le dernier service a été supprimé avec succès.");
-        } else {
-            System.out.println("Aucun service à supprimer.");
-        }
-    }
-*/
     // Méthode pour afficher le client propriétaire de la voiture
     public void afficherClient() {
         System.out.println("=== Informations du Client Propriétaire ===");
         System.out.println(client);
     }
 
-    // Méthode pour calculer le coût total d'entretien annuel de la voiture
-  /*  public double coutEntretienAnnuel() {
-        double total = 0;
-        for (Service service : services) {
-            total += service.getCout();
-        }
-        return total;
-    }*/
+
 
     @Override
     public String toString() {
