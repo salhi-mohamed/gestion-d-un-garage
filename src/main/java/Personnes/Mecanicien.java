@@ -10,6 +10,7 @@ import java.lang.Exception;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import Exceptions.*;
 
 
 
@@ -30,67 +31,53 @@ public class Mecanicien extends Employe{
         // Initialisation de la liste de voitures (Historique_voitures)
         this.historique_voitures = new ArrayList<Voiture>(); // Important : spécifier le type Voiture
     }
-       public void ajouter_voiture(Voiture voiture) {
-        try {
-            if (voiture == null) {
-                throw new Exception("Impossible d'ajouter une voiture nulle à l'historique.");
-            }
-            this.historique_voitures.add(voiture); // Ajoute la voiture si elle est valide
-        } catch (Exception e) {
-            System.out.println("Erreur lors de l'ajout de la voiture : " + e.getMessage());
+     public void ajouter_voiture(Voiture voiture) throws VoitureExistanteDejaPourLavMecException {
+    // Vérifier si la voiture existe déjà dans l'historique
+    for (Voiture v : historique_voitures) {
+        if (v.equals(voiture)) {
+            throw new VoitureExistanteDejaPourLavMecException("La voiture existe déjà dans l'historique du mécanicien.");
         }
     }
+    // Si la voiture n'existe pas déjà, on l'ajoute à l'historique
+    historique_voitures.add(voiture);
+    System.out.println("Voiture ajoutée à l'historique du mécanicien avec succès !");
+}
+
     
      
 
-public void supprimer_voiture() {
-    try {
-        // Vérifier si l'historique est vide
-        if (this.historique_voitures.isEmpty()) {
-            throw new Exception("L'historique des voitures est vide, impossible de supprimer.");
-        }
+public void supprimer_voiture(Voiture voiture) throws VoitureNonTrouveePourLavMecException {
+        boolean found = false;
 
-        // Afficher les voitures numérotées avec leur immatriculation
-        System.out.println("Liste des voitures dans l'historique :");
-        for (int i = 0; i < historique_voitures.size(); i++) {
-            System.out.print((i + 1) + ": ");
-            historique_voitures.get(i).afficher(); // Affiche les détails de la voiture
-            System.out.println(); // Nouvelle ligne
-        }
-
-        // Demander à l'utilisateur de saisir l'immatriculation de la voiture à supprimer
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Veuillez saisir l'immatriculation de la voiture à supprimer : ");
-        String immatriculation = scanner.nextLine();
-
-        // Chercher la voiture par immatriculation
-        Voiture voitureASupprimer = null;
-        for (Voiture voiture : historique_voitures) {
-            if (voiture.get_immatriculation().equals(immatriculation)) {
-                voitureASupprimer = voiture;
-                break;
+        // Recherche de la voiture dans l'historique
+        for (Voiture v : historique_voitures) {
+            if (v.equals(voiture)) {
+                historique_voitures.remove(v);  // Supprimer la voiture de l'historique
+                System.out.println("La voiture a été supprimée de l'historique.");
+                found = true;
+                break;  // Quitter la boucle dès que la voiture est trouvée
             }
         }
 
-        // Si la voiture n'a pas été trouvée
-        if (voitureASupprimer == null) {
-            throw new Exception("Aucune voiture trouvée avec cette immatriculation.");
+        // Si la voiture n'a pas été trouvée, lancer l'exception
+        if (!found) {
+            throw new VoitureNonTrouveePourLavMecException("La voiture spécifiée n'a pas été trouvée dans l'historique.");
         }
-
-        // Supprimer la voiture trouvée
-        this.historique_voitures.remove(voitureASupprimer);
-        System.out.println("La voiture a été supprimée avec succès.");
-        
-    } catch (Exception e) {
-        System.out.println("Erreur lors de la suppression de la voiture : " + e.getMessage());
     }
-}
 
 public void afficher()
 {
     super.afficher();
     System.out.println("Spécialité : "+ this.get_specialite());
-    this.afficherHistoriqueVoitures();
+    try{
+        this.afficher_historique_voitures();
+    }
+    catch(HistoriqueVoituresVideLavMecException e)
+    {
+        System.out.println( e.getMessage());
+    }
+    
+    
 }
 
       public void set_specialite(String specialite)
@@ -109,22 +96,16 @@ public void afficher()
     {
         return this.historique_voitures;
     }
-    public void afficherHistoriqueVoitures() {
-    try {
-        if (historique_voitures.isEmpty()) {
-            System.out.println("Aucune voiture dans l'historique.");
-            return; // Sort de la méthode si l'historique est vide
+    public void afficher_historique_voitures() throws HistoriqueVoituresVideLavMecException {
+        if (this.get_historique_voitures().isEmpty()) {
+            throw new HistoriqueVoituresVideLavMecException("Aucune voiture  dans l'historique.");
+        } else {
+            System.out.println("Historique des voitures  :");
+            for (Voiture voiture : this.historique_voitures) {
+                System.out.println(voiture); // Affiche chaque voiture dans l'historique
+            }
         }
-
-        System.out.println("Historique des voitures :");
-        for (Voiture voiture : historique_voitures) {
-            // Appelle la méthode afficherVoiture de la classe Voiture
-            voiture.afficher();
-            System.out.println(); // Ajoute une ligne vide pour séparer chaque voiture
-        }
-    } catch (Exception e) {
-        System.out.println("Une erreur s'est produite lors de l'affichage de l'historique : " + e.getMessage());
-    }}
+    }
     
     @Override
     public void modifier() {

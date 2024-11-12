@@ -320,7 +320,7 @@ public class Receptionniste extends Employe
 }
 //****************GESTION DES VOITURES********************
     //creer voiture
-public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) {
+/*public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) {
     // Vérifier si le client avec l'id donné existe dans la liste des clients
     Client clientExist = null;
     for (Client client : listeClients) {
@@ -343,7 +343,7 @@ public void creerVoiture(int idClient, String marque, String modele, int annee, 
         // Si le client n'existe pas
         System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
     }
-}
+}*/
 //afficher voiture 
 public void afficherVoitures() {
     // Vérifier si la liste des clients est vide

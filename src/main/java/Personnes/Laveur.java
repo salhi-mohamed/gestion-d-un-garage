@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import Exceptions.*;
 
 
 /**
@@ -75,16 +76,20 @@ public class Laveur extends Employe {
         else
             return super.toString()+" spécialité : intérieur";
     }
-  public void afficher()
-  {
-      super.afficher();
-      if (this.specialise_exterieur)
-          System.out.println("Spécialité : exterieur");
-      else
-          System.out.println("Spécialité : interieur ");
-      this.afficher_historique_voitures();
-      
-  }
+  public void afficher() {
+    super.afficher();
+    if (this.specialise_exterieur)
+        System.out.println("Spécialité : extérieur");
+    else
+        System.out.println("Spécialité : intérieur");
+
+    try {
+        this.afficher_historique_voitures(); // Cette méthode peut lancer HistoriqueVoituresVideException
+    } catch (HistoriqueVoituresVideLavMecException e) {
+        System.out.println(e.getMessage()); // Affiche le message de l'exception si l'historique est vide
+    }
+}
+
    @Override 
   
            
@@ -193,38 +198,37 @@ public void modifier() {
 }
 
 
-  public void ajouter_voiture(Voiture voiture) {
-        this.voitures.add(voiture);  // Ajouter la voiture à la liste
-        System.out.println("Voiture ajoutée avec succès !");
+ public void ajouter_voiture(Voiture voiture) throws VoitureExistanteDejaPourLavMecException {
+    // Vérifier si la voiture existe déjà dans la liste
+    if (this.get_voitures().contains(voiture)) {
+        throw new VoitureExistanteDejaPourLavMecException("La voiture existe déjà pour ce laveur.");
     }
- public void supprimer_voiture(String immatriculation) {
-    boolean trouve = false;
-
-    // Vérification si la voiture avec l'immatriculation donnée existe
-    for (Voiture voiture : voitures) {
-        if (voiture.get_immatriculation().equals(immatriculation)) {
-            voitures.remove(voiture);  // Suppression de la voiture
-            System.out.println("Voiture avec immatriculation " + immatriculation + " supprimée avec succès.");
-            trouve = true;
-            break;
-        }
+    this.voitures.add(voiture);  // Ajouter la voiture à la liste si elle n'existe pas déjà
+    System.out.println("Voiture ajoutée avec succès !");
+}
+ public void supprimer_voiture(Voiture voiture) throws VoitureNonTrouveePourLavMecException {
+    // Vérifier si la voiture existe dans la liste
+    if (!this.get_voitures().contains(voiture)) {
+        throw new VoitureNonTrouveePourLavMecException("La voiture n'a pas été trouvée pour ce laveur.");
     }
-
-    if (!trouve) {
-        System.out.println("Aucune voiture trouvée avec l'immatriculation " + immatriculation + ".");
-    }
+    this.voitures.remove(voiture);  // Supprimer la voiture de la liste
+    System.out.println("Voiture supprimée avec succès !");
 }
 
 
-    public void afficher_historique_voitures() {
-        if (voitures.isEmpty()) {
-            System.out.println("Aucune voiture dans l'historique.");
+   public void afficher_historique_voitures() throws HistoriqueVoituresVideLavMecException {
+        if (this.get_voitures().isEmpty()) {
+            throw new HistoriqueVoituresVideLavMecException("Aucune voiture lavée dans l'historique.");
         } else {
-            System.out.println("Historique des voitures lavées : ");
+            System.out.println("Historique des voitures lavées :");
             for (Voiture voiture : voitures) {
-                System.out.println(voiture.toString());  // Affiche chaque voiture de l'historique
+                System.out.println(voiture); // Affiche chaque voiture dans l'historique
             }
         }
     }
+   public ArrayList<Voiture> get_voitures()
+           {
+               return this.voitures;
+           }
     
 }
