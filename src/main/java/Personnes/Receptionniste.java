@@ -24,10 +24,7 @@ public class Receptionniste extends Employe
     private ArrayList<Fourniture> listeFournitures;
     private ArrayList<Piece_Rechange> listPiecesRechange;
 
-    //listeservices
-    //listeclients
-    //listevoitures
-    //listeemployes
+
 
     // Constructeur
     public Receptionniste(int id, String nom, String prenom, int telephone, String adresse,double salaire ,  int numeroBureau, String email) {
@@ -342,27 +339,28 @@ public class Receptionniste extends Employe
         }
     }
 
-    // Méthode pour afficher les voitures de chaque client
+    // Méthode pour afficher les voitures avec leur propriétaire directement depuis ListeVoitures
     public void afficherVoitures() {
-        if (listeClients.isEmpty()) {
-            System.out.println("Aucun client n'a de voiture à afficher.");
+        if (ListeVoitures.isEmpty()) {
+            System.out.println("Aucune voiture à afficher.");
             return;
         }
 
-        for (Client client : listeClients) {
-            System.out.println("\nClient : " + client.get_nom() + " " + client.get_prenom());
-            System.out.println("-------------------------");
+        for (Voiture voiture : ListeVoitures) {
+            Client proprietaire = voiture.getClient(); // Supposons que chaque voiture ait une référence à son client
 
-            if (client.getVoitures().isEmpty()) {
-                System.out.println("Aucune voiture associée à ce client.");
+            if (proprietaire != null) {
+                System.out.println("\nPropriétaire : " + proprietaire.get_nom() + " " + proprietaire.get_prenom());
             } else {
-                for (Voiture voiture : client.getVoitures()) {
-                    voiture.afficher(); // Afficher les informations de la voiture
-                    System.out.println();
-                }
+                System.out.println("\nPropriétaire : Non spécifié");
             }
+
+            System.out.println("-------------------------");
+            voiture.afficher(); // Afficher les informations de la voiture
+            System.out.println();
         }
     }
+
 
     // Méthode pour supprimer une voiture en fonction de l'ID
     public void supprimerVoiture(String immatriculation) {
