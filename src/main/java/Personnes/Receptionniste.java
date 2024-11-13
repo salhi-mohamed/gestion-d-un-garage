@@ -1067,6 +1067,182 @@ public void afficherTousLesEmployes() {
         System.out.println(); // Ajouter une ligne vide pour séparer chaque employé
     }
 }
+//Supprimer employe
+public void supprimerEmploye(int id) {
+    // Vérifier si la liste des employés est vide
+    if (ListeEmployes.isEmpty()) {
+        System.out.println("La liste des employés est vide.");
+        return;
+    }
+
+    // Chercher l'employé par son ID
+    Iterator<Employe> iterator = ListeEmployes.iterator();
+    while (iterator.hasNext()) {
+        Employe employe = iterator.next();
+        
+        // Si l'employé avec l'ID donné est trouvé, le supprimer
+        if (employe.get_id() == id) {
+            iterator.remove();
+            System.out.println("L'employé  " + employe.get_nom() + " "+employe.get_prenom()+" a été supprimé.");
+            return;
+        }
+    }
+    
+    // Si l'employé n'est pas trouvé
+    System.out.println("Aucun employé trouvé avec l'ID " + id + ".");
+}
+// ajouter voiture a mecanicien ou laveur 
+public void ajouterVoitureMecLaveur(int employeId, String voitureId) {
+    try {
+        // Recherche de la voiture par son ID
+        Voiture voiture = trouverVoitureParId(voitureId); // Méthode pour récupérer la voiture par son ID
+        
+        if (voiture == null) {
+            System.out.println("Erreur : Aucune voiture trouvée avec l'ID " + voitureId);
+            return; // Sortir de la méthode si la voiture n'existe pas
+        }
+
+        // Vérification si la voiture existe dans la liste des voitures disponibles
+        if (!get_liste_voitures().contains(voiture)) {
+            System.out.println("Erreur : La voiture n'existe pas dans la liste des voitures disponibles.");
+            return; // Sortir de la méthode si la voiture n'est pas présente
+        }
+
+        // Recherche de l'employé par son ID
+        Employe employe = trouverEmployeParId(employeId); // Méthode pour récupérer l'employé par ID
+        
+        if (employe == null) {
+            System.out.println("Erreur : Aucun employé trouvé avec l'ID " + employeId);
+            return;
+        }
+
+        // Vérification que l'employé est un mécanicien ou un laveur
+        if (employe instanceof Mecanicien) {
+            Mecanicien mecanicien = (Mecanicien) employe; // Cast de l'employé en mécanicien
+            mecanicien.ajouter_voiture(voiture); // Appel à la méthode ajouterVoiture du mécanicien
+            System.out.println("La voiture a été ajoutée à l'historique du mécanicien.");
+        } else if (employe instanceof Laveur) {
+            Laveur laveur = (Laveur) employe; // Cast de l'employé en laveur
+            laveur.ajouter_voiture(voiture); // Appel à la méthode ajouterVoiture du laveur
+            System.out.println("La voiture a été ajoutée à l'historique du laveur.");
+        } else {
+            System.out.println("L'employé avec l'ID " + employeId + " n'est ni un mécanicien ni un laveur.");
+        }
+    } catch (VoitureExistanteDejaPourLavMecException e) {
+        // Gestion de l'exception si la voiture est déjà dans l'historique du mécanicien ou laveur
+        System.out.println("Erreur : " + e.getMessage());
+    }
+}
+private Voiture trouverVoitureParId(String immatriculation) {
+    // Recherche de la voiture dans la liste des voitures disponibles
+    for (Voiture v : get_liste_voitures()) { // get_liste_voitures() renvoie la liste des voitures
+        if (v.get_immatriculation() == immatriculation) {
+            return v; // Retourne la voiture trouvée
+        }
+    }
+    return null; // Retourne null si la voiture n'a pas été trouvée
+}
+private Employe trouverEmployeParId(int id) {
+    // Recherche de l'employé dans la collection d'employés (par exemple une liste ou un ensemble)
+    for (Employe e : ListeEmployes) { // listeEmployes est la collection d'employés
+        if (e.get_id() == id) {
+            return e; // Retourne l'employé trouvé
+        }
+    }
+    return null; // Retourne null si aucun employé n'a été trouvé
+}
+
+
+// ajouter un employe a l equipe d un chef
+public void ajouterEmployeAuChef(int chefId, int employeId) {
+    try {
+        // Rechercher le chef par son ID
+        Employe chef = trouverEmployeParId(chefId); // Utilise une méthode existante pour trouver un employé par ID
+        if (!(chef instanceof Chef)) {
+            System.out.println("Erreur : Aucun chef trouvé avec l'ID " + chefId);
+            return;
+        }
+        
+        // Rechercher l'employé par son ID
+        Employe employe = trouverEmployeParId(employeId);
+        if (employe == null) {
+            System.out.println("Erreur : Aucun employé trouvé avec l'ID " + employeId);
+            return;
+        }
+
+        // Ajouter l'employé à l'équipe du chef
+        Chef chefInstance = (Chef) chef; // Cast de l'employé en Chef pour accéder à la méthode ajouterEmploye
+        chefInstance.ajouterEmploye(employe); // Appel à la méthode ajouterEmploye
+        System.out.println("L'employé a été ajouté avec succès à l'équipe du chef.");
+        
+    } catch (EmployeExistantException e) {
+        System.out.println("Erreur : " + e.getMessage());
+    }
+}
+// afficher les chefs
+public void afficherChefs() {
+    boolean chefTrouve = false;
+    System.out.println("Liste des chefs :");
+
+    // Parcours de la liste des employés
+    for (Employe employe : ListeEmployes) { // listeEmployes représente la collection d'employés
+        if (employe instanceof Chef) { // Vérifie si l'employé est une instance de Chef
+            System.out.println(employe); // Affiche les détails du chef
+            chefTrouve = true;
+        }
+    }
+
+    // Message si aucun chef n'a été trouvé
+    if (!chefTrouve) {
+        System.out.println("Aucun chef trouvé dans la liste des employés.");
+    }
+}
+// afficher les mecaniciens 
+public void afficherMecaniciens() {
+    boolean mecanicienTrouve = false;
+    System.out.println("Liste des mécaniciens :");
+
+    // Parcours de la liste des employés
+    for (Employe employe : ListeEmployes) { // listeEmployes représente la collection d'employés
+        if (employe instanceof Mecanicien) { // Vérifie si l'employé est une instance de Mecanicien
+            System.out.println(employe); // Affiche les détails du mécanicien
+            mecanicienTrouve = true;
+        }
+    }
+
+    // Message si aucun mécanicien n'a été trouvé
+    if (!mecanicienTrouve) {
+        System.out.println("Aucun mécanicien trouvé dans la liste des employés.");
+    }
+}
+// afficher les laveurs
+public void afficherLaveurs() {
+    boolean laveurTrouve = false;
+    System.out.println("Liste des laveurs :");
+
+    // Parcours de la liste des employés
+    for (Employe employe : ListeEmployes) { // listeEmployes représente la collection d'employés
+        if (employe instanceof Laveur) { // Vérifie si l'employé est une instance de Laveur
+            System.out.println(employe); // Affiche les détails du laveur
+            laveurTrouve = true;
+        }
+    }
+
+    // Message si aucun laveur n'a été trouvé
+    if (!laveurTrouve) {
+        System.out.println("Aucun laveur trouvé dans la liste des employés.");
+    }
+}
+
+
+public ArrayList<Voiture> get_liste_voitures()
+{
+    return this.ListeVoitures;
+
+}
+
+
+
 
 
 }
