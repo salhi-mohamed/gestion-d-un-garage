@@ -14,9 +14,8 @@ public class Garage_Manager {
    public static void main(String[] args) {
 
 
-        
-
-   }
+       
+   
           
               
 
@@ -26,4 +25,4 @@ public class Garage_Manager {
 
    
   
- }
+ }}
