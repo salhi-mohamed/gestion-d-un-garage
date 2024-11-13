@@ -105,6 +105,17 @@ public class Rendez_vous {
     }
 
                          /////////Mehode */////////////
+
+    public void annulerRendezVous() {
+        if (this.confirme) {
+            this.confirme = false;  // Marquer le rendez-vous comme annulé
+            System.out.println("Le rendez-vous avec le client " + this.client.get_nom() + " a été annulé.");
+        } else {
+            System.out.println("Le rendez-vous était déjà annulé.");
+        }
+    }
+
+
     public void ajouter_client(Client C){
         
     {

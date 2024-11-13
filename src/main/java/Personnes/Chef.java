@@ -69,4 +69,5 @@ public class Chef extends Employe {
     public Set<Employe> getEquipe() {
         return equipe;
     }
+
 }

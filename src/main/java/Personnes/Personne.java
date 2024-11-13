@@ -9,11 +9,15 @@ package Personnes;
  * @author LENOVO
  */
 public abstract  class Personne {
+    //attributs
     private int id;
     private String nom;
     private String prenom;
     private int telephone ;
     private String adresse;
+
+
+    //constructeur
     public Personne(int id , String nom , String prenom , int telephone , String adresse)
     {
         this.id=id;
@@ -22,46 +26,67 @@ public abstract  class Personne {
         this.telephone=telephone;
         this.adresse=adresse;
     }
+
+
+    ///////////////////geters & seters//////////////////
+
     public void set_id(int id)
     {
         this.id=id;
     }
+
     public void set_nom(String nom)
     {
         this.nom=nom;
     }
+
     public void set_prenom(String prenom)
     {
         this.prenom=prenom;
     }
+
     public void set_telephone(int telephone)
     {
         this.telephone=telephone;
     }
+
     public void set_adresse(String adresse)
     {
         this.adresse=adresse;
     }
+
     public int get_id()
     {
         return this.id;
     }
+
     public String get_nom()
     {
         return this.nom;
     }
+
     public String get_prenom()
     {
         return this.prenom;
     }
+
     public int get_telephone()
     {
         return this.telephone;
     }
+
     public String get_adresse()
     {
         return this.adresse;
     }
+
+
+
+
+
+
+    /////////////methodes////////////////////
+
    public abstract void modifier();
     @Override
    public String toString()

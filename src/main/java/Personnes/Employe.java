@@ -14,9 +14,12 @@ import java.util.Scanner;
  * @author LENOVO
  */
 public class Employe extends Personne{
-    
+
+    //Attributs
     private  LocalDate  date_embauche;//consider putting final
     private double salaire;
+
+    //constructeur
     public Employe(int id , String nom , String prenom , int telephone , String adresse,double salaire)
     {
         super(id,nom,prenom,telephone,adresse);
@@ -44,8 +47,13 @@ public class Employe extends Personne{
         
         
     }
-        
+
 }
+
+                                //***********/Methodes////////////////
+
+
+
     public void afficher()
     {
         super.afficher();
@@ -59,7 +67,12 @@ public class Employe extends Personne{
     public void set_date_embauche(LocalDate date_embauche) {
     this.date_embauche = date_embauche;
     }   
-    
+
+
+
+
+
+
 @Override    
   public void modifier() {
     int choice;
@@ -163,6 +176,11 @@ public class Employe extends Personne{
     sc.close();  // Fermer le scanner après utilisation
 }
 
+
+
+
+
+
     @Override
     
   public String toString() {
@@ -184,6 +202,28 @@ public class Employe extends Personne{
   {
       return this.date_embauche;
   }
- // @Override
-  
+
+
+
+
+
+
+                       ///////////geters & seters /////////////
+
+
+    public LocalDate getDate_embauche() {
+        return date_embauche;
+    }
+
+    public void setDate_embauche(LocalDate date_embauche) {
+        this.date_embauche = date_embauche;
+    }
+
+    public double getSalaire() {
+        return salaire;
+    }
+
+    public void setSalaire(double salaire) {
+        this.salaire = salaire;
+    }
 }

@@ -1,9 +1,4 @@
 
-
-
- /* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Personnes;
 import Gestion_Service.Voiture;
 import java.util.ArrayList;
@@ -19,9 +14,15 @@ import Exceptions.*;
  * @author LENOVO
  */
 public class Laveur extends Employe {
+
+    //Attributs
     private boolean specialise_interieur;
     private boolean specialise_exterieur;
-   private ArrayList<Voiture> voitures;
+    private ArrayList<Voiture> voitures;
+
+
+    //constructeur
+
   public Laveur(int id, String nom, String prenom, int telephone, String adresse, double salaire) {
     super(id, nom, prenom, telephone, adresse, salaire);
     Scanner sc = new Scanner(System.in);    
@@ -50,24 +51,46 @@ public class Laveur extends Employe {
     voitures = new ArrayList<Voiture>();
 }
 
-      
-    //    public Employe(int id , String nom , String prenom , int telephone , String adresse,double salaire)
+
+
+
+
+    //geters & seters
+
     public void set_specialise_interieur(boolean spec )
     {
         this.specialise_interieur=spec;
     }
-    public void set_specialise_exterieur(boolean spec)
-    {
-        this.specialise_exterieur=spec;
-    }
+
     public boolean get_specialise_interieur()
     {
         return this.specialise_interieur;
     }
+
+
+    public void set_specialise_exterieur(boolean spec)
+    {
+        this.specialise_exterieur=spec;
+    }
+
     public boolean get_specialise_exterieur()
     {
         return this.specialise_exterieur;
     }
+
+    public ArrayList<Voiture> getVoitures() {
+        return voitures;
+    }
+
+    public void setVoitures(ArrayList<Voiture> voitures) {
+        this.voitures = voitures;
+    }
+
+
+
+    //////////Methodes////////////////
+
+
     @Override
     public String toString()
     {
@@ -76,6 +99,11 @@ public class Laveur extends Employe {
         else
             return super.toString()+" spécialité : intérieur";
     }
+
+
+
+
+
   public void afficher() {
     super.afficher();
     if (this.specialise_exterieur)
@@ -90,9 +118,13 @@ public class Laveur extends Employe {
     }
 }
 
-   @Override 
-  
-           
+
+
+
+
+             //////Methode modifier////////////////
+
+   @Override
 public void modifier() {
     int choice;
     Scanner sc = new Scanner(System.in);
@@ -198,6 +230,10 @@ public void modifier() {
 }
 
 
+
+
+                  ///////Methode ajouter-voiture//////
+
  public void ajouter_voiture(Voiture voiture) throws VoitureExistanteDejaPourLavMecException {
     // Vérifier si la voiture existe déjà dans la liste
     if (this.get_voitures().contains(voiture)) {
@@ -215,6 +251,11 @@ public void modifier() {
     System.out.println("Voiture supprimée avec succès !");
 }
 
+
+
+
+
+                      //////methode afficher_historique_voitures////////////
 
    public void afficher_historique_voitures() throws HistoriqueVoituresVideLavMecException {
         if (this.get_voitures().isEmpty()) {

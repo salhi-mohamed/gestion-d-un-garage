@@ -37,6 +37,15 @@ public class Client extends Personne {
         this.statutFinancier = statutFinancier;
     }
 
+    public ArrayList<Fourniture> getFournituresAchetees() {
+        return fournitures_achetees;
+    }
+
+    public void setFournituresAchetees(ArrayList<Fourniture> fournituresAchetees) {
+        this.fournitures_achetees = fournituresAchetees;
+    }
+
+
     // Ajouter une voiture au client
    public void ajouterVoiture(Voiture voiture) throws VoitureDejaExistanteClientException {
     for (Voiture v : this.getVoitures()) {
@@ -214,7 +223,7 @@ public void modifier() {
         System.out.println("Aucune fourniture achetée pour ce client.");
     } else {
         System.out.println("Liste des fournitures achetées par le client:");
-        
+
         Iterator<Fourniture> iterator = fournitures_achetees.iterator();
         while (iterator.hasNext()) {
             Fourniture fourniture = iterator.next();

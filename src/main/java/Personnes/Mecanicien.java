@@ -19,8 +19,14 @@ import Exceptions.*;
  * @author LENOVO
  */
 public class Mecanicien extends Employe{
-       public String specialite;
-       public ArrayList<Voiture> historique_voitures;
+
+    //Attributs
+
+    public String specialite;
+    public ArrayList<Voiture> historique_voitures;
+
+    //constructeur
+
      public Mecanicien(int id, String nom, String prenom, int telephone, String adresse, double salaire, String specialite) {
         // Appel du constructeur de la classe Employe
         super(id, nom, prenom, telephone, adresse, salaire);
@@ -31,6 +37,11 @@ public class Mecanicien extends Employe{
         // Initialisation de la liste de voitures (Historique_voitures)
         this.historique_voitures = new ArrayList<Voiture>(); // Important : spécifier le type Voiture
     }
+
+
+
+    //**************Methodes******************************///
+
      public void ajouter_voiture(Voiture voiture) throws VoitureExistanteDejaPourLavMecException {
     // Vérifier si la voiture existe déjà dans l'historique
     for (Voiture v : historique_voitures) {
@@ -65,6 +76,11 @@ public void supprimer_voiture(Voiture voiture) throws VoitureNonTrouveePourLavMe
         }
     }
 
+
+
+
+
+
 public void afficher()
 {
     super.afficher();
@@ -80,22 +96,7 @@ public void afficher()
     
 }
 
-      public void set_specialite(String specialite)
-      {
-          this.specialite=specialite;
-      }
-      public void set_historique_voitures(ArrayList<Voiture> voitures)
-      {
-          this.historique_voitures=voitures;
-      }
-    public String get_specialite()
-    {
-        return this.specialite;
-    }
-    public ArrayList<Voiture> get_historique_voitures()
-    {
-        return this.historique_voitures;
-    }
+
     public void afficher_historique_voitures() throws HistoriqueVoituresVideLavMecException {
         if (this.get_historique_voitures().isEmpty()) {
             throw new HistoriqueVoituresVideLavMecException("Aucune voiture  dans l'historique.");
@@ -210,6 +211,43 @@ public void afficher()
      public String toString() {
     return super.toString() + "\n" + "specialite : "+this.specialite;
     }
+
+
+    /////////////////////Geters & seters /////////////////
+
+    public void set_specialite(String specialite)
+    {
+        this.specialite=specialite;
+    }
+
+    public String get_specialite()
+    {
+        return this.specialite;
+    }
+
+    public void set_historique_voitures(ArrayList<Voiture> voitures)
+    {
+        this.historique_voitures=voitures;
+    }
+
+    public ArrayList<Voiture> get_historique_voitures()
+    {
+        return this.historique_voitures;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
     
