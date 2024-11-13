@@ -12,7 +12,7 @@ import java.util.Iterator;
 import Stocks.Fourniture;
 import Stocks.Piece_Rechange;
 import Exceptions.*;
-
+import java.util.Optional;
 
 public class Receptionniste extends Employe
 {
@@ -23,6 +23,7 @@ public class Receptionniste extends Employe
     private ArrayList<Voiture> ListeVoitures;
     private ArrayList<Fourniture> listeFournitures;
     private ArrayList<Piece_Rechange> listPiecesRechange;
+    private ArrayList<Employe> ListeEmployes;
 
 
 
@@ -35,6 +36,8 @@ public class Receptionniste extends Employe
         this.listeClients = new ArrayList<>();
         this.ListeVoitures=new ArrayList<Voiture>();
         this.listeFournitures=new ArrayList<Fourniture>();
+        this.ListeEmployes=new ArrayList<Employe>();
+        
 
     }
 
@@ -692,7 +695,7 @@ public void creerClient(int id, String nom, String prenom, int telephone, String
   
    //**************SUPPRIMER UN CLIENT*************************
    // Méthode pour supprimer un client en fonction de son ID
-public void supprimerClient(int idClient) {
+/*public void supprimerClient(int idClient) {
     // Vérifier si la liste des clients est vide
     if (listeClients.isEmpty()) {
         System.out.println("La liste des clients est vide, aucune suppression possible.");
@@ -712,7 +715,33 @@ public void supprimerClient(int idClient) {
     if (!clientTrouve) {
         System.out.println("Client avec ID " + idClient + " non trouvé.");
     }
+}*/
+public void supprimerClient(int idClient) {
+    // Vérifier si la liste des clients est vide
+    if (listeClients.isEmpty()) {
+        System.out.println("La liste des clients est vide, aucune suppression possible.");
+        return; // Sortir de la méthode si la liste est vide
+    }
+
+    // Utilisation d'un Stream pour rechercher et supprimer le client
+    Optional<Client> clientASupprimer = listeClients.stream()
+            .filter(client -> client.get_id() == idClient)  // Filtrer le client avec l'ID spécifié
+            .findFirst();  // Récupérer le premier élément trouvé (s'il y en a un)
+
+    if (clientASupprimer.isPresent()) {
+        Client client = clientASupprimer.get();
+
+        // Supprimer les voitures associées à ce client dans la liste globale des voitures
+        ListeVoitures.removeIf(voiture -> client.getVoitures().contains(voiture));
+
+        // Supprimer le client de la liste des clients
+        listeClients.remove(client);
+        System.out.println("Client avec ID " + idClient + " et ses voitures associées ont été supprimés.");
+    } else {
+        System.out.println("Client avec ID " + idClient + " non trouvé.");
+    }
 }
+
 
 
  public void modifierClient(int idClient) {
@@ -818,6 +847,228 @@ public void supprimerClient(int idClient) {
     } else {
         System.out.println("Client non trouvé.");
     }
+    }
+    //****************GESTION DES EMPLOYEES********************
+    /*public void creerEmploye() {
+    Scanner scanner = new Scanner(System.in);
+
+    // Demander le type d'employé à créer
+    System.out.println("Quel type d'employé voulez-vous créer ? (Laveur, Mécanicien, Chef)");
+    String type = scanner.nextLine().trim().toLowerCase();
+
+    // Demander les informations communes pour tous les employés
+    System.out.println("Entrez l'ID de l'employé :");
+    int id = scanner.nextInt();
+    scanner.nextLine(); // Consomme la ligne restante après nextInt
+
+    // Vérifier si un employé avec cet ID existe déjà
+    for (Employe e : ListeEmployes) {
+        if (e.get_id() == id) {
+            System.out.println("Un employé avec cet ID existe déjà. Impossible de créer un nouvel employé.");
+            return;
+        }
+    }
+
+    System.out.println("Entrez le nom de l'employé :");
+    String nom = scanner.nextLine();
+
+    System.out.println("Entrez le prénom de l'employé :");
+    String prenom = scanner.nextLine();
+
+    System.out.println("Entrez le téléphone de l'employé :");
+    int telephone = scanner.nextInt();
+    scanner.nextLine(); // Consomme la ligne restante
+
+    System.out.println("Entrez l'adresse de l'employé :");
+    String adresse = scanner.nextLine();
+
+    System.out.println("Entrez le salaire de l'employé :");
+    double salaire = scanner.nextDouble();
+    scanner.nextLine(); // Consomme la ligne restante
+
+    // Création de l'employé en fonction du type spécifié
+    Employe nouvelEmploye = null;
+    switch (type) {
+        case "laveur":
+            // Créer un laveur
+            nouvelEmploye = new Laveur(id, nom, prenom, telephone, adresse, salaire);
+            break;
+
+        case "mécanicien":
+            // Demander la spécialité pour le mécanicien
+            System.out.println("Entrez la spécialité du mécanicien :");
+            String specialite = scanner.nextLine(); // Saisie libre pour la spécialité
+            // Créer un mécanicien avec la spécialité
+            nouvelEmploye = new Mecanicien(id, nom, prenom, telephone, adresse, salaire, specialite);
+            break;
+
+        case "chef":
+            // Créer un chef
+            nouvelEmploye = new Chef(id, nom, prenom, telephone, adresse, salaire);
+            break;
+
+        default:
+            System.out.println("Type d'employé invalide !");
+            return; // Sortir si le type est invalide
+    }
+
+    // Ajouter l'employé à la liste
+    if (nouvelEmploye != null) {
+        ListeEmployes.add(nouvelEmploye);
+        System.out.println("L'employé " + nouvelEmploye.get_nom() + " a été créé et ajouté à la liste.");
+    }
+}*/
+    //*************CREER EMPLOYE*****************
+    public void creerEmploye(int id, String nom, String prenom, int telephone, String adresse, double salaire, String typeEmploye) {
+    // Vérifier si un employé avec cet ID existe déjà
+    for (Employe e : ListeEmployes) {
+        if (e.get_id() == id) {
+            System.out.println("Un employé avec cet ID existe déjà. Impossible de créer un nouvel employé.");
+            return;
+        }
+    }
+
+    // Créer l'employé en fonction du type
+    Employe nouvelEmploye = null;
+    switch (typeEmploye.toLowerCase()) {
+        case "laveur":
+            // Créer un laveur
+            nouvelEmploye = new Laveur(id, nom, prenom, telephone, adresse, salaire);
+            break;
+
+        case "mécanicien":
+            // Demander la spécialité pour le mécanicien
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Entrez la spécialité du mécanicien :");
+            String specialite = scanner.nextLine(); // Demander la spécialité du mécanicien
+
+            // Vérifier que la spécialité n'est pas vide
+            if (specialite == null || specialite.trim().isEmpty()) {
+                System.out.println("La spécialité du mécanicien ne peut pas être vide !");
+                return;
+            }
+
+            // Créer un mécanicien avec la spécialité
+            nouvelEmploye = new Mecanicien(id, nom, prenom, telephone, adresse, salaire, specialite);
+            break;
+
+        case "chef":
+            // Créer un chef
+            nouvelEmploye = new Chef(id, nom, prenom, telephone, adresse, salaire);
+            break;
+
+        default:
+            System.out.println("Type d'employé invalide !");
+            return;  // Sortir si le type est invalide
+    }
+
+    // Ajouter l'employé à la liste
+    if (nouvelEmploye != null) {
+        ListeEmployes.add(nouvelEmploye);
+        System.out.println("L'employé " + nouvelEmploye.get_nom() + " a été créé et ajouté à la liste.");
+    }
+}
+    //******************afficher employe*****************************
+   /* public void afficherEmployes() {
+    // Vérifie si la liste des employés est vide
+    if (ListeEmployes.isEmpty()) {
+        System.out.println("Aucun employé dans la liste.");
+        return;
+    }
+
+    // Affiche les employés en fonction de leur type
+    System.out.println("Liste des Employés :");
+
+    for (Employe employe : ListeEmployes) {
+        System.out.println("------------------------------");
+        // Affichage des informations de base
+        System.out.println("ID: " + employe.get_id());
+        System.out.println("Nom: " + employe.get_nom());
+        System.out.println("Prénom: " + employe.get_prenom());
+        System.out.println("Téléphone: " + employe.get_telephone());
+        System.out.println("Adresse: " + employe.get_adresse());
+        System.out.println("Salaire: " + employe.get_salaire());
+
+        // Vérification du type d'employé pour afficher des détails spécifiques
+        if (employe instanceof Mecanicien) {
+            Mecanicien mecanicien = (Mecanicien) employe;
+            System.out.println("Type: Mécanicien");
+            System.out.println("Spécialité: " + mecanicien.get_specialite());
+        } else if (employe instanceof Laveur) {
+            Laveur laveur = (Laveur) employe;
+            System.out.println("Type: Laveur");
+
+            // Affichage des spécialités du laveur de manière conviviale
+            if (laveur.get_specialise_exterieur()) {
+                System.out.println("Spécialité: Extérieur (Nettoyage extérieur)");
+            } else if (laveur.get_specialise_interieur()) {
+                System.out.println("Spécialité: Intérieur (Nettoyage intérieur)");
+            } else {
+                System.out.println("Spécialité: Non spécifiée");
+            }
+        } else if (employe instanceof Chef) {
+            System.out.println("Type: Chef");
+        }
+
+        System.out.println("------------------------------\n");
+    }
+}*/
+
+public void afficherTousLesEmployes() {
+    if (ListeEmployes.isEmpty()) {
+        System.out.println("Il n'y a pas d'employés à afficher.");
+        return;
+    }
+
+    // Parcours de tous les employés dans la liste
+    for (Employe employe : ListeEmployes) {
+        // Afficher les informations de base de l'employé
+        System.out.println("ID : " + employe.get_id());
+        System.out.println("Nom : " + employe.get_nom());
+        System.out.println("Prénom : " + employe.get_prenom());
+        System.out.println("Téléphone : " + employe.get_telephone());
+        System.out.println("Adresse : " + employe.get_adresse());
+        System.out.println("Salaire : " + employe.get_salaire());
+        
+        // Vérifier le type d'employé et afficher des informations supplémentaires
+        if (employe instanceof Laveur) {
+            // Si l'employé est un Laveur, afficher les voitures lavées
+            Laveur laveur = (Laveur) employe;
+            System.out.println("Type : Laveur");
+            try {
+                laveur.afficher_historique_voitures();// Affiche les voitures lavées
+            } catch (HistoriqueVoituresVideLavMecException e) {
+                System.out.println("Aucune voiture lavée.");
+            }
+        } 
+        else if (employe instanceof Mecanicien) {
+            // Si l'employé est un Mécanicien, afficher les voitures réparées
+            Mecanicien mecanicien = (Mecanicien) employe;
+            System.out.println("Type : Mécanicien");
+            try {
+                mecanicien.afficher_historique_voitures();// Affiche les voitures réparées
+            } catch (HistoriqueVoituresVideLavMecException e) {
+                System.out.println("Aucune voiture réparée.");
+            }
+        } 
+        else if (employe instanceof Chef) {
+            // Si l'employé est un Chef, afficher l'équipe
+            Chef chef = (Chef) employe;
+            System.out.println("Type : Chef");
+            try {
+                chef.afficherEquipe();// Affiche l'équipe du chef
+            } catch (EquipeVideException e) {
+                System.out.println("L'équipe est vide.");
+            }
+        } 
+        else {
+            System.out.println("Type d'employé inconnu.");
+        }
+        System.out.println(); // Ajouter une ligne vide pour séparer chaque employé
+    }
+}
+
+
 }
 
 
@@ -828,4 +1079,3 @@ public void supprimerClient(int idClient) {
 
 
 
-}
