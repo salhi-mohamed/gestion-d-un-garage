@@ -14,9 +14,9 @@ import java.util.Scanner;
 public class Rendez_vous {
     //attribut
    private int id_rendez_vous;
-  private LocalDate Date_rendez_vous;
+   private LocalDate Date_rendez_vous;
    private String Description_rendez_vous;
-   private boolean confirme;
+   private StatutRendezVous statut;
    private Voiture voiture;
    private Client client;
 
@@ -24,35 +24,27 @@ public class Rendez_vous {
 
 
 
-    // constructeur
-
-   public Rendez_vous(int id_rendez_vous, String Description_rendez_vous, boolean confirme, Voiture voiture, Client client) {
+    // Constructeur
+    public Rendez_vous(int id_rendez_vous, String Description_rendez_vous, Voiture voiture, Client client) {
         this.id_rendez_vous = id_rendez_vous;
         this.Description_rendez_vous = Description_rendez_vous;
-        this.confirme = confirme;
-        this.client = client;
         this.voiture = voiture;
+        this.client = client;
+        this.statut = StatutRendezVous.EN_ATTENTE;  // Statut initial du rendez-vous
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Scanner scanner = new Scanner(System.in);
         boolean dateValide = false;
-        // Boucle jusqu'à ce que l'utilisateur entre une date valide
         while (!dateValide) {
-            System.out.println("Veuillez entrer la date du rendez_vous (format: dd/MM/yyyy) : ");
+            System.out.println("Veuillez entrer la date du rendez-vous (format: dd/MM/yyyy) : ");
             String dateInput = scanner.nextLine();
             try {
-                // Convertir la chaîne saisie en LocalDate
                 this.Date_rendez_vous = LocalDate.parse(dateInput, formatter);
-                dateValide = true;  // Si aucune exception, la date est valide, on sort de la boucle
+                dateValide = true;
             } catch (DateTimeParseException e) {
-                // En cas de format de date incorrect
                 System.out.println("Format de date invalide. Utilisez le format dd/MM/yyyy.");
-            } 
-        
-        
+            }
         }
-
-         
-   }
+    }
 
 
    //geter et seter
@@ -76,16 +68,13 @@ public class Rendez_vous {
         return Date_rendez_vous;
     }
 
-    /*public void setDate_rendez_vous(Date date_rendez_vous) {
-        Date_rendez_vous = date_rendez_vous;
-    }*/
 
-    public boolean isConfirme() {
-        return confirme;
+    public StatutRendezVous getStatut() {
+        return statut;
     }
 
-    public void setConfirme(boolean confirme) {
-        this.confirme = confirme;
+    public void setStatut(StatutRendezVous statut) {
+        this.statut = statut;
     }
 
     public Voiture getVoiture() {
@@ -106,12 +95,13 @@ public class Rendez_vous {
 
                          /////////Mehode */////////////
 
+    // Méthode pour annuler le rendez-vous
     public void annulerRendezVous() {
-        if (this.confirme) {
-            this.confirme = false;  // Marquer le rendez-vous comme annulé
+        if (this.statut != StatutRendezVous.ANNULE) {
+            this.statut = StatutRendezVous.ANNULE;
             System.out.println("Le rendez-vous avec le client " + this.client.get_nom() + " a été annulé.");
         } else {
-            System.out.println("Le rendez-vous était déjà annulé.");
+            System.out.println("Le rendez-vous est déjà annulé.");
         }
     }
 
@@ -124,21 +114,30 @@ public class Rendez_vous {
     }
 
 
-    // Redéfinition de la méthode toString()
+    // Redéfinition de la méthode toString
     @Override
     public String toString() {
-       return "id rendez-vous :  " + this.getId_rendez_vous() +"\n" +" date rendez-vous : "+ this.getDate_rendez_vous()+ "\n " +"Description rendez-vous : "+this.getDescription_rendez_vous()+ "\n" +" voiture concernée : "+this.getVoiture().get_immatriculation()+ "\n" +" client concerné : "+ this.getClient().get_id();
-        
+        return "id rendez-vous : " + this.id_rendez_vous +
+                "\n date rendez-vous : " + this.Date_rendez_vous +
+                "\n Description rendez-vous : " + this.Description_rendez_vous +
+                "\n voiture concernée : " + this.voiture.get_immatriculation() +
+                "\n client concerné : " + this.client.get_id() +
+                "\n statut : " + this.statut;
     }
 
 
 
 
 
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
