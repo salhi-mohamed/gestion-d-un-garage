@@ -994,7 +994,8 @@ public void supprimerClient(int idClient) {
             // Demander l'expertise du mécanicien
             Expertise expertise = null;
             while (expertise == null) {
-                System.out.println("Entrez l'expertise du mécanicien (CHOISIR PARMI : MOTEUR, ELECTRONIQUE, CARROSSERIE) :");
+                System.out.println("Entrez l'expertise du mécanicien (CHOISIR PARMI : MOTEUR, ELECTRONIQUE, CARROSSERIE , PEINTURE , FREINAGE , CLIMATISATION ,TRANSMISSION , SUSPENSION ,ESSUIE_GLACES , PNEUMATIQUES");
+
                 String expertiseStr = scanner.nextLine().toUpperCase();
                 
                 // Vérifier que l'expertise correspond à une valeur valide de l'énumération
