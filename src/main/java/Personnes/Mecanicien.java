@@ -125,7 +125,7 @@ public void afficher()
         }
     }
     
-    @Override
+   /* @Override
     public void modifier() {
         int choice;
         Scanner sc = new Scanner(System.in);
@@ -223,7 +223,7 @@ public void afficher()
             }
 
         } while (choice != 0); // Répète jusqu'à ce que l'utilisateur choisisse de quitter
-    }
+    }*/
     
 
      
@@ -264,7 +264,8 @@ public String toString() {
    public Expertise get_expertise() {
     return this.expertise;
 }
-public void modifier_avec_expertise() {
+  @Override  
+public void modifier() {
     int choice;
     Scanner sc = new Scanner(System.in);
 
