@@ -268,48 +268,6 @@ public class Receptionniste extends Employe
 
    
     /**************** GESTION DES VOITURES ********************/
-/*
-    // Méthode pour créer une voiture
-    public void creerVoiture(int idClient, String marque, String modele, int annee, long kilometrage, String immatriculation) throws VoitureDejaExistanteClientException {
-        // Vérifier si le client avec l'ID donné existe dans la liste des clients
-        Client clientExist = listeClients.stream()
-                .filter(client -> client.get_id() == idClient)
-                .findFirst()
-                .orElse(null);
-
-        if (clientExist != null) {
-            // Création de la nouvelle voiture avec les informations fournies
-            Voiture voiture = new Voiture(marque, modele, annee, kilometrage, immatriculation, clientExist);
-            ListeVoitures.add(voiture);  // Ajouter la voiture à la liste générale des voitures
-            clientExist.ajouterVoiture(voiture);  // Ajouter la voiture au client
-            System.out.println("Voiture créée et ajoutée au client avec succès.");
-        } else {
-            System.out.println("Client avec ID " + idClient + " n'existe pas. La voiture n'a pas été créée.");
-        }
-    }
-
-    // Méthode pour afficher les voitures avec leur propriétaire directement depuis ListeVoitures
-    public void afficherVoitures() {
-        if (ListeVoitures.isEmpty()) {
-            System.out.println("Aucune voiture à afficher.");
-            return;
-        }
-
-        for (Voiture voiture : ListeVoitures) {
-            Client proprietaire = voiture.getClient(); // Supposons que chaque voiture ait une référence à son client
-
-            if (proprietaire != null) {
-                System.out.println("\nPropriétaire : " + proprietaire.get_nom() + " " + proprietaire.get_prenom());
-            } else {
-                System.out.println("\nPropriétaire : Non spécifié");
-            }
-
-            System.out.println("-------------------------");
-            voiture.afficher(); // Afficher les informations de la voiture
-            System.out.println();
-        }
-    }
-*/
 
 
 
