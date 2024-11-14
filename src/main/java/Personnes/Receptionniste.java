@@ -952,7 +952,8 @@ public void supprimerClient(int idClient) {
             // Demander l'expertise du mécanicien
             Expertise expertise = null;
             while (expertise == null) {
-                System.out.println("Entrez l'expertise du mécanicien (CHOISIR PARMI : MOTEUR, ELECTRONIQUE, CARROSSERIE) :");
+                System.out.println("Entrez l'expertise du mécanicien (CHOISIR PARMI : MOTEUR, ELECTRONIQUE, CARROSSERIE , PEINTURE , FREINAGE , CLIMATISATION ,TRANSMISSION , SUSPENSION ,ESSUIE_GLACES , PNEUMATIQUES");
+
                 String expertiseStr = scanner.nextLine().toUpperCase();
                 
                 // Vérifier que l'expertise correspond à une valeur valide de l'énumération
@@ -1313,6 +1314,27 @@ public ArrayList<Voiture> get_liste_voitures()
     return this.ListeVoitures;
 
 }
+//modifier employe
+public void modifierEmploye(int id) {
+    // Rechercher l'employé avec l'ID fourni
+    for (Employe employe : ListeEmployes) {
+        if (employe.get_id() == id) {
+            System.out.println("Modification de l'employé ID : " + id);
+
+            // Vérifier le type d'employé et appeler la méthode modifier appropriée
+            if (employe instanceof Mecanicien) {
+                ((Mecanicien) employe).modifier();
+            } else if (employe instanceof Laveur) {
+                ((Laveur) employe).modifier();
+            } else {
+                System.out.println("Un chef ne peut pas etre modifiable.");
+            }
+            return;
+        }
+    }
+    System.out.println("Aucun employé trouvé avec l'ID : " + id);
+}
+
 
 
 

@@ -125,7 +125,7 @@ public void afficher()
         }
     }
     
-    @Override
+   /* @Override
     public void modifier() {
         int choice;
         Scanner sc = new Scanner(System.in);
@@ -223,7 +223,7 @@ public void afficher()
             }
 
         } while (choice != 0); // Répète jusqu'à ce que l'utilisateur choisisse de quitter
-    }
+    }*/
     
 
      
@@ -264,7 +264,8 @@ public String toString() {
    public Expertise get_expertise() {
     return this.expertise;
 }
-public void modifier_avec_expertise() {
+  @Override  
+/*public void modifier() {
     int choice;
     Scanner sc = new Scanner(System.in);
 
@@ -378,7 +379,144 @@ public void modifier_avec_expertise() {
 
     } while (choice != 0); // Répète jusqu'à ce que l'utilisateur choisisse de quitter
 }
-}
+}*/
+  public void modifier() {
+    int choice;
+    Scanner sc = new Scanner(System.in);
+
+    do {
+        // Menu pour modifier les informations
+        System.out.println("Que voulez-vous modifier ?");
+        System.out.println("1 : nom");
+        System.out.println("2 : prénom");
+        System.out.println("3 : adresse");
+        System.out.println("4 : téléphone");
+        System.out.println("5 : salaire");
+        System.out.println("6 : date d'embauche");
+        System.out.println("7 : spécialité");
+        System.out.println("8 : expertise");
+        System.out.println("0 : quitter");
+
+        // Vérifier que l'entrée est bien un entier
+        while (!sc.hasNextInt()) {
+            System.out.println("Saisie invalide, veuillez entrer un nombre entre 0 et 8.");
+            sc.next(); // Consomme l'entrée invalide
+        }
+        choice = sc.nextInt();
+
+        // Vérifier si l'entier est dans la plage valide (0 à 8)
+        if (choice < 0 || choice > 8) {
+            System.out.println("Choix invalide, veuillez entrer un nombre entre 0 et 8.");
+            continue; // Retourne au début de la boucle pour un nouveau choix
+        }
+
+        // Traiter le choix valide
+        sc.nextLine(); // Consommer le retour de ligne restant après nextInt()
+        switch (choice) {
+            case 1:
+                System.out.println("Saisir le nouveau nom : ");
+                String new_name = sc.nextLine();
+                super.set_nom(new_name);
+                System.out.println("Nom mis à jour.");
+                break;
+
+            case 2:
+                System.out.println("Saisir le nouveau prénom : ");
+                String new_firstname = sc.nextLine();
+                super.set_prenom(new_firstname);
+                System.out.println("Prénom mis à jour.");
+                break;
+
+            case 3:
+                System.out.println("Saisir la nouvelle adresse : ");
+                String new_address = sc.nextLine();
+                super.set_adresse(new_address);
+                System.out.println("Adresse mise à jour.");
+                break;
+
+            case 4:
+                // Gestion de la saisie du numéro de téléphone
+                boolean validPhone = false;
+                int new_telephone = 0;
+                while (!validPhone) {
+                    System.out.println("Saisir le nouveau téléphone (format: 1234567890) : ");
+                    String phoneInput = sc.nextLine();
+                    try {
+                        new_telephone = Integer.parseInt(phoneInput);
+                        validPhone = true; // Sortie de la boucle si la saisie est valide
+                    } catch (NumberFormatException e) {
+                        System.out.println("Saisie invalide, veuillez entrer un numéro de téléphone valide.");
+                    }
+                }
+                super.set_telephone(new_telephone);
+                System.out.println("Téléphone mis à jour.");
+                break;
+
+            case 5:
+                // Gestion de la saisie du salaire
+                boolean validSalary = false;
+                double new_salary = 0.0;
+                while (!validSalary) {
+                    System.out.println("Saisir le nouveau salaire : ");
+                    String salaryInput = sc.nextLine();
+                    try {
+                        new_salary = Double.parseDouble(salaryInput);
+                        validSalary = true; // Sortie de la boucle si la saisie est valide
+                    } catch (NumberFormatException e) {
+                        System.out.println("Saisie invalide, veuillez entrer un montant de salaire valide.");
+                    }
+                }
+                super.set_salaire(new_salary);
+                System.out.println("Salaire mis à jour.");
+                break;
+
+            case 6:
+                System.out.println("Saisir la nouvelle date d'embauche (format: dd/MM/yyyy) : ");
+                String dateInput = sc.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                try {
+                    LocalDate newDateEmbauche = LocalDate.parse(dateInput, formatter);
+                    super.set_date_embauche(newDateEmbauche);
+                    System.out.println("Date d'embauche mise à jour.");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Format de date invalide. Utilisez le format dd/MM/yyyy.");
+                }
+                break;
+
+            case 7:
+                System.out.println("Saisir la nouvelle spécialité : ");
+                String nouvelleSpecialite = sc.nextLine();
+                this.specialite = nouvelleSpecialite;
+                System.out.println("Spécialité mise à jour.");
+                break;
+
+            case 8:
+                System.out.println("Choisissez la nouvelle expertise : ");
+                for (Expertise e : Expertise.values()) {
+                    System.out.println(e.ordinal() + " : " + e); // Affiche chaque expertise avec un numéro correspondant
+                }
+                int expertiseChoice = sc.nextInt();
+                if (expertiseChoice >= 0 && expertiseChoice < Expertise.values().length) {
+                    this.set_expertise(Expertise.values()[expertiseChoice]);
+                    System.out.println("Expertise mise à jour.");
+                } else {
+                    System.out.println("Choix d'expertise invalide.");
+                }
+                sc.nextLine(); // Consomme le retour de ligne
+                break;
+
+            case 0:
+                System.out.println("Sortie du menu de modification.");
+                break;
+
+            default:
+                System.out.println("Choix invalide.");
+                break;
+        }
+
+    } while (choice != 0); // Répète jusqu'à ce que l'utilisateur choisisse de quitter
+}}
+
 
 
 
