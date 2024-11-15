@@ -18,6 +18,7 @@ public class Client extends Personne {
         super(id, nom, prenom, telephone, adresse);
         this.voitures = new HashSet<>();
         this.statutFinancier = statutFinancier;
+        this.fournitures_achetees=new ArrayList<Fourniture>();
     }
 
     // Getters et setters
@@ -178,11 +179,30 @@ public void modifier() {
 
 
     // Redéfinition de la méthode toString() pour afficher les informations du client
-    @Override
-    public String toString() {
-        return super.toString() + "\n" + "Statut financier : " + this.getStatutFinancier() + "\n" + 
-               "Voitures : " + this.getVoitures().toString() + "Fournitures achetées : "+this.get_fournitures_achetees().toString();
+    
+  @Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(super.toString()).append("\n");
+    sb.append("Statut financier : ").append(this.getStatutFinancier()).append("\n");
+
+    // Vérification des voitures
+    if (this.getVoitures() != null && !this.getVoitures().isEmpty()) {
+        sb.append("Voitures : ").append(this.getVoitures().toString()).append("\n");
+    } else {
+        sb.append("Aucune voiture associée à ce client.\n");
     }
+
+    // Vérification des fournitures achetées
+    if (this.get_fournitures_achetees() != null && !this.get_fournitures_achetees().isEmpty()) {
+        sb.append("Fournitures achetées : ").append(this.get_fournitures_achetees().toString()).append("\n");
+    } else {
+        sb.append("Pas de fournitures achetées pour ce client.\n");
+    }
+
+    return sb.toString();
+}
+
     public ArrayList<Fourniture> get_fournitures_achetees()
     {
         return this.fournitures_achetees;
@@ -222,7 +242,7 @@ public void modifier() {
     if (fournitures_achetees.isEmpty()) {
         System.out.println("Aucune fourniture achetée pour ce client.");
     } else {
-        System.out.println("Liste des fournitures achetées par le client:");
+        System.out.println("Liste des fournitures achetées par le client " + this.get_prenom() +" "+this.get_nom());
 
         Iterator<Fourniture> iterator = fournitures_achetees.iterator();
         while (iterator.hasNext()) {

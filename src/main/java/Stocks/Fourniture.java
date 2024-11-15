@@ -121,5 +121,17 @@ public class Fourniture {
                 .sorted((f1, f2) -> Double.compare(f1.getPrix(), f2.getPrix()))
                 .collect(Collectors.toList());
     }
+    @Override
+public String toString() {
+    
+    return "Fourniture {" +
+           "ID = " + idFourniture +
+           ", Nom = '" + nom + '\'' +
+           ", Description = '" + description + '\'' +
+           ", Prix = " + prix +
+           ", Quantité en Stock = " + quantiteStock +
+           '}';
+}
+
 
 }
