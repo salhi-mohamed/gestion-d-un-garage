@@ -554,7 +554,7 @@ public class Receptionniste extends Employe
 
 
 
-
+//
 
 
 
@@ -1590,6 +1590,80 @@ public void afficherLaveurs() {
     // Message si aucun laveur n'a été trouvé
     if (!laveurTrouve) {
         System.out.println("Aucun laveur trouvé dans la liste des employés.");
+    }
+}
+// afficher voitures par mecanicien 
+public void afficherVoituresParMecanicien(int idEmploye) {
+    // Recherche de l'employé par son ID dans la liste des employés
+    Employe employeTrouve = null;
+    for (Employe employe : ListeEmployes) {
+        if (employe.get_id() == idEmploye) {
+            employeTrouve = employe;
+            break;
+        }
+    }
+
+    // Vérification si l'employé existe
+    if (employeTrouve == null) {
+        System.out.println("Aucun employé trouvé avec l'ID " + idEmploye + ".");
+        return;
+    }
+
+    // Vérification si l'employé est un mécanicien
+    if (!(employeTrouve instanceof Mecanicien)) {
+        System.out.println("L'employé avec l'ID " + idEmploye + " n'est pas un mécanicien.");
+        return;
+    }
+
+    // Si l'employé est un mécanicien, on cast l'employé en Mecanicien
+    Mecanicien mecanicien = (Mecanicien) employeTrouve;
+
+    // Affichage des voitures associées au mécanicien
+    ArrayList<Voiture> voituresAssociees = mecanicien.get_historique_voitures(); // Récupérer les voitures associées
+    if (voituresAssociees.isEmpty()) {
+        System.out.println("Le mécanicien " + mecanicien.get_nom() + " n'a aucune voiture associée.");
+    } else {
+        System.out.println("Voitures associées au mécanicien " + mecanicien.get_nom() + ":");
+        for (Voiture voiture : voituresAssociees) {
+            System.out.println(voiture); // Affiche les détails de chaque voiture
+        }
+    }
+}
+// afficher voitures par laveurs
+public void afficherVoituresParLaveur(int idEmploye) {
+    // Recherche de l'employé par son ID dans la liste des employés
+    Employe employeTrouve = null;
+    for (Employe employe : ListeEmployes) {
+        if (employe.get_id() == idEmploye) {
+            employeTrouve = employe;
+            break;
+        }
+    }
+
+    // Vérification si l'employé existe
+    if (employeTrouve == null) {
+        System.out.println("Aucun employé trouvé avec l'ID " + idEmploye + ".");
+        return;
+    }
+
+    // Vérification si l'employé est un mécanicien
+    if (!(employeTrouve instanceof Laveur)) {
+        System.out.println("L'employé avec l'ID " + idEmploye + " n'est pas un laveur.");
+        return;
+    }
+
+    // Si l'employé est un mécanicien, on cast l'employé en Mecanicien
+    Laveur laveur = (Laveur) employeTrouve;
+
+    // Affichage des voitures associées au mécanicien
+    ArrayList<Voiture> voituresAssociees = laveur.get_voitures(); // Récupérer les voitures associées
+    if (voituresAssociees.isEmpty()) {
+        System.out.println("Le mécanicien " + laveur.get_nom() + " n'a aucune voiture associée.");
+    } else {
+        System.out.println("Voitures associées au laveur " + laveur.get_nom() + ":");
+        for (Voiture voiture : voituresAssociees) {
+            System.out.println(voiture); // Affiche les détails de chaque voiture
+        }
     }
 }
 
