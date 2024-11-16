@@ -18,9 +18,9 @@ public class Receptionniste extends Employe
 {
     private int numeroBureau;
     private String email;
-    private ArrayList<Rendez_vous> listeRendezVous; // Liste pour stocker les rendez-vous
+    public ArrayList<Rendez_vous> listeRendezVous; // Liste pour stocker les rendez-vous
     public ArrayList<Client> listeClients;
-    private ArrayList<Voiture> ListeVoitures;
+    public ArrayList<Voiture> ListeVoitures;
     private ArrayList<Fourniture> listeFournitures;
     private ArrayList<Piece_Rechange> listPiecesRechange;
     private ArrayList<Employe> ListeEmployes;
@@ -37,6 +37,7 @@ public class Receptionniste extends Employe
         this.ListeVoitures=new ArrayList<Voiture>();
         this.listeFournitures=new ArrayList<Fourniture>();
         this.ListeEmployes=new ArrayList<Employe>();
+        this.ListeServices=new ArrayList<Service>();
         
 
     }
@@ -380,63 +381,119 @@ public class Receptionniste extends Employe
         }
     }
 
+
+
+
+
+
+
   //******************Gestion Rendez_vous///////////////
 
 
-   
-   
 
+
+//methode pour afficher un rendez vous par son id
+    public void afficherRendezVous(int idRendezVous) {
+        // Recherche du rendez-vous par ID
+        Optional<Rendez_vous> rendezVousOpt = listeRendezVous.stream()
+                .filter(rdv -> rdv.getId_rendez_vous() == idRendezVous)
+                .findFirst();
+
+        if (rendezVousOpt.isEmpty()) {
+            System.out.println("Erreur : Rendez-vous avec l'ID " + idRendezVous + " introuvable.");
+            return; // Sortie si le rendez-vous n'est pas trouvé
+        }
+
+        // Affichage des détails du rendez-vous
+        Rendez_vous rendezVous = rendezVousOpt.get();
+        System.out.println("Détails du rendez-vous :");
+        System.out.println(rendezVous.toString());
+    }
+
+//methode pour afficher tous les rendez vous
+    public void afficherTousLesRendezVous() {
+        if (listeRendezVous.isEmpty()) {
+            System.out.println("Aucun rendez-vous disponible !");
+            return; // Sortie si la liste est vide
+        }
+
+        System.out.println("Liste des rendez-vous :");
+        listeRendezVous.forEach(rdv -> System.out.println(rdv.toString()));
+    }
 
 
     public void supprimerRendezVous(int idRendezVous) {
-        // Recherche du rendez-vous à supprimer
-        Rendez_vous rendezVous = listeRendezVous.stream()
-                .filter(r -> r.getId_rendez_vous() == idRendezVous)
-                .findFirst()
-                .orElse(null);
+        // Recherche du rendez-vous par ID
+        Optional<Rendez_vous> rendezVousOpt = listeRendezVous.stream()
+                .filter(rdv -> rdv.getId_rendez_vous() == idRendezVous)
+                .findFirst();
 
-        if (rendezVous == null) {
-            System.out.println("Aucun rendez-vous trouvé avec l'ID : " + idRendezVous);
+        if (rendezVousOpt.isEmpty()) {
+            System.out.println("Erreur : Rendez-vous avec l'ID " + idRendezVous + " introuvable.");
+            return; // Sortie si le rendez-vous n'est pas trouvé
         }
 
-        // Suppression du rendez-vous
+        // Suppression du rendez-vous de la liste
+        Rendez_vous rendezVous = rendezVousOpt.get();
         listeRendezVous.remove(rendezVous);
-        System.out.println("Rendez-vous avec l'ID " + idRendezVous + " supprimé avec succès.");
 
+        System.out.println("Rendez-vous avec l'ID " + idRendezVous + " supprimé avec succès !");
     }
 
 
 
-    public void modifierRendezVous(int idRendezVous, String nouvelleDescription, Voiture nouvelleVoiture, Client nouveauClient) {
-        // Recherche du rendez-vous à modifier
-        Rendez_vous rendezVous = listeRendezVous.stream()
-                .filter(r -> r.getId_rendez_vous() == idRendezVous)
-                .findFirst()
-                .orElse(null);
 
-        if (rendezVous == null) {
-            System.out.println("Aucun rendez-vous trouvé avec l'ID : " + idRendezVous);
+    public void modifierRendezVous(int idRendezVous, String nouvelleDescription, int idClient, String immatriculationVoiture) {
+        // Recherche du rendez-vous par ID
+        Optional<Rendez_vous> rendezVousOpt = listeRendezVous.stream()
+                .filter(rdv -> rdv.getId_rendez_vous() == idRendezVous)
+                .findFirst();
 
+        if (rendezVousOpt.isEmpty()) {
+            System.out.println("Erreur : Rendez-vous avec l'ID " + idRendezVous + " introuvable.");
+            return; // Sortie si le rendez-vous n'est pas trouvé
         }
 
-        // Mise à jour des informations du rendez-vous
-        if (nouvelleDescription != null && !nouvelleDescription.isEmpty()) {
-            assert rendezVous != null;
-            rendezVous.setDescription_rendez_vous(nouvelleDescription);
+        Rendez_vous rendezVous = rendezVousOpt.get();
+
+        // Vérification du client
+        Optional<Client> clientOpt = listeClients.stream()
+                .filter(client -> client.get_id() == idClient)
+                .findFirst();
+
+        if (clientOpt.isEmpty()) {
+            System.out.println("Erreur : Client avec l'ID " + idClient + " introuvable.");
+            return; // Sortie si le client n'est pas trouvé
+        }
+        Client client = clientOpt.get();
+
+        // Vérification de la voiture dans la liste globale
+        Optional<Voiture> voitureOpt = ListeVoitures.stream()
+                .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
+                .findFirst();
+
+        if (voitureOpt.isEmpty()) {
+            System.out.println("Erreur : Voiture avec l'immatriculation " + immatriculationVoiture + " introuvable.");
+            return; // Sortie si la voiture n'existe pas
+        }
+        Voiture voiture = voitureOpt.get();
+
+        // Vérification que la voiture appartient au client
+        if (!client.getVoitures().contains(voiture)) {
+            System.out.println("Erreur : La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client avec l'ID " + idClient + ".");
+            return; // Sortie si la voiture n'appartient pas au client
         }
 
-        if (nouvelleVoiture != null) {
-            assert rendezVous != null;
-            rendezVous.setVoiture(nouvelleVoiture);
-        }
+        // Modification des informations du rendez-vous
+        rendezVous.setDescription_rendez_vous(nouvelleDescription);
+        rendezVous.setClient(client);
+        rendezVous.setVoiture(voiture);
 
-        if (nouveauClient != null) {
-            assert rendezVous != null;
-            rendezVous.setClient(nouveauClient);
-        }
-
-        System.out.println("Rendez-vous avec l'ID " + idRendezVous + " modifié avec succès.");
+        System.out.println("Rendez-vous avec l'ID " + idRendezVous + " modifié avec succès !");
+        System.out.println("Nouvelles informations : " + rendezVous.toString());
     }
+
+
 
 
 
@@ -446,7 +503,8 @@ public class Receptionniste extends Employe
 
     //*********** GESTION DE Service /////////////////////////
 
-  
+  //methode pour creer un service
+
     public void creerService(int idClient, String immatriculationVoiture, int idService, String description, double cout, int idRendezVous) {
     // Vérification du client
     Optional<Client> clientOpt = listeClients.stream()
@@ -495,18 +553,104 @@ public class Receptionniste extends Employe
 
     // Création du service avec le bon constructeur
     Service service = new Service(description, cout, idService, voitureGlobale, rendezVous, client);
-
+    ListeServices.add(service);
     // Affichage des informations du service créé
     System.out.println("Service créé avec succès :");
     System.out.println(service.toString());
-}
-
-
-   
+    }
 
 
 
-    
+//methode pour supprimer un service par son id
+
+    public void supprimerService(int idService) {
+        // Recherche du service par ID
+        Optional<Service> serviceOpt = ListeServices.stream()
+                .filter(service -> service.getIdService() == idService)
+                .findFirst();
+
+        if (serviceOpt.isEmpty()) {
+            System.out.println("Erreur : Service avec l'ID " + idService + " introuvable.");
+            return; // Sortie de la méthode si le service n'existe pas
+        }
+
+        // Suppression du service de la liste
+        Service serviceASupprimer = serviceOpt.get();
+        ListeServices.remove(serviceASupprimer);
+
+        System.out.println("Service avec l'ID " + idService + " supprimé avec succès.");
+    }
+
+
+
+//methode pour modifer un service
+    public void modifierService(int idService, String nouvelleDescription, double nouveauCout, int nouvelIdRendezVous) {
+        // Recherche du service par ID
+        Optional<Service> serviceOpt = ListeServices.stream()
+                .filter(service -> service.getIdService() == idService)
+                .findFirst();
+
+        if (serviceOpt.isEmpty()) {
+            System.out.println("Erreur : Service avec l'ID " + idService + " introuvable.");
+            return; // Sortie de la méthode si le service n'existe pas
+        }
+
+        Service serviceAModifier = serviceOpt.get();
+
+        // Vérification du nouveau rendez-vous
+        Optional<Rendez_vous> rendezVousOpt = listeRendezVous.stream()
+                .filter(rdv -> rdv.getId_rendez_vous() == nouvelIdRendezVous)
+                .findFirst();
+
+        if (rendezVousOpt.isEmpty()) {
+            System.out.println("Erreur : Rendez-vous avec l'ID " + nouvelIdRendezVous + " introuvable.");
+            return; // Sortie de la méthode si le rendez-vous n'existe pas
+        }
+
+        Rendez_vous nouveauRendezVous = rendezVousOpt.get();
+
+        // Modification des attributs du service
+        serviceAModifier.setDescription(nouvelleDescription);
+        serviceAModifier.setCout(nouveauCout);
+        serviceAModifier.setRendezVous(nouveauRendezVous);
+
+        System.out.println("Service modifié avec succès !");
+        System.out.println(serviceAModifier.toString());
+    }
+
+
+//Methode pour afficher un service par son id
+    public void afficherService(int idService) {
+        // Recherche du service par ID
+        Optional<Service> serviceOpt = ListeServices.stream()
+                .filter(service -> service.getIdService() == idService)
+                .findFirst();
+
+        if (serviceOpt.isEmpty()) {
+            System.out.println("Erreur : Service avec l'ID " + idService + " introuvable.");
+            return; // Sortie de la méthode si le service n'existe pas
+        }
+
+        // Affichage du service trouvé
+        Service service = serviceOpt.get();
+        System.out.println("Détails du service :");
+        System.out.println(service.toString());
+    }
+//methode pour afficher tous les services
+    public void afficherTousLesServices() {
+        if (ListeServices.isEmpty()) {
+            System.out.println("Aucun service disponible !");
+            return;
+        }
+
+        System.out.println("Liste des services :");
+        ListeServices.forEach(service -> System.out.println(service.toString()));
+    }
+
+
+
+
+
 
 
 
