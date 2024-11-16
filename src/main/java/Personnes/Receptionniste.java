@@ -381,50 +381,6 @@ public class Receptionniste extends Employe
     }
 
   //******************Gestion Rendez_vous///////////////
-public void creerRendezVous(int idRendezVous, String description, int idClient, String immatriculationVoiture) {
-    // Vérification du client
-    Client client = listeClients.stream()
-            .filter(c -> c.get_id() == idClient)
-            .findFirst()
-            .orElse(null);
-
-    if (client == null) {
-        System.out.println("Client introuvable !");
-        return;  // Arrête la méthode si le client n'est pas trouvé
-    }
-
-    // Vérification de la voiture dans la liste générale des voitures
-    Voiture voitureGenerale = ListeVoitures.stream()
-            .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
-            .findFirst()
-            .orElse(null);
-
-    if (voitureGenerale == null) {
-        System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'existe pas dans la liste générale des voitures !");
-        return;  // Arrête la méthode si la voiture n'existe pas dans la liste générale
-    }
-
-    // Vérification que la voiture appartient bien au client
-    Voiture voitureClient = client.getVoitures().stream()
-            .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
-            .findFirst()
-            .orElse(null);
-
-    if (voitureClient == null) {
-        System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client !");
-        return;  // Arrête la méthode si la voiture n'appartient pas au client
-    }
-
-    // Création du rendez-vous avec l'ID passé en paramètre
-    Rendez_vous rendezVous = new Rendez_vous(idRendezVous, description, voitureClient, client);
-
-    // Ajout du rendez-vous à la liste globale
-    listeRendezVous.add(rendezVous);
-
-    System.out.println("Rendez-vous créé avec succès !");
-    System.out.println("ID du rendez-vous : " + idRendezVous);
-    rendezVous.toString();
-}
 
 
    
@@ -1752,6 +1708,50 @@ public void modifierEmploye(int id) {
 
 
 
+public void creerRendezVous(int idRendezVous, String description, int idClient, String immatriculationVoiture) {
+    // Vérification du client
+    Client client = listeClients.stream()
+            .filter(c -> c.get_id() == idClient)
+            .findFirst()
+            .orElse(null);
+
+    if (client == null) {
+        System.out.println("Client introuvable !");
+        return;  // Arrête la méthode si le client n'est pas trouvé
+    }
+
+    // Vérification de la voiture dans la liste générale des voitures
+    Voiture voitureGenerale = ListeVoitures.stream()
+            .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
+            .findFirst()
+            .orElse(null);
+
+    if (voitureGenerale == null) {
+        System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'existe pas dans la liste générale des voitures !");
+        return;  // Arrête la méthode si la voiture n'existe pas dans la liste générale
+    }
+
+    // Vérification que la voiture appartient bien au client
+    Voiture voitureClient = client.getVoitures().stream()
+            .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
+            .findFirst()
+            .orElse(null);
+
+    if (voitureClient == null) {
+        System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client !");
+        return;  // Arrête la méthode si la voiture n'appartient pas au client
+    }
+
+    // Création du rendez-vous avec l'ID passé en paramètre
+    Rendez_vous rendezVous = new Rendez_vous(idRendezVous, description, voitureClient, client);
+
+    // Ajout du rendez-vous à la liste globale
+    listeRendezVous.add(rendezVous);
+
+    System.out.println("Rendez-vous créé avec succès !");
+    System.out.println("ID du rendez-vous : " + idRendezVous);
+    rendezVous.toString();
+}
 
 
 }
