@@ -12,8 +12,10 @@ import java.time.LocalDate;
 
 
 public class Garage_Manager{
- public static void main(String[] args){}
- }             
+ public static void main(String[] args){   
+}
+}
+            
 
 
 

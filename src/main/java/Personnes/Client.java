@@ -16,7 +16,7 @@ public class Client extends Personne {
     // Constructeur
     public Client(int id, String nom, String prenom, int telephone, String adresse, String statutFinancier) {
         super(id, nom, prenom, telephone, adresse);
-        this.voitures = new HashSet<>();
+        this.voitures = new HashSet<Voiture>();
         this.statutFinancier = statutFinancier;
         this.fournitures_achetees=new ArrayList<Fourniture>();
     }
