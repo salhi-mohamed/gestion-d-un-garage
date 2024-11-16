@@ -13,7 +13,7 @@ import Exceptions.*;
  *
  * @author LENOVO
  */
-public class Laveur extends Employe {
+public class Laveur extends Employe implements GestionExperience{
 
     //Attributs
     private boolean specialise_interieur;
@@ -271,5 +271,14 @@ public void modifier() {
            {
                return this.voitures;
            }
-    
+   @Override
+    public void afficherNiveau(int experience) {
+        if (experience < 2) {
+            System.out.println("Laveur : Niveau Junior - "+experience+" années de travail dans ce garage. ");
+        } else if (experience < 5) {
+            System.out.println("Laveur : Niveau Confirmé - "+experience+" années de travail dans ce garage. ");
+        } else {
+            System.out.println("Laveur : Niveau Senior - "+experience+" années de travail dans ce garage. ");
+        }
+    } 
 }

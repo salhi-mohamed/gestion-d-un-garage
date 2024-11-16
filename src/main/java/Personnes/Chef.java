@@ -10,7 +10,7 @@ import Exceptions.*;
  *
  * @author LENOVO
  */
-public class Chef extends Employe {
+public class Chef extends Employe implements GestionExperience {
     // Attributs
     private Set<Employe> equipe; // L'équipe du chef (ensemble d'employés)
 
@@ -69,5 +69,14 @@ public class Chef extends Employe {
     public Set<Employe> getEquipe() {
         return equipe;
     }
-
+@Override
+public void afficherNiveau(int experience) {
+        if (experience < 2) {
+            System.out.println("Chef : Niveau Junior - "+experience+" années de travail dans ce garage. ");
+        } else if (experience < 5) {
+            System.out.println("Chef : Niveau Confirmé - "+experience+" années de travail dans ce garage. ");
+        } else {
+            System.out.println("Chef : Niveau Senior - "+experience+" années de travail dans ce garage. ");
+        }
+    }
 }

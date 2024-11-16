@@ -13,6 +13,10 @@ import Stocks.Fourniture;
 import Stocks.Piece_Rechange;
 import Exceptions.*;
 import java.util.Optional;
+import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
+import java.util.List;
+
 
 public class Receptionniste extends Employe
 {
@@ -1117,6 +1121,34 @@ public void supprimerClient(int idClient) {
         System.out.println("Erreur : " + e.getMessage());
     }
 }
+    //afficher voitures par client : 
+    public void afficher_voitures_par_client(int idclient)
+    {
+         Client clientTrouve = null;
+
+    // Recherche du client dans la liste des clients
+    for (Client client : this.listeClients) {
+        if (client.get_id() == idclient) {
+            clientTrouve = client;
+            break;
+        }
+    }
+
+    // Si le client n'est pas trouvé, afficher un message d'erreur
+    if (clientTrouve == null) {
+        System.out.println("Client avec l'ID " + idclient + " non trouvé.");
+        return;
+    }
+    if (clientTrouve.getVoitures().isEmpty())
+    {
+        System.out.println("Ce client n'a pas de voitures encore ");
+        return;
+    }
+    for (Voiture voiture : clientTrouve.getVoitures())
+    {
+      System.out.println(voiture);
+    }
+}
 
     //AJOUTER UNE FOURNITURE AU CLIENT 
     public void ajouter_fourniture_client(int idFourniture, int idClient) {
@@ -1896,6 +1928,69 @@ public void creerRendezVous(int idRendezVous, String description, int idClient, 
     System.out.println("ID du rendez-vous : " + idRendezVous);
     rendezVous.toString();
 }
+// Méthode pour afficher le niveau d'un employé par son ID
+      private int calculerExperience(Employe employe) {
+        // Logique pour calculer l'expérience en fonction de la date d'embauche
+        // (par exemple, en utilisant la date actuelle et la date d'embauche)
+        LocalDate dateEmbauche = employe.get_date_embauche();  // supposons que la méthode getDateEmbauche() existe
+        LocalDate dateActuelle = LocalDate.now();
+        
+        // Calcul de l'expérience en années
+        int experience = (int) ChronoUnit.YEARS.between(dateEmbauche, dateActuelle);
+        return experience;
+    }
+    public void afficherNiveauEmploye(int idEmploye) {
+        // Recherche de l'employé dans la liste par son ID
+        Employe employe = null;
+        for (Employe e : ListeEmployes) {
+            if (e.get_id() == idEmploye) {
+                employe = e;
+                break; // L'employé a été trouvé, on sort de la boucle
+            }
+        }
+
+        // Si l'employé n'existe pas
+        if (employe == null) {
+            System.out.println("Aucun employé trouvé avec l'ID " + idEmploye);
+            return; // On arrête la méthode si l'employé n'est pas trouvé
+        }
+
+        // Calcul de l'expérience de l'employé
+        int experience = calculerExperience(employe);  // Calcul de l'expérience
+
+        // Si l'employé existe, on vérifie son type et on affiche son niveau avec l'expérience
+        if (employe instanceof Mecanicien) {
+            Mecanicien mecanicien = (Mecanicien) employe; // Cast en Mécanicien
+            mecanicien.afficherNiveau(experience);  // Appel avec l'expérience
+        } else if (employe instanceof Laveur) {
+            Laveur laveur = (Laveur) employe; // Cast en Laveur
+            laveur.afficherNiveau(experience);  // Appel avec l'expérience
+        } else if (employe instanceof Chef) {
+            Chef chef = (Chef) employe; // Cast en Chef
+            chef.afficherNiveau(experience);  // Appel avec l'expérience
+        } else {
+            System.out.println("Le type d'employé avec l'ID " + idEmploye + " n'est pas reconnu.");
+        }
+    }
+    //stream pour afficher liste d employe par niveau d experience (de plus experimenté au moin experimenté)
+     public void afficherListeEmployesParExperience() {
+        // Vérification si la liste d'employés est vide
+        if (ListeEmployes.isEmpty()) {
+            System.out.println("La liste des employés est vide.");
+            return;
+        }
+
+        // Tri des employés en fonction de leur expérience (du plus expérimenté au moins expérimenté)
+        List<Employe> listeTriee = ListeEmployes.stream()
+                .sorted((e1, e2) -> Integer.compare(calculerExperience(e2), calculerExperience(e1)))  // Tri décroissant
+                .collect(Collectors.toList());
+
+        // Affichage des employés triés par expérience
+        System.out.println("Liste des employés triée par expérience :");
+        for (Employe employe : listeTriee) {
+            System.out.println(employe.get_nom() + " " + employe.get_prenom() + " - Expérience : " + calculerExperience(employe) + " années");
+        }
+    }
 
 
 }

@@ -18,7 +18,7 @@ import Exceptions.*;
  *
  * @author LENOVO
  */
-public class Mecanicien extends Employe{
+public class Mecanicien extends Employe implements GestionExperience{
 
     //Attributs
 
@@ -515,7 +515,20 @@ public String toString() {
         }
 
     } while (choice != 0); // Répète jusqu'à ce que l'utilisateur choisisse de quitter
-}}
+}
+  //interface fonctionnelle
+  @Override
+    public void afficherNiveau(int experience) {
+        if (experience < 2) {
+            System.out.println("Mécanicien : Niveau Junior - "+experience+" années de travail dans ce garage. ");
+        } else if (experience < 5) {
+            System.out.println("Mécanicien : Niveau Confirmé - "+experience+" années de travail dans ce garage. ");
+        } else {
+            System.out.println("Mécanicien : Niveau Senior - "+experience+" années de travail dans ce garage. ");
+        }
+    }
+  
+}
 
 
 
