@@ -250,7 +250,7 @@ public class Receptionniste extends Employe
 
 
 
-    ////methode pour afficher  toute les pieces
+    ////methode pour afficher_toute les pieces
 
     public void afficherToutesLesPiecesRechange() {
         if (listPiecesRechange.isEmpty()) {
@@ -379,14 +379,6 @@ public class Receptionniste extends Employe
             System.out.println("--------------------------");
         }
     }
-
-
-
-
-
-
-
-
 
 
 
