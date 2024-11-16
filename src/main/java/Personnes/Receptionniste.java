@@ -385,95 +385,12 @@ public class Receptionniste extends Employe
     //*********** GESTION DE Service /////////////////////////
 
 
-    public void creerService(String description, double cout, int idClient, String immatriculationVoiture,
-                                int idRendezVous, ArrayList<Integer> idsEmployes, ArrayList<Integer> idsPieces) {
-
-        // Vérification du client
-        Client client = listeClients.stream()
-                .filter(c -> c.get_id() == idClient)
-                .findFirst()
-                .orElse(null);
-
-        if (client == null) {
-            System.out.println("Client introuvable !");
-
-        }
-
-        // Vérification de la voiture associée au client
-        Voiture voiture = client.getVoitures().stream()
-                .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
-                .findFirst()
-                .orElse(null);
-
-        if (voiture == null) {
-            System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client !");
-
-        }
-
-        // Vérification du rendez-vous
-        Rendez_vous rendezVous = listeRendezVous.stream()
-                .filter(r -> r.getId_rendez_vous() == idRendezVous)
-                .findFirst()
-                .orElse(null);
-
-        if (rendezVous == null) {
-            System.out.println("Rendez-vous introuvable !");
-
-        }
-
-        // Récupération des employés effecteurs
-        ArrayList<Employe> effecteurs = new ArrayList<>();
-        for (int idEmploye : idsEmployes) {
-            Employe employe = ListeEmployes.stream()
-                    .filter(e -> e.get_id() == idEmploye)
-                    .findFirst()
-                    .orElse(null);
-            if (employe != null) {
-                effecteurs.add(employe);
-            } else {
-                System.out.println("Employé avec ID " + idEmploye + " introuvable !");
-            }
-        }
-
-        // Récupération des pièces de rechange utilisées
-        ArrayList<Piece_Rechange> piecesUtilisees = new ArrayList<>();
-        for (int idPiece : idsPieces) {
-            Piece_Rechange piece = listPiecesRechange.stream()
-                    .filter(p -> p.getIdPiece() == idPiece)
-                    .findFirst()
-                    .orElse(null);
-            if (piece != null) {
-                piecesUtilisees.add(piece);
-            } else {
-                System.out.println("Pièce avec ID " + idPiece + " introuvable !");
-            }
-        }
-
-        // Génération de l'ID du service
-        int idService = ListeServices.size() + 1;  // On génère l'ID en fonction de la taille de la liste (ou utiliser un autre mécanisme d'ID)
-
-        // Création du service avec tous les attributs, y compris l'ID
-        Service service = new Service(description, cout, idService, voiture, rendezVous, client);
-
-        // Ajout des employés effecteurs
-        for (Employe effecteur : effecteurs) {
-            service.ajouterEffecteur(effecteur);
-        }
-
-        // Ajout des pièces utilisées
-        for (Piece_Rechange piece : piecesUtilisees) {
-            service.ajouterPiece(piece);
-        }
-
-        // Ajout du service à la liste globale
-        ListeServices.add(service);
-
-        System.out.println("Service créé avec succès !");
-        System.out.println("ID du service : " + idService);
-        service.afficherService();
+   
 
 
-    }
+
+    
+
 
 
 
