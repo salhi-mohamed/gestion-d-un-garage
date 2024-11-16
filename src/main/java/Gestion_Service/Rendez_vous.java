@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 
 
-
 public class Rendez_vous {
     //attribut
    private int id_rendez_vous;
@@ -111,6 +110,28 @@ public class Rendez_vous {
     {
         this.client=client;
     }
+    }
+
+    public void afficherRendezVous() {
+        System.out.println("=== Détails du Rendez-vous ===");
+        System.out.println("ID : " + id_rendez_vous);
+        System.out.println("Description : " + Description_rendez_vous);
+
+        if (voiture != null) {
+            System.out.println("Voiture : " + voiture.getMarque() + " " + voiture.getModele() +
+                    " - Immatriculation : " + voiture.getImmatriculation());
+        } else {
+            System.out.println("Voiture : Aucune voiture associée.");
+        }
+
+        if (client != null) {
+            System.out.println("Client : " + client.get_nom() + " " + client.get_prenom() +
+                    " - Téléphone : " + client.get_telephone());
+        } else {
+            System.out.println("Client : Aucun client associé.");
+        }
+
+        System.out.println("===============================");
     }
 
 

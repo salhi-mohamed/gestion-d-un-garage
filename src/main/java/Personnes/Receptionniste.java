@@ -19,7 +19,7 @@ public class Receptionniste extends Employe
     private int numeroBureau;
     private String email;
     private ArrayList<Rendez_vous> listeRendezVous; // Liste pour stocker les rendez-vous
-    private ArrayList<Client> listeClients;
+    public ArrayList<Client> listeClients;
     private ArrayList<Voiture> ListeVoitures;
     private ArrayList<Fourniture> listeFournitures;
     private ArrayList<Piece_Rechange> listPiecesRechange;
@@ -379,6 +379,102 @@ public class Receptionniste extends Employe
             System.out.println("--------------------------");
         }
     }
+
+  //******************Gestion Rendez_vous///////////////
+
+
+    public void creerRendezVous(String description, int idClient, String immatriculationVoiture) {
+        // Vérification du client
+        Client client = listeClients.stream()
+                .filter(c -> c.get_id() == idClient)
+                .findFirst()
+                .orElse(null);
+
+        if (client == null) {
+            System.out.println("Client introuvable !");
+        }
+
+        // Vérification de la voiture associée au client
+        Voiture voiture = client.getVoitures().stream()
+                .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
+                .findFirst()
+                .orElse(null);
+
+        if (voiture == null) {
+            System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client !");
+        }
+
+        // Génération d'un ID unique pour le rendez-vous
+        int idRendezVous = listeRendezVous.size() + 1;
+
+        // Création du rendez-vous
+        Rendez_vous rendezVous = new Rendez_vous(idRendezVous, description, voiture, client);
+
+        // Ajout du rendez-vous à la liste globale
+        listeRendezVous.add(rendezVous);
+
+        System.out.println("Rendez-vous créé avec succès !");
+        System.out.println("ID du rendez-vous : " + idRendezVous);
+        rendezVous.toString();
+    }
+
+
+
+
+
+    public void supprimerRendezVous(int idRendezVous) {
+        // Recherche du rendez-vous à supprimer
+        Rendez_vous rendezVous = listeRendezVous.stream()
+                .filter(r -> r.getId_rendez_vous() == idRendezVous)
+                .findFirst()
+                .orElse(null);
+
+        if (rendezVous == null) {
+            System.out.println("Aucun rendez-vous trouvé avec l'ID : " + idRendezVous);
+        }
+
+        // Suppression du rendez-vous
+        listeRendezVous.remove(rendezVous);
+        System.out.println("Rendez-vous avec l'ID " + idRendezVous + " supprimé avec succès.");
+
+    }
+
+
+
+    public void modifierRendezVous(int idRendezVous, String nouvelleDescription, Voiture nouvelleVoiture, Client nouveauClient) {
+        // Recherche du rendez-vous à modifier
+        Rendez_vous rendezVous = listeRendezVous.stream()
+                .filter(r -> r.getId_rendez_vous() == idRendezVous)
+                .findFirst()
+                .orElse(null);
+
+        if (rendezVous == null) {
+            System.out.println("Aucun rendez-vous trouvé avec l'ID : " + idRendezVous);
+
+        }
+
+        // Mise à jour des informations du rendez-vous
+        if (nouvelleDescription != null && !nouvelleDescription.isEmpty()) {
+            assert rendezVous != null;
+            rendezVous.setDescription_rendez_vous(nouvelleDescription);
+        }
+
+        if (nouvelleVoiture != null) {
+            assert rendezVous != null;
+            rendezVous.setVoiture(nouvelleVoiture);
+        }
+
+        if (nouveauClient != null) {
+            assert rendezVous != null;
+            rendezVous.setClient(nouveauClient);
+        }
+
+        System.out.println("Rendez-vous avec l'ID " + idRendezVous + " modifié avec succès.");
+    }
+
+
+
+
 
 
 
