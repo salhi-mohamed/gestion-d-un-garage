@@ -24,7 +24,7 @@ public class Receptionniste extends Employe
     private ArrayList<Fourniture> listeFournitures;
     private ArrayList<Piece_Rechange> listPiecesRechange;
     private ArrayList<Employe> ListeEmployes;
-
+    private ArrayList<Service> ListeServices;
 
 
     // Constructeur
@@ -382,6 +382,100 @@ public class Receptionniste extends Employe
 
 
 
+    //*********** GESTION DE Service /////////////////////////
+
+
+    public void creerService(String description, double cout, int idClient, String immatriculationVoiture,
+                                int idRendezVous, ArrayList<Integer> idsEmployes, ArrayList<Integer> idsPieces) {
+
+        // Vérification du client
+        Client client = listeClients.stream()
+                .filter(c -> c.get_id() == idClient)
+                .findFirst()
+                .orElse(null);
+
+        if (client == null) {
+            System.out.println("Client introuvable !");
+
+        }
+
+        // Vérification de la voiture associée au client
+        Voiture voiture = client.getVoitures().stream()
+                .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
+                .findFirst()
+                .orElse(null);
+
+        if (voiture == null) {
+            System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client !");
+
+        }
+
+        // Vérification du rendez-vous
+        Rendez_vous rendezVous = listeRendezVous.stream()
+                .filter(r -> r.getId_rendez_vous() == idRendezVous)
+                .findFirst()
+                .orElse(null);
+
+        if (rendezVous == null) {
+            System.out.println("Rendez-vous introuvable !");
+
+        }
+
+        // Récupération des employés effecteurs
+        ArrayList<Employe> effecteurs = new ArrayList<>();
+        for (int idEmploye : idsEmployes) {
+            Employe employe = ListeEmployes.stream()
+                    .filter(e -> e.get_id() == idEmploye)
+                    .findFirst()
+                    .orElse(null);
+            if (employe != null) {
+                effecteurs.add(employe);
+            } else {
+                System.out.println("Employé avec ID " + idEmploye + " introuvable !");
+            }
+        }
+
+        // Récupération des pièces de rechange utilisées
+        ArrayList<Piece_Rechange> piecesUtilisees = new ArrayList<>();
+        for (int idPiece : idsPieces) {
+            Piece_Rechange piece = listPiecesRechange.stream()
+                    .filter(p -> p.getIdPiece() == idPiece)
+                    .findFirst()
+                    .orElse(null);
+            if (piece != null) {
+                piecesUtilisees.add(piece);
+            } else {
+                System.out.println("Pièce avec ID " + idPiece + " introuvable !");
+            }
+        }
+
+        // Génération de l'ID du service
+        int idService = ListeServices.size() + 1;  // On génère l'ID en fonction de la taille de la liste (ou utiliser un autre mécanisme d'ID)
+
+        // Création du service avec tous les attributs, y compris l'ID
+        Service service = new Service(description, cout, idService, voiture, rendezVous, client);
+
+        // Ajout des employés effecteurs
+        for (Employe effecteur : effecteurs) {
+            service.ajouterEffecteur(effecteur);
+        }
+
+        // Ajout des pièces utilisées
+        for (Piece_Rechange piece : piecesUtilisees) {
+            service.ajouterPiece(piece);
+        }
+
+        // Ajout du service à la liste globale
+        ListeServices.add(service);
+
+        System.out.println("Service créé avec succès !");
+        System.out.println("ID du service : " + idService);
+        service.afficherService();
+
+
+    }
+
+
 
 
 
@@ -714,7 +808,7 @@ public void supprimerClient(int idClient) {
     }
     return null;  // Si le client n'est pas trouvé
 }
-    public void afficherListeClients() {
+   /* public void afficherListeClients() {
     // Vérifier si la liste des clients est vide
     if (listeClients.isEmpty()) {
         System.out.println("Aucun client à afficher.");
@@ -743,8 +837,24 @@ public void supprimerClient(int idClient) {
             System.out.println("Aucune voiture associée à ce client.");
         }
     }
+    }*/
+ public void afficherListeClients() {
+    // Vérifier si la liste des clients est vide
+    if (listeClients.isEmpty()) {
+        System.out.println("Aucun client à afficher.");
+        return;
     }
-    public void affichv()
+
+    // Parcourir la liste des clients
+    for (Client client : listeClients) {
+        // Afficher les informations du client via la méthode toString()
+        System.out.println(client);  // Cela appelle automatiquement client.toString()
+
+       
+    }
+}
+
+    public void afficher_voiturs_client()
     {
         for (Voiture v : this.ListeVoitures)
         {
@@ -761,6 +871,7 @@ public void supprimerClient(int idClient) {
             break; // Si le client est trouvé, on peut sortir de la boucle
         }
     }
+    
 
     // Vérification si le client existe
     if (clientExist != null) {
@@ -798,6 +909,162 @@ public void supprimerClient(int idClient) {
         System.out.println("Client non trouvé.");
     }
     }
+    public void supprimerVoitureClient(int idClient, String idVoiture) {
+    Client clientTrouve = null;
+
+    // Recherche du client dans la liste des clients
+    for (Client client : this.listeClients) {
+        if (client.get_id() == idClient) {
+            clientTrouve = client;
+            break;
+        }
+    }
+
+    // Si le client n'est pas trouvé, afficher un message d'erreur
+    if (clientTrouve == null) {
+        System.out.println("Client avec l'ID " + idClient + " non trouvé.");
+        return;
+    }
+
+    // Si le client est trouvé, on appelle la méthode retirerVoiture
+    try {
+        // Tenter de retirer la voiture du client
+        clientTrouve.retirerVoiture(idVoiture);  // On laisse la gestion de la voiture à cette méthode
+        System.out.println("La voiture avec l'ID " + idVoiture + " a été supprimée du client "+ clientTrouve.get_nom()+" "+clientTrouve.get_prenom());
+    } catch (VoitureNonTrouveeClientException e) {
+        // En cas d'erreur si la voiture n'est pas trouvée pour ce client
+        System.out.println("Erreur : " + e.getMessage()+" pour ce client");
+    } catch (ArgumentInvalideException e) {
+        // En cas d'argument invalide dans la méthode retirerVoiture
+        System.out.println("Erreur : " + e.getMessage());
+    }
+}
+
+    //AJOUTER UNE FOURNITURE AU CLIENT 
+    public void ajouter_fourniture_client(int idFourniture, int idClient) {
+    // Trouver la fourniture correspondante
+    Fourniture fourniture = null;
+    for (Fourniture f : listeFournitures) {
+        if (f.getIdFourniture() == idFourniture) {
+            fourniture = f;
+            break;
+        }
+    }
+
+    if (fourniture == null) {
+        System.out.println("Fourniture introuvable avec l'ID: " + idFourniture);
+        return;
+    }
+
+    // Trouver le client correspondant
+    Client client = null;
+    for (Client c : listeClients) {
+        if (c.get_id() == idClient) {
+            client = c;
+            break;
+        }
+    }
+
+    if (client == null) {
+        System.out.println("Client introuvable avec l'ID: " + idClient);
+        return;
+    }
+
+    // Ajouter la fourniture au client
+    try {
+        client.ajouterFourniture(fourniture);
+    } catch (FournitureExisteClientException e) {
+        System.out.println(e.getMessage());
+    }
+}
+    public void supprimer_fourniture_de_client(int idClient, int idFourniture) {
+    // Recherche du client par son ID
+    Client client = trouverClientParId(idClient);  // Méthode pour trouver le client
+
+    if (client == null) {
+        System.out.println("Client introuvable avec l'ID : " + idClient);
+        return;
+    }
+
+    // Recherche de la fourniture par son ID dans la liste des fournitures achetées du client
+    Fourniture fournitureASupprimer = trouverFournitureParId(idFourniture);  // Méthode pour trouver la fourniture
+
+    if (fournitureASupprimer == null) {
+        System.out.println("Fourniture introuvable avec l'ID : " + idFourniture);
+        return;
+    }
+
+    // Utiliser le try-catch pour gérer l'exception levée par supprimerFourniture
+    try {
+        // Appeler la méthode pour supprimer la fourniture du client
+        client.supprimerFourniture(fournitureASupprimer);
+    } catch (FournitureNonTrouveeClientException e) {
+        // Gérer l'exception si la fourniture n'est pas trouvée dans la liste
+        System.out.println("Erreur : " + e.getMessage());
+    }
+}
+    public void afficherFournituresClient(int idClient) {
+    Client client = null;
+
+    // Recherche du client dans la liste des clients par ID
+    for (Client c : listeClients) { // listeClients représente la collection des clients
+        if (c.get_id() == idClient) {
+            client = c;
+            break;
+        }
+    }
+
+    // Si le client est trouvé, afficher ses fournitures
+    if (client != null) {
+        client.afficherFournitures(); // Appel à la méthode afficherFournitures() de la classe Client
+    } else {
+        System.out.println("Client avec l'ID " + idClient + " non trouvé.");
+    }
+}
+public void afficher_fournitures_par_client(int idClient) {
+    // Vérifier si le client existe dans la liste des clients
+    Client client = null;
+    for (Client c : listeClients) {
+        if (c.get_id() == idClient) {
+            client = c;
+            break;
+        }
+    }
+
+    if (client != null) {
+        // Appeler la méthode afficherFournitures du client
+        client.afficherFournitures();
+    } else {
+        System.out.println("Client non trouvé avec l'ID : " + idClient);
+    }
+}
+
+
+// Méthode pour trouver un client par son ID
+private Client trouverClientParId(int idClient) {
+    // Ici vous pouvez chercher le client dans votre liste de clients
+    // Par exemple :
+    for (Client client : listeClients) {
+        if (client.get_id() == idClient) {
+            return client;
+        }
+    }
+    return null;  // Retourne null si le client n'est pas trouvé
+}
+
+// Méthode pour trouver une fourniture par son ID (si vous avez une liste de fournitures)
+private Fourniture trouverFournitureParId(int idFourniture) {
+    // Chercher la fourniture dans une liste de fournitures
+    // Par exemple, si vous avez une liste globale de fournitures :
+    for (Fourniture fourniture : listeFournitures) {
+        if (fourniture.getIdFourniture() == idFourniture) {
+            return fourniture;
+        }
+    }
+    return null;  // Retourne null si la fourniture n'est pas trouvée
+}
+
+    
     //****************GESTION DES EMPLOYEES********************
     /*public void creerEmploye() {
     Scanner scanner = new Scanner(System.in);
@@ -869,6 +1136,7 @@ public void supprimerClient(int idClient) {
     }
 }*/
     //*************CREER EMPLOYE*****************
+//sans expertise
     public void creerEmploye(int id, String nom, String prenom, int telephone, String adresse, double salaire, String typeEmploye) {
     // Vérifier si un employé avec cet ID existe déjà
     for (Employe e : ListeEmployes) {
@@ -918,6 +1186,7 @@ public void supprimerClient(int idClient) {
         System.out.println("L'employé " + nouvelEmploye.get_nom() + " a été créé et ajouté à la liste.");
     }
 }
+    //avec expertise
     public void creer_employe(int id, String nom, String prenom, int telephone, String adresse, double salaire, String typeEmploye) {
     // Vérifier si un employé avec cet ID existe déjà
     for (Employe e : ListeEmployes) {
@@ -1023,7 +1292,7 @@ public void supprimerClient(int idClient) {
         System.out.println("------------------------------\n");
     }
 }*/
-
+//sans expertise
 public void afficherTousLesEmployes() {
     if (ListeEmployes.isEmpty()) {
         System.out.println("Il n'y a pas d'employés à afficher.");
@@ -1077,6 +1346,7 @@ public void afficherTousLesEmployes() {
         System.out.println(); // Ajouter une ligne vide pour séparer chaque employé
     }
 }
+//avec expertise
 public void afficher_tous_les_employes() {
     if (ListeEmployes.isEmpty()) {
         System.out.println("Il n'y a pas d'employés à afficher.");
@@ -1334,7 +1604,7 @@ public void modifierEmploye(int id) {
 
 }
 
-
+//
 
 
 
