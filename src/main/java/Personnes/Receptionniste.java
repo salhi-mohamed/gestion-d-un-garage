@@ -392,16 +392,26 @@ public class Receptionniste extends Employe
 
         if (client == null) {
             System.out.println("Client introuvable !");
+            return;
         }
 
-        // Vérification de la voiture associée au client
-        Voiture voiture = client.getVoitures().stream()
+        // Vérification si la voiture existe dans la liste globale des voitures
+        Voiture voiture = ListeVoitures.stream()
                 .filter(v -> v.get_immatriculation().equals(immatriculationVoiture))
                 .findFirst()
                 .orElse(null);
 
         if (voiture == null) {
+            System.out.println("Voiture avec immatriculation " + immatriculationVoiture + " introuvable !");
+            return;
+        }
+
+        // Vérification si la voiture appartient bien au client
+        boolean voitureAssocieeAuClient = client.getVoitures().contains(voiture);
+
+        if (!voitureAssocieeAuClient) {
             System.out.println("La voiture avec l'immatriculation " + immatriculationVoiture + " n'appartient pas au client !");
+            return;
         }
 
         // Génération d'un ID unique pour le rendez-vous
@@ -415,7 +425,7 @@ public class Receptionniste extends Employe
 
         System.out.println("Rendez-vous créé avec succès !");
         System.out.println("ID du rendez-vous : " + idRendezVous);
-        rendezVous.toString();
+        rendezVous.afficherRendezVous();
     }
 
 
