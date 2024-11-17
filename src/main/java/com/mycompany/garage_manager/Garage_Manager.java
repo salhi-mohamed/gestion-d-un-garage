@@ -13,15 +13,9 @@ import java.time.LocalDate;
 
 public class Garage_Manager{
  public static void main(String[] args){ 
-     Receptionniste r=new Receptionniste(0, "d", "f", 20592345, "fff",2500 ,  5, "ff");
-     
-     r.creerEmploye(0, "tajouri", "med", 0, "med", 0, "chef");
-          r.creerEmploye(1, "salhi", "med", 0, "med", 0, "laveur");
-               r.creerEmploye(2, "essid", "med", 0, "med", 0, "chef");
+ }}
 
-        r.afficherListeEmployesParExperience();
-}
-}
+
             
 
 

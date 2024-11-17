@@ -1679,6 +1679,51 @@ public void ajouterVoitureMecLaveur(int employeId, String voitureId) {
         System.out.println("Erreur : " + e.getMessage());
     }
 }
+// supprimer voiture d'un mecanicien /laveur 
+public void supprimerVoitureMecLaveur(int employeId, String voitureId) {
+    try {
+        // Recherche de l'employé par son ID
+        Employe employe = trouverEmployeParId(employeId); // Méthode pour récupérer l'employé par ID
+
+        if (employe == null) {
+            System.out.println("Erreur : Aucun employé trouvé avec l'ID " + employeId);
+            return;
+        }
+
+        // Vérification si l'employé est un chef
+        if (employe instanceof Chef) {
+            System.out.println("Erreur : L'employé concerné est un chef.");
+            return; // Sortir de la méthode si l'employé est un chef
+        }
+
+        // Recherche de la voiture par son ID
+        Voiture voiture = trouverVoitureParId(voitureId); // Méthode pour récupérer la voiture par ID
+
+        if (voiture == null) {
+            System.out.println("Erreur : Aucune voiture trouvée avec l'ID " + voitureId);
+            return; // Sortir de la méthode si la voiture n'existe pas
+        }
+
+        // Vérification que l'employé est un mécanicien ou un laveur
+        if (employe instanceof Mecanicien) {
+            Mecanicien mecanicien = (Mecanicien) employe; // Cast en mécanicien
+            mecanicien.supprimer_voiture(voiture); // Appel de la méthode supprimer_voiture
+        } else if (employe instanceof Laveur) {
+            Laveur laveur = (Laveur) employe; // Cast en laveur
+            laveur.supprimer_voiture(voiture); // Appel de la méthode supprimer_voiture
+        } else {
+            System.out.println("L'employé avec l'ID " + employeId + " n'est ni un mécanicien ni un laveur.");
+        }
+    } catch (VoitureNonTrouveePourLavMecException e) {
+        // Gestion de l'exception si la voiture n'est pas trouvée dans l'historique
+        System.out.println("Erreur : " + e.getMessage());
+    } catch (Exception e) {
+        // Gestion des autres exceptions
+        System.out.println("Erreur inattendue : " + e.getMessage());
+    }
+}
+
+
 private Voiture trouverVoitureParId(String immatriculation) {
     // Recherche de la voiture dans la liste des voitures disponibles
     for (Voiture v : this.ListeVoitures) { // get_liste_voitures() renvoie la liste des voitures
