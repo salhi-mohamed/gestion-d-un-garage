@@ -1700,12 +1700,13 @@ public void supprimerVoitureMecLaveur(int employeId, String voitureId) {
         Voiture voiture = trouverVoitureParId(voitureId); // Méthode pour récupérer la voiture par ID
 
         if (voiture == null) {
-            System.out.println("Erreur : Aucune voiture trouvée avec l'ID " + voitureId);
+            System.out.println("Erreur : Aucune voiture trouvée avec l'immatriculation  " + voitureId);
             return; // Sortir de la méthode si la voiture n'existe pas
         }
-
+        
         // Vérification que l'employé est un mécanicien ou un laveur
         if (employe instanceof Mecanicien) {
+            
             Mecanicien mecanicien = (Mecanicien) employe; // Cast en mécanicien
             mecanicien.supprimer_voiture(voiture); // Appel de la méthode supprimer_voiture
         } else if (employe instanceof Laveur) {
@@ -1890,7 +1891,7 @@ public void afficherVoituresParLaveur(int idEmploye) {
     // Affichage des voitures associées au mécanicien
     ArrayList<Voiture> voituresAssociees = laveur.get_voitures(); // Récupérer les voitures associées
     if (voituresAssociees.isEmpty()) {
-        System.out.println("Le mécanicien " + laveur.get_nom() + " n'a aucune voiture associée.");
+        System.out.println("Le laveur " + laveur.get_nom() + " n'a aucune voiture associée.");
     } else {
         System.out.println("Voitures associées au laveur " + laveur.get_nom() + ":");
         for (Voiture voiture : voituresAssociees) {
